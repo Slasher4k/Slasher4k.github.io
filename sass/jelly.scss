@@ -1,0 +1,331 @@
+$red-jelly: #F83A4B;
+$green-jelly: #17ab9d;
+$green-jelly2: #64c585;
+$yellow-jelly: #f8c215;
+$blue-jelly: #00899f;
+$border-width: 6px;
+
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:700');
+@mixin row-border($side,$color,$width)
+{
+	border-bottom: $width solid $color;
+	border-top: $width solid $color;
+
+	@if $side == 'left' {   		
+    	border-left: $width solid $color; 
+   } @else {
+        border-right: $width solid $color;
+   }
+}
+
+body{
+  min-width: 500px;
+}
+
+
+.navigation a{
+	color: $red-jelly;
+	font-size: 14px;
+	letter-spacing: 2px;
+
+}
+
+#contact-btn{
+	color: #fff;
+	border-bottom: none;
+	background-color: $green-jelly;	
+	font-size: 16px;
+	padding: 10px 25px;
+	transition: all .3s;
+}
+
+li a#contact-btn:hover{
+    
+	background-color: $blue-jelly;
+  -webkit-box-shadow: 3px 3px 14px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 3px 3px 14px 0px rgba(0,0,0,0.75);
+  box-shadow: 3px 3px 14px 0px rgba(0,0,0,0.75);
+}
+
+.btn{
+	background-color: $red-jelly;
+}
+
+.btn:hover, .btn:focus {
+    background-color: $red-jelly;
+}
+
+
+#header.fixed {
+    background-color: rgba(255, 255, 255, 0.9);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.banner-logo
+{
+	//margin-top:18%;
+}
+
+#header.fixed .header-content {
+    position: relative;
+}
+
+.feature .icon {
+    color: $red-jelly;
+    font-size: 60px;
+}
+
+.navigation a:hover, .navigation a.active {
+    color: $red-jelly;
+    border-bottom: 3px solid;
+}
+
+.footer-top{
+	background-color: $green-jelly;
+}
+
+.footer-bottom{
+	background-color: darken($green-jelly,10%);
+}
+
+.work .overlay.overlay-green {
+	background: transparentize($green-jelly,.1);
+}
+
+.social-icons a:hover, .footer .footer-share a:hover {
+    background-color: $yellow-jelly;
+    border-color: $yellow-jelly;
+    color: #fff;
+}
+
+.yellow-back{
+	background-color: $yellow-jelly;
+}
+.green-back{
+	background-color: $green-jelly;
+}
+.red-back{
+	background-color: $red-jelly;
+}
+.flex-control-nav {
+    width: 50%;
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    z-index: 100;
+    text-align: inherit;
+}
+
+.testimonials blockquote {
+    border: 0;
+    margin: 0;
+    padding: 100px 15%;
+}
+
+.testimonials {
+     background-color: transparent; 
+}
+/* centre nav
+.navigation {
+    text-align: center;
+    float: none;
+}*/
+.container-fluid{
+	margin-bottom:5em;
+}
+
+.no-margin
+{
+  margin: 0;
+}
+
+.section-heading {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 6em;
+    
+    color: #515151;
+    margin-bottom: 4%;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+
+@media screen and (max-width: 991px) {
+    .section-heading{
+        font-size: 4em;
+    }
+}
+
+.border-row{
+	padding: 15px;
+	//margin: 10px 0;
+
+	&.red-left{
+    	@include row-border('left',$red-jelly,$border-width)
+    } 
+
+    &.green-right{
+    	@include row-border('right',$green-jelly,$border-width)
+    }
+
+    &.yellow-left{
+    	@include row-border('left',$yellow-jelly,$border-width) 
+    } 
+}
+
+
+
+.midalign-heading-left {
+	position: absolute;
+	bottom: 0;
+	transform: rotate(-90deg);
+	transform-origin: 0% 100% 0; // 0 100 is want next to section (padding is col 2 + size of ti) 0 0 for centre
+
+	>  h2{
+	    line-height: 84px;
+	    margin: 0;    	    
+	}
+}
+
+.midalign-heading-right {
+	position: absolute;
+	top: 0;
+	left: 99px;
+	transform: rotate(90deg);
+	transform-origin: 0% 0% 0; // 0 0 if want next to section. 0 100 to centre
+
+	>  h2{
+	    line-height: 84px;
+	    margin: 0;    	    
+	}
+}
+
+.person h5 {
+    color: $yellow-jelly;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.social-icons a{
+ 	border: 1px solid #515151;    
+    color: #515151;
+}
+
+.form-control:focus {
+    outline: none !important;
+    border-color: $red-jelly;
+    box-shadow: 0 0 10px $red-jelly;
+}
+
+.download .btn {
+    font-size: 1.75em;
+}
+
+.no-top-padding
+{
+	padding-top: 0;
+}
+
+.half-bottom-padding
+{
+	padding-top: 0;
+	padding-bottom: 50px;
+}
+
+.wrapper{
+    padding: 0 8%;
+    text-align: center;
+}
+
+.banner-title > p
+{
+  font-size: 4em;
+  line-height: inherit;
+  color: #515151;
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
+}
+
+
+.banner-title{
+    //@include row-border('left',$green-jelly,10px);
+    padding-right: 10%;
+    animation: fade-in 1s ease-in 2s both;
+}
+
+
+
+.keyword{
+  color:$red-jelly;
+  font-weight: bold;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+
+
+// ANIMATIONS
+
+.left-slide{
+	transform: translateX(-100%);
+}
+
+.come-in-left {
+  animation: come-in-left 3s ease forwards;
+}
+
+@keyframes come-in-left {
+  to { transform: translateX(0%); }
+}
+
+.right-slide{
+	transform: translateX(100%);
+}
+
+.come-in-right {
+  animation: come-in-left 2s ease forwards;
+}
+
+@keyframes come-in-right {
+  to { transform: translateX(0%); }
+}
+
+
+
+//windows
+
+// .window{
+//     width:100%;
+//     height:100%;
+//     position:absolute;
+// }
+
+ section{
+ 	overflow-x: hidden; 
+ }
+
+
+@keyframes fade-in{
+  0%{
+    opacity: 0;
+
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+.svg-col{
+  animation: move-to-left 3s linear both;
+}
+
+
+@keyframes move-to-left{
+  0%, 50%{
+    transform: translateX(60%)
+  }
+  100%{
+    transform: translateX(0%)
+  }
+}
