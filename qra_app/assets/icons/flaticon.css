@@ -27,6 +27,7 @@
         font-size: 28px;
 font-style: normal;
 margin-left: 10px;
+  color:black;
 }
 
 .flaticon-sleep:before { content: "\f100"; }
