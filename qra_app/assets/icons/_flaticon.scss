@@ -1,6 +1,6 @@
     /*
     Flaticon icon font: Flaticon
-    Creation date: 01/01/2018 00:22
+    Creation date: 01/01/2018 05:54
     */
 
     @font-face {
@@ -36,24 +36,26 @@
   font-smoothing: antialiased;
     }
 
-    .flaticon-interface:before { content: "\f100"; }
-.flaticon-add:before { content: "\f101"; }
-.flaticon-direction:before { content: "\f102"; }
-.flaticon-zzz-sleep-symbol:before { content: "\f103"; }
-.flaticon-toilet:before { content: "\f104"; }
-.flaticon-playground:before { content: "\f105"; }
-.flaticon-protection-symbol-of-opened-umbrella-silhouette-under-raindrops:before { content: "\f106"; }
-.flaticon-nature:before { content: "\f107"; }
-.flaticon-drop-silhouette:before { content: "\f108"; }
-.flaticon-grill:before { content: "\f109"; }
+    .flaticon-disabled:before { content: "\f100"; }
+.flaticon-zoomout:before { content: "\f101"; }
+.flaticon-zoomin:before { content: "\f102"; }
+.flaticon-directions:before { content: "\f103"; }
+.flaticon-sleep:before { content: "\f104"; }
+.flaticon-toilet:before { content: "\f105"; }
+.flaticon-playground:before { content: "\f106"; }
+.flaticon-shelter:before { content: "\f107"; }
+.flaticon-table:before { content: "\f108"; }
+.flaticon-water:before { content: "\f109"; }
+.flaticon-bbq:before { content: "\f10a"; }
     
-    $font-Flaticon-interface: "\f100";
-    $font-Flaticon-add: "\f101";
-    $font-Flaticon-direction: "\f102";
-    $font-Flaticon-zzz-sleep-symbol: "\f103";
-    $font-Flaticon-toilet: "\f104";
-    $font-Flaticon-playground: "\f105";
-    $font-Flaticon-protection-symbol-of-opened-umbrella-silhouette-under-raindrops: "\f106";
-    $font-Flaticon-nature: "\f107";
-    $font-Flaticon-drop-silhouette: "\f108";
-    $font-Flaticon-grill: "\f109";
+    $font-Flaticon-disabled: "\f100";
+    $font-Flaticon-zoomout: "\f101";
+    $font-Flaticon-zoomin: "\f102";
+    $font-Flaticon-directions: "\f103";
+    $font-Flaticon-sleep: "\f104";
+    $font-Flaticon-toilet: "\f105";
+    $font-Flaticon-playground: "\f106";
+    $font-Flaticon-shelter: "\f107";
+    $font-Flaticon-table: "\f108";
+    $font-Flaticon-water: "\f109";
+    $font-Flaticon-bbq: "\f10a";
