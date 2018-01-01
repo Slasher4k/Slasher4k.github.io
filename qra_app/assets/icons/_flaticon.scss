@@ -1,6 +1,6 @@
     /*
     Flaticon icon font: Flaticon
-    Creation date: 31/12/2017 01:55
+    Creation date: 01/01/2018 00:22
     */
 
     @font-face {
@@ -36,18 +36,24 @@
   font-smoothing: antialiased;
     }
 
-    .flaticon-zzz-sleep-symbol:before { content: "\f100"; }
-.flaticon-toilet:before { content: "\f101"; }
-.flaticon-playground:before { content: "\f102"; }
-.flaticon-protection-symbol-of-opened-umbrella-silhouette-under-raindrops:before { content: "\f103"; }
-.flaticon-nature:before { content: "\f104"; }
-.flaticon-drop-silhouette:before { content: "\f105"; }
-.flaticon-grill:before { content: "\f106"; }
+    .flaticon-interface:before { content: "\f100"; }
+.flaticon-add:before { content: "\f101"; }
+.flaticon-direction:before { content: "\f102"; }
+.flaticon-zzz-sleep-symbol:before { content: "\f103"; }
+.flaticon-toilet:before { content: "\f104"; }
+.flaticon-playground:before { content: "\f105"; }
+.flaticon-protection-symbol-of-opened-umbrella-silhouette-under-raindrops:before { content: "\f106"; }
+.flaticon-nature:before { content: "\f107"; }
+.flaticon-drop-silhouette:before { content: "\f108"; }
+.flaticon-grill:before { content: "\f109"; }
     
-    $font-Flaticon-zzz-sleep-symbol: "\f100";
-    $font-Flaticon-toilet: "\f101";
-    $font-Flaticon-playground: "\f102";
-    $font-Flaticon-protection-symbol-of-opened-umbrella-silhouette-under-raindrops: "\f103";
-    $font-Flaticon-nature: "\f104";
-    $font-Flaticon-drop-silhouette: "\f105";
-    $font-Flaticon-grill: "\f106";
+    $font-Flaticon-interface: "\f100";
+    $font-Flaticon-add: "\f101";
+    $font-Flaticon-direction: "\f102";
+    $font-Flaticon-zzz-sleep-symbol: "\f103";
+    $font-Flaticon-toilet: "\f104";
+    $font-Flaticon-playground: "\f105";
+    $font-Flaticon-protection-symbol-of-opened-umbrella-silhouette-under-raindrops: "\f106";
+    $font-Flaticon-nature: "\f107";
+    $font-Flaticon-drop-silhouette: "\f108";
+    $font-Flaticon-grill: "\f109";

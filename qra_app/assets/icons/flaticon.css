@@ -1,7 +1,7 @@
-  /*
-    Flaticon icon font: Flaticon
-    Creation date: 31/12/2017 01:55
-    */
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 01/01/2018 00:22
+  	*/
 
 @font-face {
   font-family: "Flaticon";
@@ -23,17 +23,20 @@
 
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
-  font-family: Flaticon;
-        font-size: 28px;
-font-style: normal;
-margin-left: 10px;
-  color:black;
+    font-family: Flaticon;
+    font-size: 28px;
+    font-style: normal;
+    margin-left: 10px;
+    color: black;
 }
 
-.flaticon-sleep:before { content: "\f100"; }
-.flaticon-toilet:before { content: "\f101"; }
-.flaticon-playground:before { content: "\f102"; }
-.flaticon-shelter:before { content: "\f103"; }
-.flaticon-table:before { content: "\f104"; }
-.flaticon-water:before { content: "\f105"; }
-.flaticon-bbq:before { content: "\f106"; }
+.flaticon-zoomout:before { content: "\f100"; }
+.flaticon-zoomin:before { content: "\f101"; }
+.flaticon-directions:before { content: "\f102"; }
+.flaticon-sleep:before { content: "\f103"; }
+.flaticon-toilet:before { content: "\f104"; }
+.flaticon-playground:before { content: "\f105"; }
+.flaticon-shelter:before { content: "\f106"; }
+.flaticon-table:before { content: "\f107"; }
+.flaticon-water:before { content: "\f108"; }
+.flaticon-bbq:before { content: "\f109"; }
