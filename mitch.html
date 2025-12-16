@@ -1,0 +1,1719 @@
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetawayBoost | Grow Your Local Business with Travel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#09090b",
+                        foreground: "#fafafa",
+                        primary: "#ffffff",
+                        brandOrange: {
+                            DEFAULT: '#f97316',
+                            dark: '#ea580c',
+                            light: '#fb923c',
+                        },
+                        brandPurple: {
+                            DEFAULT: '#8b5cf6',
+                            dark: '#7c3aed',
+                            deep: '#581c87',
+                        },
+                        muted: "#9ca3af",
+                        border: "#27272a",
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'scroll': 'scroll 40s linear infinite',
+                    },
+                    keyframes: {
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #09090b;
+            --foreground: #fafafa;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hero-glow {
+            background: radial-gradient(125% 125% at 50% 10%, #000 40%, #581c87 70%, #ea580c 100%);
+            opacity: 0.8;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(249, 115, 22, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card-dark {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Smooth scrolling offset for fixed header */
+        html {
+            scroll-padding-top: 5rem;
+        }
+    </style>
+</head>
+
+<body class="">
+
+    <div
+        class="max-w-7xl mx-auto border-x border-x-white/10  relative antialiased min-h-screen flex flex-col items-center overflow-x-hidden selection:bg-brandOrange/30 selection:text-white">
+
+        <!-- Header -->
+        <header class="fixed top-4 z-50 w-full flex justify-center px-2 md:px-4">
+            <div
+                class="w-[95%] md:w-full max-w-4xl bg-black/80 backdrop-blur-lg border border-white/10 rounded-full shadow-lg shadow-brandPurple/10">
+                <div class="flex h-14 items-center justify-between px-4 md:px-6">
+                    <a class="flex items-center gap-2 group" href="#">
+                        <img src="https://i.imgur.com/YreoeUV.jpeg" alt="GetawayBoost Logo: Palm Tree with Upward Arrow"
+                            class="w-6 h-6 md:w-8 md:h-8 flex-shrink-0" />
+                        <span
+                            class="text-base md:text-lg font-bold text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-brandOrange-light to-brandOrange">GetawayBoost</span>
+                    </a>
+
+                    <nav class="hidden md:block">
+                        <ul class="flex items-center gap-1">
+                            <li><a href="#how-it-works"
+                                    class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors scroll-smooth">How
+                                    it Works</a></li>
+                            <li><a href="#features"
+                                    class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors scroll-smooth">Benefits</a>
+                            </li>
+                            <li><a href="#pricing"
+                                    class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors scroll-smooth">Pricing</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="flex flex-row items-center gap-1 md:gap-3 shrink-0">
+                        <a href="#pricing"
+                            class="flex bg-brandOrange hover:bg-brandOrange-dark text-white h-8 px-3 md:px-4 text-xs md:text-sm font-bold items-center justify-center rounded-full transition-all shadow-lg shadow-brandOrange/20 scroll-smooth">Get
+                            Access</a>
+                        <button onclick="showMobileMenu()"
+                            class="md:hidden border border-stone-600 border-border size-8 rounded-md cursor-pointer flex items-center justify-center"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-menu size-5">
+                                <line x1="4" x2="20" y1="12" y2="12"></line>
+                                <line x1="4" x2="20" y1="6" y2="6"></line>
+                                <line x1="4" x2="20" y1="18" y2="18"></line>
+                            </svg></button>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-menu-backdrop" onclick="closeMenu()" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden md:hidden "></div>
+            <div id="mobile-menu"
+                class="fixed inset-x-0 w-[95%] mx-auto bottom-3 bg-background border border-border p-4 rounded-xl shadow-lg hidden  md:hidden ">
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center justify-between"><a class="flex items-center gap-3" href="/">
+                        <img src="https://i.imgur.com/YreoeUV.jpeg" alt="GetawayBoost Logo: Palm Tree with Upward Arrow"
+                            class="w-6 h-6 md:w-8 md:h-8 flex-shrink-0" />
+                            <p class="text-lg font-semibold text-primary">GetawayBoost</p>
+                        </a><button onclick="closeMenu()" class="border border-border rounded-md p-1 cursor-pointer"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-x size-5">
+                                <path d="M18 6 6 18"></path>
+                                <path d="m6 6 12 12"></path>
+                            </svg></button></div>
+                    <ul class="flex flex-col text-sm mb-4 border border-border rounded-md" style="opacity: 1;">
+                        <li class="p-2.5 border-b border-border last:border-b-0" style="opacity: 1;"><a href="#how-it-works"
+                                class="underline-offset-4 hover:text-primary/80 transition-colors text-primary/60 font-medium">How it Works</a>
+                        </li>
+                        <li class="p-2.5 border-b border-border last:border-b-0" style="opacity: 1;"><a href="#features"
+                                class="underline-offset-4 hover:text-primary/80 transition-colors text-primary/60">Benefits</a></li>
+                        <li class="p-2.5 border-b border-border last:border-b-0" style="opacity: 1;"><a href="#pricing"
+                                class="underline-offset-4 hover:text-primary/80 transition-colors text-primary/60">Pricing</a>
+                        </li>
+                    </ul>
+                    <div class="flex flex-col gap-2">
+                        <a href="#pricing"
+                            class="flex bg-brandOrange hover:bg-brandOrange-dark text-white h-8 px-3 md:px-4 text-xs md:text-sm font-bold items-center justify-center rounded-full transition-all shadow-lg shadow-brandOrange/20 scroll-smooth">Get
+                            Access</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <script>
+            const mobileMenu = document.querySelector('#mobile-menu');
+            const mobileMenuBackdrop = document.querySelector('#mobile-menu-backdrop');
+            function showMobileMenu(){
+                mobileMenu.classList.remove('hidden');
+                mobileMenuBackdrop.classList.remove('hidden');
+
+            }
+
+            function closeMenu(){
+                mobileMenu.classList.add('hidden');
+                mobileMenuBackdrop.classList.add('hidden');
+
+            }
+
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+
+            mobileLinks.forEach((a)=>{
+                a.addEventListener('click',closeMenu);
+            })
+
+            
+        </script>
+
+        <!-- Hero Section -->
+        <section class="w-full relative pt-32 pb-20 px-6">
+            <div class="absolute inset-0 -z-10 h-[800px] w-full hero-glow rounded-b-[3rem]"></div>
+
+            <div class="max-w-4xl mx-auto flex flex-col items-center text-center gap-6 md:gap-8">
+                <div
+                    class="inline-flex items-center gap-2 rounded-full border border-brandOrange/30 bg-brandOrange/10 px-3 py-1 text-sm text-brandOrange-light backdrop-blur-sm">
+                    <span class="flex h-2 w-2 rounded-full bg-brandOrange"></span>
+                    The #1 Strategy For Local Business Growth
+                </div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter text-white drop-shadow-sm">
+                    Give Free Holidays.<br>
+                    <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-brandOrange via-brandOrange-light to-white">Watch
+                        Sales Explode.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-medium">
+                    Stop discounting your prices. Stand out from competitors by offering complimentary luxury vacations.
+                    Increase referrals, get 5-star Google reviews, and build an irresistible brand.
+                </p>
+                <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+                    <a href="#pricing"
+                        class="h-10 px-6 md:px-8 rounded-full bg-brandOrange hover:bg-brandOrange-dark text-white font-bold flex items-center justify-center transition-all shadow-[0_0_30px_-5px_rgba(249,115,22,0.6)] hover:shadow-[0_0_40px_-5px_rgba(249,115,22,0.8)] hover:scale-105">Join
+                        Now</a>
+                    <a href="#how-it-works"
+                        class="h-10 px-6 md:px-8 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 text-white font-medium flex items-center justify-center transition-all">How
+                        it works</a>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto mt-16 px-4">
+                <div class="relative overflow-hidden pt-[56.25%] rounded-2xl shadow-2xl ring-4 ring-brandOrange/50">
+                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/0gd9ufPo0QA"
+                        title="Getawayboost VSL - Unlock Explosive Sales" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </section>
+        <section class="w-full border-y border-brandPurple/20 bg-brandPurple-deep/20 py-16 md:py-24 backdrop-blur-sm">
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <p class="text-sm font-medium text-gray-400 mb-8 uppercase tracking-widest">Proven results for these
+                    industries</p>
+                <div class="flex flex-wrap justify-center gap-x-12 gap-y-6 opacity-80 text-gray-200">
+
+                    <!-- Real Estate -->
+                    <div class="flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brandOrange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span class="font-semibold">Real Estate</span>
+                    </div>
+
+                    <!-- Fitness Centers -->
+                    <div class="flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brandOrange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <span class="font-semibold">Fitness Centers</span>
+                    </div>
+
+                    <!-- Hair & Beauty -->
+                    <div class="flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brandOrange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 22s8-4 8-10a8 8 0 10-16 0c0 6 8 10 8 10z" />
+                        </svg>
+                        <span class="font-semibold">Hair & Beauty</span>
+                    </div>
+
+                    <!-- Massage & Day Spa -->
+                    <div class="flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brandOrange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 20h16M4 10h16M4 14h16M10 6h4M8 4h8" />
+                        </svg>
+                        <span class="font-semibold">Massage & Day Spa</span>
+                    </div>
+
+                    <!-- Restaurants & Cafés -->
+                    <div class="flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brandOrange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 3v12m6-12v12m6-12v12M4 21h16" />
+                        </svg>
+                        <span class="font-semibold">Restaurants & Cafés</span>
+                    </div>
+
+                    <!-- Dental -->
+                    <div class="flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brandOrange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 22c4-2 7-6 7-10a7 7 0 10-14 0c0 4 3 8 7 10zM9 10h.01M15 10h.01" />
+                        </svg>
+                        <span class="font-semibold">Dental Clinics</span>
+                    </div>
+
+                    <div class="flex items-center gap-2"><svg class="w-6 h-6 text-brandOrange" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg> <span class="font-semibold">Car Dealers</span></div>
+                    <div class="flex items-center gap-2"><svg class="w-6 h-6 text-brandOrange" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg> <span class="font-semibold">Solar & Home Imp</span></div>
+
+                    <!-- Physio & Chiropractic -->
+                    <div class="flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brandOrange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 12h10M12 7v10M5 19h14M5 5h14" />
+                        </svg>
+                        <span class="font-semibold">Physio & Chiro</span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <section id="how-it-works" class="w-full bg-white/5 py-16 md:py-24 border-y border-white/5">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-12 md:mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Simple. Seamless. Smart.</h2>
+                    <p class="text-gray-400 mt-2">The easiest marketing campaign you will ever run.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 relative">
+
+                    <div class="hidden md:block absolute top-8 left-[12.5%] w-[75%] h-px bg-brandPurple/40 -z-0"></div>
+
+                    <div class="relative flex flex-col items-center text-center">
+                        <div
+                            class="w-16 h-16 rounded-full bg-brandOrange flex items-center justify-center text-xl font-bold mb-4 border-4 border-background text-white shadow-lg shadow-brandOrange/30 z-10">
+                            1</div>
+                        <h3 class="text-lg font-bold mb-2 text-white">You Gift It</h3>
+                        <p class="text-sm text-gray-400 px-4 md:px-0">Give a digital or printed voucher to a client who
+                            buys your service or refers a friend.</p>
+                    </div>
+
+                    <div class="relative flex flex-col items-center text-center">
+                        <div
+                            class="w-16 h-16 rounded-full bg-brandPurple flex items-center justify-center text-xl font-bold mb-4 border-4 border-background text-white shadow-lg shadow-brandPurple/30 z-10">
+                            2</div>
+                        <h3 class="text-lg font-bold mb-2 text-white">They Activate</h3>
+                        <p class="text-sm text-gray-400 px-4 md:px-0">Your customer visits our redemption portal and
+                            pays the small nightly booking fee & taxes (approx $30/night). Room rate is complimentary.
+                            Booking fee covers fixed costs, housekeeping etc.</p>
+                    </div>
+
+                    <div class="relative flex flex-col items-center text-center">
+                        <div
+                            class="w-16 h-16 rounded-full bg-brandOrange flex items-center justify-center text-xl font-bold mb-4 border-4 border-background text-white shadow-lg shadow-brandOrange/30 z-10">
+                            3</div>
+                        <h3 class="text-lg font-bold mb-2 text-white">They Travel</h3>
+                        <p class="text-sm text-gray-400 px-4 md:px-0">They have 18 months to book a luxury resort in
+                            100+ amazing destinations like Australia, Bali, Phuket, New Zealand or Las
+                            Vegas.<br><em>(flights not included)</em></p>
+                    </div>
+
+                    <div class="relative flex flex-col items-center text-center">
+                        <div
+                            class="w-16 h-16 rounded-full bg-brandPurple flex items-center justify-center text-xl font-bold mb-4 border-4 border-background text-white shadow-lg shadow-brandPurple/30 z-10">
+                            4</div>
+                        <h3 class="text-lg font-bold mb-2 text-white">You Grow</h3>
+                        <p class="text-sm text-gray-400 px-4 md:px-0">They leave you a glowing review and tell everyone
+                            they know about the business that sent them on a holiday!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="w-full py-16 md:py-24 bg-white/5 border-y border-white/5">
+            <div class="max-w-7xl mx-auto px-6 mb-12 text-center">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Real Boosts for Real Businesses</h2>
+                <p class="text-gray-400">See what our partners are saying about the GetawayBoost effect.</p>
+            </div>
+
+            <div
+                class="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0%,#FFF_10%,#FFF_90%,transparent_100%)]">
+                <ul
+                    class="flex items-center justify-center md:justify-start [&_li]:mx-4 [&_img]:max-w-none animate-scroll group-hover:paused">
+                    <li class="w-[85vw] md:w-96 shrink-0">
+                        <div class="glass-card rounded-xl p-6 h-full flex flex-col justify-between">
+                            <svg class="w-8 h-8 text-brandOrange mb-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M14 6c0-2.209-1.791-4-4-4s-4 1.791-4 4v4h8V6zm0 14h8V10h-8v10zm-8 0h8v-8H6v8z" />
+                            </svg>
+                            <p class="text-base md:text-lg italic text-gray-200">"We used to offer a small cash
+                                discount. Switching to GetawayBoost instantly doubled our closing rate. Best decision
+                                we've made."</p>
+                            <div class="mt-6 pt-4 border-t border-white/10">
+                                <p class="font-bold text-white">David S.</p>
+                                <p class="text-sm text-gray-400">Owner, High-End Solar Installation</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="w-[85vw] md:w-96 shrink-0">
+                        <div class="glass-card rounded-xl p-6 h-full flex flex-col justify-between">
+                            <svg class="w-8 h-8 text-brandPurple mb-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M14 6c0-2.209-1.791-4-4-4s-4 1.791-4 4v4h8V6zm0 14h8V10h-8v10zm-8 0h8v-8H6v8z" />
+                            </svg>
+                            <p class="text-base md:text-lg italic text-gray-200">"The best part is the referral system.
+                                My clients are actively telling their friends just to get the free trip voucher."</p>
+                            <div class="mt-6 pt-4 border-t border-white/10">
+                                <p class="font-bold text-white">Jessica R.</p>
+                                <p class="text-sm text-gray-400">Luxury Real Estate Agent</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="w-[85vw] md:w-96 shrink-0">
+                        <div class="glass-card rounded-xl p-6 h-full flex flex-col justify-between">
+                            <svg class="w-8 h-8 text-brandOrange mb-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M14 6c0-2.209-1.791-4-4-4s-4 1.791-4 4v4h8V6zm0 14h8V10h-8v10zm-8 0h8v-8H6v8z" />
+                            </svg>
+                            <p class="text-base md:text-lg italic text-gray-200">"Zero fulfillment on our end! We just
+                                give the printed voucher, and GetawayBoost handles the rest. Win-win-win."</p>
+                            <div class="mt-6 pt-4 border-t border-white/10">
+                                <p class="font-bold text-white">Mark T.</p>
+                                <p class="text-sm text-gray-400">Fitness Center Manager</p>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="w-[85vw] md:w-96 shrink-0">
+                        <div class="glass-card rounded-xl p-6 h-full flex flex-col justify-between">
+                            <svg class="w-8 h-8 text-brandOrange mb-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M14 6c0-2.209-1.791-4-4-4s-4 1.791-4 4v4h8V6zm0 14h8V10h-8v10zm-8 0h8v-8H6v8z" />
+                            </svg>
+                            <p class="text-base md:text-lg italic text-gray-200">"We used to offer a small cash
+                                discount. Switching to GetawayBoost instantly doubled our closing rate. Best decision
+                                we've made."</p>
+                            <div class="mt-6 pt-4 border-t border-white/10">
+                                <p class="font-bold text-white">David S.</p>
+                                <p class="text-sm text-gray-400">Owner, High-End Solar Installation</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="w-[85vw] md:w-96 shrink-0">
+                        <div class="glass-card rounded-xl p-6 h-full flex flex-col justify-between">
+                            <svg class="w-8 h-8 text-brandPurple mb-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M14 6c0-2.209-1.791-4-4-4s-4 1.791-4 4v4h8V6zm0 14h8V10h-8v10zm-8 0h8v-8H6v8z" />
+                            </svg>
+                            <p class="text-base md:text-lg italic text-gray-200">"The best part is the referral system.
+                                My clients are actively telling their friends just to get the free trip voucher."</p>
+                            <div class="mt-6 pt-4 border-t border-white/10">
+                                <p class="font-bold text-white">Jessica R.</p>
+                                <p class="text-sm text-gray-400">Luxury Real Estate Agent</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="w-[85vw] md:w-96 shrink-0">
+                        <div class="glass-card rounded-xl p-6 h-full flex flex-col justify-between">
+                            <svg class="w-8 h-8 text-brandOrange mb-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M14 6c0-2.209-1.791-4-4-4s-4 1.791-4 4v4h8V6zm0 14h8V10h-8v10zm-8 0h8v-8H6v8z" />
+                            </svg>
+                            <p class="text-base md:text-lg italic text-gray-200">"Zero fulfillment on our end! We just
+                                give the printed voucher, and GetawayBoost handles the rest. Win-win-win."</p>
+                            <div class="mt-6 pt-4 border-t border-white/10">
+                                <p class="font-bold text-white">Mark T.</p>
+                                <p class="text-sm text-gray-400">Fitness Center Manager</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section id="features" class="w-full max-w-7xl mx-auto px-6 py-16 md:py-24">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Why Incentives Work Better</h2>
+                <p class="text-gray-400">Psychology says experiences are worth more than cash discounts.</p>
+            </div>
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-3 grid-rows-auto md:grid-rows-2 gap-6 h-auto md:h-[600px] mb-6 md:mb-12">
+                <div
+                    class="glass-card md:col-span-2 md:row-span-2 rounded-3xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden group border-brandPurple/30 min-h-[400px]">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-brandPurple/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <div class="z-10">
+                        <div
+                            class="w-12 h-12 bg-brandOrange rounded-xl flex items-center justify-center mb-4 text-white shadow-lg shadow-brandOrange/30">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">High Perceived Value</h3>
+                        <p class="text-gray-300 text-sm md:text-base">A $500 cash discount is forgotten in a day. A
+                            4-night luxury holiday to Bali or Mexico is remembered forever. You pay a fraction of the
+                            cost, but the customer perceives thousands in value.</p>
+                    </div>
+                    <div class="relative mt-8 h-48 md:h-64 rounded-xl overflow-hidden border border-white/10">
+                        <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                            alt="Luxury resort swimming pool and beach"
+                            class="object-cover w-full h-full hover:scale-105 transition-transform duration-700">
+                        <div
+                            class="absolute bottom-4 right-4 bg-black/80 backdrop-blur px-4 py-2 rounded-lg border border-white/10">
+                            <span class="text-brandOrange-light font-bold">Value: $1,400+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="glass-card rounded-3xl p-6 flex flex-col justify-center relative overflow-hidden group border border-brandPurple/20 min-h-[200px]">
+                    <div
+                        class="w-10 h-10 bg-brandPurple/30 text-brandPurple-light rounded-lg flex items-center justify-center mb-4 border border-brandPurple/50">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Viral Social Proof</h3>
+                    <p class="text-sm text-gray-400">When customers go on holiday, they post photos. They tag YOU. It's
+                        free organic marketing.</p>
+                </div>
+
+                <div
+                    class="glass-card rounded-3xl p-6 flex flex-col justify-center relative overflow-hidden group border border-brandOrange/20 min-h-[200px]">
+                    <div
+                        class="w-10 h-10 bg-brandOrange/20 text-brandOrange-light rounded-lg flex items-center justify-center mb-4 border border-brandOrange/40">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Zero Fulfilment</h3>
+                    <p class="text-sm text-gray-400">We handle the booking, the dates, and the customer service. You
+                        just hand over the voucher.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div
+                    class="glass-card rounded-3xl p-6 flex flex-col justify-center items-start relative overflow-hidden group border border-brandPurple/20">
+                    <div
+                        class="w-10 h-10 bg-brandPurple/30 text-brandPurple-light rounded-lg flex items-center justify-center mb-4 border border-brandPurple/50">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 10l6 6 4-4 8 8" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Boost Conversion Rates</h3>
+                    <p class="text-gray-400 text-sm">According to HubSpot, adding an incentive to your advertising can
+                        boost conversion rates by <span class="font-semibold text-brandOrange">up to 42%</span>.</p>
+                </div>
+
+                <div
+                    class="glass-card rounded-3xl p-6 flex flex-col justify-center items-start relative overflow-hidden group border border-brandOrange/20">
+                    <div
+                        class="w-10 h-10 bg-brandOrange/20 text-brandOrange-light rounded-lg flex items-center justify-center mb-4 border border-brandOrange/40">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Emotion Drives Action</h3>
+                    <p class="text-gray-400 text-sm">Oxford Economics found that emotionally driven incentives like
+                        travel rewards are <span class="font-semibold text-brandOrange">3x more effective</span> than
+                        tangible rewards.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="social-proof" class="w-full max-w-7xl mx-auto px-6 text-white">
+
+            <div class="text-center">
+                <h2 class="text-xl md:text-2xl font-bold mb-3 text-brandOrange-light">
+                    Don't just take our word for it
+                </h2>
+
+                <h3 class="text-4xl md:text-5xl font-extrabold mb-6 text-white">
+                    The Reviews Speak for Themselves
+                </h3>
+
+                <p class="text-lg text-gray-300 max-w-4xl mx-auto mb-4">
+                    <span class="text-4xl tracking-widest text-brandOrange mb-2 inline-block">★★★★★</span><br>
+                    <strong class="text-xl">Average of 4.7 out of 5 stars</strong> — proof that these free getaways
+                    deliver.
+                </p>
+
+                <p class="text-gray-400 max-w-3xl mx-auto mb-6">
+                    These reviews come directly from real travellers who've enjoyed a getaway through our partner
+                    network, showing the quality and reliability of every trip.
+                </p>
+
+                <p class="text-gray-400 max-w-3xl mx-auto mb-10">
+                    When you hand a client one of our getaway vouchers, you can be confident the booking process is
+                    smooth, the stays are top quality, and the experience makes you look like a legend.
+                </p>
+                <p class="social-proof-subtext text-gray-500 text-sm italic max-w-3xl mx-auto mb-12">
+                    Here’s a snapshot of genuine reviews pulled from trusted platforms like <strong>TrustPilot</strong>
+                    and <strong>Sitejabber</strong>.
+                </p>
+            </div>
+
+            <!-- Visible Reviews -->
+            <div id="social-proof-gallery-container"
+                class="flex flex-wrap justify-center gap-6 md:gap-8 max-w-5xl mx-auto">
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer w-full sm:w-[48%] lg:w-[30%]">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/YXaVbo6.jpeg"
+                        alt="Social Proof Testimonial 1">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer w-full sm:w-[48%] lg:w-[30%]">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/9v1fxeR.jpeg"
+                        alt="Social Proof Testimonial 2">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer w-full sm:w-[48%] lg:w-[30%]">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/5Ynft0B.jpeg"
+                        alt="Social Proof Testimonial 3">
+                </div>
+
+            </div>
+
+            <!-- Hidden Reviews -->
+            <div id="hidden-reviews"
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-center max-w-7xl mx-auto mt-6 hidden">
+
+                <!-- 4–18 -->
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/4XZUrNm.jpeg"
+                        alt="Social Proof Testimonial 4">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/WgQKEgB.jpeg"
+                        alt="Social Proof Testimonial 5">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/C0UFQNe.jpeg"
+                        alt="Social Proof Testimonial 6">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/i9PEoA6.jpeg"
+                        alt="Social Proof Testimonial 7">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/ux0yM26.jpeg"
+                        alt="Social Proof Testimonial 8">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/eAkTOci.jpeg"
+                        alt="Social Proof Testimonial 9">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/nnlZH7R.jpeg"
+                        alt="Social Proof Testimonial 10">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/xlnP4pJ.jpeg"
+                        alt="Social Proof Testimonial 11">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/b38hcSb.jpeg"
+                        alt="Social Proof Testimonial 12">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/rueHVfF.jpeg"
+                        alt="Social Proof Testimonial 13">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/8qS0laP.jpeg"
+                        alt="Social Proof Testimonial 14">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/DKTRknv.jpeg"
+                        alt="Social Proof Testimonial 15">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/NDJb42c.jpeg"
+                        alt="Social Proof Testimonial 16">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/AmYiTPy.jpeg"
+                        alt="Social Proof Testimonial 17">
+                </div>
+
+                <div
+                    class="social-proof-item glass-card-dark rounded-xl overflow-hidden shadow-lg border-2 border-brandOrange/50 transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,153,0,0.5)] cursor-pointer">
+                    <img class="w-full h-auto block" src="https://i.imgur.com/erPvLwM.jpeg"
+                        alt="Social Proof Testimonial 18">
+                </div>
+
+            </div>
+
+            <div class="text-center mt-12">
+                <button id="toggle-reviews-btn"
+                    class="h-12 px-8 rounded-full bg-brandOrange hover:bg-brandOrange-dark text-white font-bold text-lg flex items-center justify-center transition-all shadow-lg shadow-brandOrange/30 hover:scale-105 mx-auto"
+                    onclick="toggleReviews()">
+                    Show More Reviews
+                </button>
+            </div>
+
+        </section>
+
+        <script>
+            function toggleReviews() {
+                const hiddenGallery = document.getElementById('hidden-reviews');
+                const btn = document.getElementById('toggle-reviews-btn');
+
+                if (hiddenGallery.classList.contains('hidden')) {
+                    hiddenGallery.classList.remove('hidden');
+                    hiddenGallery.classList.add('grid');
+                    btn.textContent = 'Hide Reviews';
+                    hiddenGallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    hiddenGallery.classList.remove('grid');
+                    hiddenGallery.classList.add('hidden');
+                    btn.textContent = 'Show All Reviews';
+                    btn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        </script>
+
+        <section  id="somethings" class="w-full max-w-4xl mx-auto px-6 pt-16 md:pt-24 pb-0">
+            <div
+                class="relative rounded-2xl border border-brandPurple/30 bg-gradient-to-br from-brandPurple/20 to-black p-8 md:p-12 overflow-hidden">
+                <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-brandPurple/20 blur-3xl rounded-full">
+                </div>
+
+                <div class="flex gap-8 items-start">
+                    <div class="shrink-0">
+                        <div
+                            class="w-20 h-20 rounded-full bg-brandOrange flex items-center justify-center shadow-lg shadow-brandOrange/40">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-black" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M12 1.5a5.25 5.25 0 00-5.25 5.25v4.5a.75.75 0 001.5 0V6.75a3.75 3.75 0 117.5 0v4.5a.75.75 0 001.5 0V6.75a5.25 5.25 0 00-5.25-5.25z"
+                                    clip-rule="evenodd" />
+                                <path fill-rule="evenodd"
+                                    d="M3.75 9a.75.75 0 00-.75.75v8.25a3.75 3.75 0 003.75 3.75h9.75a3.75 3.75 0 003.75-3.75V9.75a.75.75 0 00-.75-.75h-15zM9 14.25a.75.75 0 100 1.5h6a.75.75 0 100-1.5H9z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold text-white mb-4">The "Double-Lock" Ironclad Guarantee</h3>
+
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-lg font-semibold text-brandOrange mb-2">1. No Results? No Pay.</h4>
+                                <p class="text-gray-300 text-sm leading-relaxed">
+                                    We are so confident in this system that if it doesn't work for your business, you
+                                    don't pay. <br>We take on the risk so you don't have to.
+                                </p>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-semibold text-brandOrange mb-2">2. 365-Day 100% Satisfaction
+                                    Warranty</h4>
+                                <p class="text-gray-300 text-sm leading-relaxed">
+                                    Use the system for 12 months. Launch the campaigns. Distribute the vouchers. If you
+                                    honestly follow the steps and aren't thrilled with the growth of your business, we
+                                    will refund every penny. If you're not happy, we're not happy.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="pricing" class="w-full max-w-7xl mx-auto px-6 pt-16 md:pt-24 pb-0">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">One VIP Program. Two Ways to Start.</h2>
+                <p class="text-gray-400">
+                    Choose how you want to invest in your growth. <br>
+                    Most businesses choose annual for maximum value and exclusive bonuses.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto items-start">
+
+                <!-- MONTHLY VIP -->
+                <div
+                    class="glass-card rounded-3xl p-10 border border-white/10 hover:border-brandPurple/50 transition-all flex flex-col relative">
+                    <h3 class="text-2xl font-bold text-white">VIP Monthly</h3>
+                    <p class="text-gray-400 mt-2 mb-6">Spread the investment over time.</p>
+
+                    <div class="mb-8">
+                        <div class="flex items-end gap-2">
+                            <span class="text-5xl font-extrabold text-white">$397</span>
+                            <span class="text-xl text-gray-400 font-medium mb-1">/ month</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">12 monthly payments</p>
+                    </div>
+
+                    <a href="https://buy.stripe.com/3cIfZh5kT89vavZ2bC3Ru0L" target="_blank" rel="noopener noreferrer"
+                        class="w-full h-12 rounded-full border border-white/20 hover:bg-white/10 transition-colors text-white font-bold mb-8 flex items-center justify-center">
+                        Get Access
+                    </a>
+
+                    <ul class="space-y-4 text-sm text-gray-300">
+                        <li class="flex gap-3">
+                            <svg class="w-5 h-5 text-brandPurple flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <strong>Unlimited</strong> Getaway Accommodation Vouchers <br>($1,000 value each)
+                        </li>
+                        <li class="flex gap-3">
+                            <svg class="w-5 h-5 text-brandPurple flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            30 Minute Strategy Consultation Call
+                        </li>
+                        <li class="flex gap-3">
+                            <svg class="w-5 h-5 text-brandPurple flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            Random Unique Codes per Voucher
+                        </li>
+                        <li class="flex gap-3">
+                            <svg class="w-5 h-5 text-brandPurple flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            Community Access & Ongoing Support
+                        </li>
+                        <li class="flex gap-3">
+                            <svg class="w-5 h-5 text-brandPurple flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            All 100+ Luxury Destinations
+                        </li>
+
+                        <!-- NOT INCLUDED -->
+                        <li class="flex gap-3 text-gray-500 pt-4 border-t border-white/10">
+                            <svg class="w-5 h-5 text-gray-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm4.293-11.707a1 1 0 00-1.414-1.414L10 8.586 7.121 5.707a1 1 0 10-1.414 1.414L8.586 10l-2.879 2.879a1 1 0 101.414 1.414L10 11.414l2.879 2.879a1 1 0 001.414-1.414L11.414 10l2.879-2.879z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <strong>Unlimited Hotel Savings Gift Cards</strong> (Annual VIP only)
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ANNUAL VIP -->
+                <div class="glass-card rounded-3xl p-10 border-2 border-brandOrange
+            bg-gradient-to-b from-brandOrange/10 to-transparent
+            relative overflow-hidden shadow-2xl shadow-brandOrange/20
+            flex flex-col
+            transition-all duration-300
+            hover:scale-[1.05] hover:-translate-y-3
+            hover:shadow-brandPurple/40 z-10">
+
+                    <div class="absolute inset-0 bg-gradient-to-br from-brandPurple/40 to-transparent"></div>
+
+                    <div class="absolute top-0 right-0 bg-brandOrange text-white text-xs font-bold
+                px-4 py-1 rounded-bl-xl uppercase tracking-wide z-20">
+                        Best Value
+                    </div>
+
+                    <div class="absolute top-8 right-0 bg-brandOrange/80 backdrop-blur-sm
+                text-white text-sm font-extrabold px-4 py-1
+                rounded-bl-xl tracking-wider shadow-lg z-20">
+                        Save $1,164
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-brandOrange-light z-20">Annual VIP</h3>
+                    <p class="text-gray-300 mt-2 mb-6 z-20">
+                        The smartest way to invest. Save more and unlock exclusive bonuses.
+                    </p>
+
+                    <div class="mb-8 z-20">
+                        <div class="flex items-end gap-2">
+                            <span class="text-5xl font-extrabold text-white">$3,600</span>
+                            <span class="text-xl text-gray-400 font-medium mb-1">/ year</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Billed once annually</p>
+                        <p class="text-xs text-brandOrange-light mt-2 font-bold">
+                            Includes exclusive Annual-only bonuses
+                        </p>
+                    </div>
+
+                    <a href="https://buy.stripe.com/bJe8wPaFdahD7jNaI83Ru0J" class="w-full h-12 rounded-full bg-brandOrange hover:bg-brandOrange-dark
+              transition-colors text-white font-bold mb-8
+              shadow-lg shadow-brandOrange/30 inline-flex items-center
+              justify-center z-20">
+                        Get VIP Access
+                    </a>
+                    <div class="space-y-4">
+                        <p class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">
+                            Available exclusively with Annual VIP</p>
+                        <ul class="space-y-3 text-sm text-gray-200">
+                            <li class="flex gap-3 items-start"><svg class="w-5 h-5 text-brandOrange flex-shrink-0"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg> <span><strong>Bonus 1:</strong><strong> Unlimited</strong> Hotel Savings Gift
+                                    Cards <br>($100 - $500 value each)</span></li>
+                            <li class="flex gap-3 items-start"><svg class="w-5 h-5 text-brandOrange flex-shrink-0"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg> <span><strong>Bonus 2:</strong> 60 minute Follow-Up Strategy Consultation
+                                    Call</span></li>
+                            <li class="flex gap-3 items-start"><svg class="w-5 h-5 text-brandOrange flex-shrink-0"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg> <span><strong>Bonus 3:</strong> Priority Concierge Support</span></li>
+                            <li class="flex gap-3 items-start"><svg class="w-5 h-5 text-brandOrange flex-shrink-0"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg> <span><strong>Bonus 4:</strong> Custom Voucher Codes for Branding</span></li>
+                            <li class="text-sm text-brandOrange font-bold pt-2">The 16 Implementation Playbooks:
+                                <br>Your Zero-Guesswork Growth Library</li>
+                            <li class="flex gap-3 items-start"><svg class="w-5 h-5 text-brandOrange flex-shrink-0"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg> <span><strong>SYSTEM 1: Client Acquisition</strong> (Lead Generation & Outreach)
+                                    - includes 4 x Implementation Playbooks</span></li>
+                            <li class="flex gap-3 items-start"><svg class="w-5 h-5 text-brandOrange flex-shrink-0"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg> <span><strong>SYSTEM 2: High-Ticket Conversion</strong> (Sales, Closing, & Ads) -
+                                    includes 4 x Implementation Playbooks</span></li>
+                            <li class="flex gap-3 items-start"><svg class="w-5 h-5 text-brandOrange flex-shrink-0"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg> <span><strong>SYSTEM 3: Magnetic Authority</strong> (Branding & Visibility) -
+                                    includes 4 x Implementation Playbooks</span></li>
+                            <li class="flex gap-3 items-start"><svg class="w-5 h-5 text-brandOrange flex-shrink-0"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg> <span><strong>SYSTEM 4: Client Goldmine</strong> (Retention & Referrals) -
+                                    includes 3 x Implementation Playbooks</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="faq" class="w-full max-w-7xl mx-auto px-6 pt-16 md:pt-24 pb-0">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Questions? We Have Answers.</h2>
+                <p class="text-gray-400">Everything you need to know about partnering with GetawayBoost.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto space-y-4">
+                <div id="faq-accordion" class="space-y-4">
+
+                    <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                        data-group="main">
+                        <button
+                            class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                            <h3
+                                class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                                What is the actual cost of a voucher to my business?
+                            </h3>
+                            <span
+                                class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                            <div class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                You pay a low, fixed <strong>subscription fee</strong> to license our GetawayBoost
+                                system and enjoy unlimited access to the accommodation vouchers. The Annual VIP saves
+                                you over $5,850+ plus you get over $10,000+ in value of bonuses for free included with
+                                membership - the <strong>unlimited access of Hotel Savings Gift Cards</strong> (up to
+                                $500 value each) alone pays for the upgrade. <br><br>The hotel savings gift cards are
+                                valid in over 1 million hotels worldwide and give your clients access to cash credit
+                                they can use to get up to 50% off retail room rates. Plus, they get access to thousands
+                                of exclusive discounts such as Australia Zoo tickets, ski trips, snorkeling lessons,
+                                wine tours, rock climbing, romantic dinner dates and tons more.
+
+                                You can stack these in high-value bundles for different offers, different marketing
+                                campaigns, different times of year, nurturing your clients, or incentivizing repeat
+                                visits and rewarding loyalty.
+
+                                There is no additional cost per voucher, whether you hand out 10 or 1,000. Your monthly
+                                fee covers the license, support, and access to the redemption portal.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                        data-group="main">
+                        <button
+                            class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                            <h3
+                                class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                                Why does the customer pay a booking fee/tax?
+                            </h3>
+                            <span
+                                class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                            <div class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                The getaway accommodation voucher covers the <strong>retail cost of the
+                                    accommodation</strong> itself. The customer's small nightly booking fee (typically
+                                $30-$35 USD/night) covers unavoidable costs like hotel taxes, government fees, resort
+                                fees, and housekeeping. This structure is what makes the high perceived value model
+                                affordable for your business.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                        data-group="main">
+                        <button
+                            class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                            <h3
+                                class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                                Are there any blackout dates or timeshare presentations?
+                            </h3>
+                            <span
+                                class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                            <div class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                <strong>No.</strong> There are no timeshare presentations or boring sales pitches for
+                                your customers to sit through in order to enjoy their relaxing holiday. <br><br>Our
+                                vouchers are valid for 18 months and are subject to availability, similar to standard
+                                hotel bookings. Christmas, Easter, School Holidays and other peak periods may cause
+                                there to be limited availability. If customers still want to travel at those times they
+                                may need to pay a surcharge fee depending on the resort. We recommend for the best
+                                availability and lowest fees book <strong>Thursday - Sunday</strong> nights as Friday
+                                and Saturday are peak days and may have a small surcharge fee. <br><br>The getaway
+                                reward vouchers are designed to be a true gift, not a sales pitch. We work with 4-star
+                                and 5-star hotels & resorts around the world and can ensure there are absolutely
+                                <strong>no timeshare presentations</strong> required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                        data-group="main">
+                        <button
+                            class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                            <h3
+                                class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                                Can I customize the voucher design with my company logo?
+                            </h3>
+                            <span
+                                class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                            <div class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                Yes, our system allows you to <strong>brand your physical or digital vouchers</strong>
+                                with your logo and unique promotional message. This ensures the incentive directly
+                                reinforces your business's brand identity every time a customer sees it. The Annual VIP
+                                plan also allows for customized voucher codes.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="hidden-faqs" class="space-y-4 hidden">
+                        <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                            data-group="more">
+                            <button
+                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                <h3
+                                    class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    Is this legit? How can a holiday be free?
+                                </h3>
+                                <span
+                                    class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                            </button>
+                            <div
+                                class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                <div
+                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    Yes — it’s real. We’ve partnered with a global travel network that gives us access
+                                    to unbooked resort stays — the same way airlines offer last-minute deals to fill
+                                    empty seats.
+                                    <ul class="list-disc ml-6 mt-2 space-y-1">
+                                        <li>You use these rewards to stand out and win more sales.</li>
+                                        <li>Your clients get a genuine holiday they weren’t expecting.</li>
+                                        <li>Our travel partner fills unused rooms that would’ve sat empty.</li>
+                                    </ul>
+                                    No catch. No timeshare nonsense. No flights included. It’s smart, ethical marketing
+                                    — designed to build trust, create unforgettable moments, and help you grow faster
+                                    than ever before.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                            data-group="more">
+                            <button
+                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                <h3
+                                    class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    How do I actually use this?
+                                </h3>
+                                <span
+                                    class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                            </button>
+                            <div
+                                class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                <div
+                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    Simple. Here's how it works:
+                                    <ul class="list-disc ml-6 mt-2 space-y-1">
+                                        <li>Use our templates & scripts to reach out to prospects or run an advertising
+                                            campaign.</li>
+                                        <li>Offer a free luxury getaway (gifted via our portal).</li>
+                                        <li>Watch your response rate jump with your usual prospecting or advertising.
+                                        </li>
+                                        <li>Convert more leads into sales using the strategies in our implementation
+                                            playbooks</li>
+                                        <li>Close more deals, faster with <strong>less stress</strong> & <strong>no tech
+                                                overwhelm</strong>.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                            data-group="more">
+                            <button
+                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                <h3
+                                    class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    Is this legal & ethical?
+                                </h3>
+                                <span
+                                    class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                            </button>
+                            <div
+                                class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                <div
+                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    Yes — it’s fully compliant with Australian consumer law.
+                                    <p class="mt-2">You’re not bribing, misleading, or offering incentives in a way that
+                                        crosses any ethical or legal lines. You’re simply gifting something of genuine
+                                        value — no strings attached. Just like a thank-you hamper, complimentary gym
+                                        session, or Bunnings gift card. The difference? This is far more memorable and
+                                        emotionally powerful.</p>
+                                    <p class="mt-2"> This is what modern trust-building looks like. And it works —
+                                        because it’s built on going above and beyond, delivering value, not pressure.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                            data-group="more">
+                            <button
+                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                <h3
+                                    class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    What if I’m already doing well?
+                                </h3>
+                                <span
+                                    class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                            </button>
+                            <div
+                                class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                <div
+                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    This <strong>amplifies your success.</strong>
+                                    <p class="mt-2">If you’re already converting some leads or getting steady customers,
+                                        this helps you double your results — because the getaway rewards open more
+                                        doors, start more conversations, create extra value, and give you an edge over
+                                        competitors in a crowded market.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                            data-group="more">
+                            <button
+                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                <h3
+                                    class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    Will I look desperate?
+                                </h3>
+                                <span
+                                    class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                            </button>
+                            <div
+                                class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                <div
+                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    Quite the opposite. You’re offering a high-end bonus, not a discount.
+                                    <p class="mt-2">Think: <strong>Positioning</strong> over price. <strong>Perceived
+                                            value</strong> over negotiation. <strong>Trust</strong> over transaction.
+                                    </p>
+                                    <p class="mt-2">This makes you <strong>memorable</strong>, not desperate. It builds
+                                        reciprocity and goodwill, not skepticism. That positions you as smart, generous,
+                                        and different (in the best way).</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                            data-group="more">
+                            <button
+                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                <h3
+                                    class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    Does this work in my area?
+                                </h3>
+                                <span
+                                    class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                            </button>
+                            <div
+                                class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                <div
+                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    If people in your area like getting rewarded or experiencing something special —
+                                    <strong>YES!</strong>
+                                    <p class="mt-2">We’ve seen it work in:</p>
+                                    <ul class="list-disc ml-6 mt-2 space-y-1">
+                                        <li>Busy city centres</li>
+                                        <li>Coastal towns and suburbs</li>
+                                        <li>Regional and rural areas</li>
+                                        <li>Highly competitive local markets</li>
+                                    </ul>
+                                    This is <strong>human psychology</strong>, not post code luck. Everyone wants to go
+                                    on a holiday!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                            data-group="more">
+                            <button
+                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                <h3
+                                    class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    What if my client asks: ‘Is this real?’
+                                </h3>
+                                <span
+                                    class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                            </button>
+                            <div
+                                class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                <div
+                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    Simple. You show, not sell.
+                                    <p class="mt-2">Hand them the actual printed voucher or send them the link to the
+                                        redemption portal. They’ll see real destinations. Real partners. Real
+                                        availability. Nothing hidden. Nothing fluffy.</p>
+                                    <p class="mt-2">It works just like booking any other reward or experience — Once
+                                        they redeem, they get an instant confirmation with full details. And in that
+                                        moment, <strong>trust is built.</strong> Because you didn’t just say it was
+                                        real. You proved it.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                            data-group="more">
+                            <button
+                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                <h3
+                                    class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    Can I use this for prospecting and follow-up?
+                                </h3>
+                                <span
+                                    class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                            </button>
+                            <div
+                                class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                <div
+                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    Absolutely 100%. That’s the power of it. This isn’t just a simple promotion — it’s a
+                                    full-funnel trust builder.
+                                    <p class="mt-2">You can use these incentives to:</p>
+                                    <ul class="list-disc ml-6 mt-2 space-y-1">
+                                        <li>Start new conversations with prospects</li>
+                                        <li>Reignite interest from previous or inactive clients</li>
+                                        <li>Turn “I’m not ready” into “Let’s talk”</li>
+                                        <li>Encourage repeat business and referrals</li>
+                                        <li>Stand out from competitors in your local area</li>
+                                    </ul>
+                                    Because when you lead with <strong>real emotional value</strong> — people remember
+                                    how you made them feel.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
+                            data-group="more">
+                            <button
+                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                <h3
+                                    class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
+                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    Is there a limit to how many vouchers I can hand out?
+                                </h3>
+                                <span
+                                    class="accordion-icon transition-transform duration-300 text-brandOrange-light group-hover:text-brandOrange">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                            </button>
+                            <div
+                                class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                <div
+                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    <strong>No.</strong> The Flex Pass and Annual VIP plans both include
+                                    <strong>unlimited</strong> distribution of accommodation vouchers. Only one getaway
+                                    accommodation voucher can be redeemed per person per year. The Annual VIP membership
+                                    gives unlimited access to use of Hotel Savings Gift Cards that can be in combination
+                                    or separate for continuous gifting, rewards for referral partners, different
+                                    marketing campaigns, upsells, and repeat visits as loyalty rewards. We encourage you
+                                    to use them in every part of your sales and marketing funnel to maximize your
+                                    growth. <br><br>Hotel Savings Gift Cards can even be used as a thank-you to your
+                                    staff for employee perks, smashing goals, or positive culture building. A happy team
+                                    is a high performing team.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center pt-8">
+                    <button id="show-more-faq"
+                        class="h-10 px-6 rounded-full bg-brandOrange hover:bg-brandOrange-dark text-white font-bold flex items-center justify-center transition-all shadow-lg shadow-brandOrange/20 hover:scale-105">
+                        Show All FAQ
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const accordionContainer = document.getElementById('faq-accordion');
+                const hiddenFaqs = document.getElementById('hidden-faqs');
+                const showMoreButton = document.getElementById('show-more-faq');
+
+                // Function to close all open items
+                const closeAll = (currentHeader = null) => {
+                    // Select all accordion headers
+                    const items = accordionContainer.querySelectorAll('.accordion-item');
+
+                    items.forEach(item => {
+                        const header = item.querySelector('.accordion-header');
+                        const content = item.querySelector('.accordion-content');
+                        const icon = item.querySelector('.accordion-icon svg');
+
+                        // Only act if the current header is NOT the one being clicked to open/toggle
+                        if (header !== currentHeader && header.classList.contains('active')) {
+                            header.classList.remove('active');
+                            item.classList.remove('border-brandOrange/70', 'shadow-[0_0_15px_rgba(255,153,0,0.2)]'); // Clean up active glow/border
+                            icon.style.transform = 'rotate(0deg)';
+                            content.style.maxHeight = '0';
+                        }
+                    });
+                };
+
+                // Initialize click handlers for all headers using event delegation
+                accordionContainer.addEventListener('click', (e) => {
+                    const header = e.target.closest('.accordion-header');
+                    if (!header) return;
+
+                    const item = header.closest('.accordion-item');
+                    const content = item.querySelector('.accordion-content');
+                    const icon = item.querySelector('.accordion-icon svg');
+
+                    // Toggle logic
+                    const isActive = header.classList.contains('active');
+
+                    closeAll(header); // Close all others first
+
+                    if (!isActive) {
+                        // Open the clicked item
+                        header.classList.add('active');
+                        // Use a subtle border/shadow for active state
+                        item.classList.add('border-brandOrange/70', 'shadow-[0_0_15px_rgba(255,153,0,0.2)]');
+                        icon.style.transform = 'rotate(180deg)';
+
+                        // Set max height to content's scroll height for smooth transition
+                        // Need a small timeout to ensure it calculates correctly if coming from hidden
+                        setTimeout(() => {
+                            content.style.maxHeight = content.scrollHeight + "px";
+                        }, 10);
+                    } else {
+                        // Close the clicked item
+                        header.classList.remove('active');
+                        item.classList.remove('border-brandOrange/70', 'shadow-[0_0_15px_rgba(255,153,0,0.2)]');
+                        icon.style.transform = 'rotate(0deg)';
+                        content.style.maxHeight = '0';
+                    }
+                });
+
+                // Handle the "Show More" button click
+                showMoreButton.addEventListener('click', () => {
+                    const isHidden = hiddenFaqs.classList.contains('hidden');
+
+                    if (isHidden) {
+                        // Expand hidden FAQs
+                        hiddenFaqs.classList.remove('hidden');
+                        showMoreButton.textContent = 'Hide FAQ';
+
+                        // Re-calculate max-height for any active content in the new section
+                        setTimeout(() => {
+                            hiddenFaqs.querySelectorAll('.accordion-header.active').forEach(header => {
+                                const content = header.nextElementSibling;
+                                content.style.maxHeight = content.scrollHeight + "px";
+                            });
+                        }, 50);
+
+                    } else {
+                        // Collapse hidden FAQs
+                        closeAll(); // Close all open answers when hiding
+                        hiddenFaqs.classList.add('hidden');
+                        showMoreButton.textContent = 'Show All FAQ';
+
+                        // Scroll to the button to visually confirm collapse
+                        showMoreButton.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
+
+                // Optional: Recalculate max-height on window resize for responsiveness
+                window.addEventListener('resize', () => {
+                    accordionContainer.querySelectorAll('.accordion-header.active').forEach(header => {
+                        const content = header.nextElementSibling;
+                        // Ensure correct scrollHeight is calculated
+                        content.style.maxHeight = 'none';
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    });
+                });
+            });
+        </script>
+
+        <section class="w-full px-6 py-16 md:py-24">
+            <div
+                class="max-w-5xl mx-auto relative rounded-3xl overflow-hidden bg-gradient-to-r from-brandPurple-dark to-brandOrange-dark px-6 py-20 text-center shadow-2xl shadow-brandPurple/30">
+                <div
+                    class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-soft-light">
+                </div>
+
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-normal">Stop Competing on
+                        Price.<br>Start Competing on Value.</h2>
+                    <p class="text-orange-100 text-lg mb-8 max-w-2xl mx-auto font-medium">Join 1,000+ local businesses
+                        using travel incentives to dominate their market.</p>
+
+                    <a href="#pricing"
+                        class="inline-flex h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-bold text-brandOrange-dark shadow-lg transition-transform hover:scale-105 hover:bg-gray-100 focus-visible:outline-none">
+                        Grow Your Sales Now
+                    </a>
+
+                    <p class="text-xs text-gray-200 mt-2">
+                        Zero Risk. Get Results or Pay $0.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        </main>
+        <footer class="w-full border-t border-white/10 bg-black py-12">
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
+                <div class="col-span-2">
+                    <a class="flex items-center gap-2 mb-4" href="#">
+                        <img src="https://i.imgur.com/YreoeUV.jpeg" alt="GetawayBoost Logo: Palm Tree with Upward Arrow"
+                            class="w-6 h-6 flex-shrink-0" />
+                        <span class="text-lg font-bold text-white">GetawayBoost</span>
+                    </a>
+                    <p class="text-gray-500 max-w-xs">Helping local businesses grow through the power of high-value
+                        experiences.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Product</h4>
+                    <ul class="space-y-2 text-gray-500">
+                        <li><a href="#features"
+                                class="hover:text-brandOrange transition-colors scroll-smooth scroll-mt-20">Features</a>
+                        </li>
+                        <li><a href="#pricing"
+                                class="hover:text-brandOrange transition-colors scroll-smooth scroll-mt-20">Pricing</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Legal</h4>
+                    <ul class="space-y-2 text-gray-500">
+                        <li><a href="https://docs.google.com/document/d/14JkL04LJ3vr-ZeChrU6g4-V2dMI83wgyrcx8ZtbpMoQ/edit?usp=sharing"
+                                class="hover:text-brandOrange transition-colors">Privacy Policy</a></li>
+                        <li><a href="https://docs.google.com/document/d/1yXTv32Gwy_A_t6Ti2lwAdaaqgkxpeuUeuCq73AlyCao/edit?usp=sharing"
+                                class="hover:text-brandOrange transition-colors">Refund Policy</a></li>
+                        <li><a href="https://docs.google.com/document/d/1gfnRCalTSPtqeq2vciv9My2GNNlzyKHxRb3H6NcnqAo/edit?usp=sharing"
+                                class="hover:text-brandOrange transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-white/10 text-center text-xs text-gray-500 space-y-3">
+
+
+                <p>
+                    <strong>DISCLAIMER:</strong> This site is not affiliated with or endorsed by YouTube, Google,
+                    Facebook, Meta, or Alphabet in any way. YouTube is a trademark of Google LLC, a subsidiary of
+                    Alphabet Inc. Facebook is a trademark of Meta Platforms, Inc.
+                </p>
+
+                <p class="max-w-4xl mx-auto">
+                    <strong>Earnings Disclaimer:</strong> Every market and business owner approach is unique, using
+                    different strategies, local conditions, and client relationships. Therefore, individual results will
+                    vary from business to business. YOUR RESULTS WILL DEPEND ON FACTORS UNIQUE TO YOUR BUSINESS,
+                    INCLUDING BUT NOT LIMITED TO YOUR MARKETING EFFORTS, FOLLOW-UP, LOCAL COMPETITION, AND HOW YOU
+                    IMPLEMENT THE GETAWAYBOOST SYSTEM.
+                </p>
+
+                <p class="max-w-4xl mx-auto">
+                    ‘GetawayBoost’ is NOT a “get rich scheme.” We do not make income claims and we are not promising
+                    you’ll close a specific number of sales or earn a certain amount in a set timeframe. We believe in
+                    hard work, dedication, and learning the marketing and sales skills that can help you build your
+                    brand and business — creating the career and lifestyle you want on your own terms. During your
+                    GetawayBoost journey, we provide the tools, training, and framework to help you generate more leads,
+                    convert more clients, and strengthen your local brand. DO NOT join GetawayBoost if you expect to
+                    build a thriving local business without putting in the time, effort, and consistency required to
+                    make it happen.
+                </p>
+
+                <p class="max-w-4xl mx-auto text-[0.6rem] md:text-xs">
+                    Numerous consumer behavior studies confirm that incentives — especially memorable, experiential
+                    rewards like holidays — significantly increase customer engagement and conversion rates. Research
+                    published in the Journal of Business Research and insights from Forrester demonstrate that
+                    experiential marketing drives stronger emotional connections and loyalty, making incentives a
+                    powerful tool to motivate homeowners to choose you.1,2,3
+                    <br>
+                    1. Journal of Business Research, “Experiential motivation and consumer engagement,” 2020
+                    <br>
+                    2. Forrester Research, “The psychology of experiential marketing,” 2022
+                    <br>
+                    3. Axios, “How rewards turn advertising into a win-win for brands and consumers,” 2023
+                </p>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-white/10 text-center text-gray-600 text-xs">
+                © 2025 GetawayBoost. All Rights Reserved.
+            </div>
+        </footer>
+    </div>
+
+
+</body>
+
+</html>
