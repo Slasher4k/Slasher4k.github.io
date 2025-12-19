@@ -737,24 +737,7 @@
 
         </section>
 
-        <script>
-            function toggleReviews() {
-                const hiddenGallery = document.getElementById('hidden-reviews');
-                const btn = document.getElementById('toggle-reviews-btn');
-
-                if (hiddenGallery.classList.contains('hidden')) {
-                    hiddenGallery.classList.remove('hidden');
-                    hiddenGallery.classList.add('grid');
-                    btn.textContent = 'Hide Reviews';
-                    hiddenGallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                } else {
-                    hiddenGallery.classList.remove('grid');
-                    hiddenGallery.classList.add('hidden');
-                    btn.textContent = 'Show All Reviews';
-                    btn.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }
-        </script>
+     
 
         <section  id="somethings" class="w-full max-w-4xl mx-auto px-6 pt-16 md:pt-24 pb-0">
             <div
@@ -1009,14 +992,14 @@
                     <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                         data-group="main">
                         <button
-                            class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                            class="accordion-header w-full items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                            <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange shrink-0"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
                             <h3
                                 class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange shrink-0"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                </svg>
                                 What is the actual cost of a voucher to my business?
                             </h3>
                             <span
@@ -1028,7 +1011,7 @@
                             </span>
                         </button>
                         <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-                            <div class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                            <div class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                 You pay a low, fixed <strong>subscription fee</strong> to license our GetawayBoost
                                 system and enjoy unlimited access to the accommodation vouchers. The Annual VIP saves
                                 you over $5,850+ plus you get over $10,000+ in value of bonuses for free included with
@@ -1052,14 +1035,14 @@
                     <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                         data-group="main">
                         <button
-                            class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                            class="accordion-header w-full items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                            <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange shrink-0"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
                             <h3
                                 class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange shrink-0"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                </svg>
                                 Why does the customer pay a booking fee/tax?
                             </h3>
                             <span
@@ -1071,7 +1054,7 @@
                             </span>
                         </button>
                         <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-                            <div class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                            <div class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                 The getaway accommodation voucher covers the <strong>retail cost of the
                                     accommodation</strong> itself. The customer's small nightly booking fee (typically
                                 $30-$35 USD/night) covers unavoidable costs like hotel taxes, government fees, resort
@@ -1084,14 +1067,14 @@
                     <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                         data-group="main">
                         <button
-                            class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                            class="accordion-header w-full  items-center p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px"> 
+                            <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange shrink-0"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
                             <h3
                                 class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange shrink-0"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                </svg>
                                 Are there any blackout dates or timeshare presentations?
                             </h3>
                             <span
@@ -1103,7 +1086,7 @@
                             </span>
                         </button>
                         <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-                            <div class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                            <div class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                 <strong>No.</strong> There are no timeshare presentations or boring sales pitches for
                                 your customers to sit through in order to enjoy their relaxing holiday. <br><br>Our
                                 vouchers are valid for 18 months and are subject to availability, similar to standard
@@ -1122,14 +1105,14 @@
                     <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                         data-group="main">
                         <button
-                            class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                            class="accordion-header w-full p-6 cursor-pointer items-center group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                            <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange shrink-0"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
                             <h3
                                 class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange shrink-0"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                </svg>
                                 Can I customize the voucher design with my company logo?
                             </h3>
                             <span
@@ -1141,7 +1124,7 @@
                             </span>
                         </button>
                         <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-                            <div class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                            <div class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                 Yes, our system allows you to <strong>brand your physical or digital vouchers</strong>
                                 with your logo and unique promotional message. This ensures the incentive directly
                                 reinforces your business's brand identity every time a customer sees it. The Annual VIP
@@ -1154,14 +1137,14 @@
                         <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                             data-group="more">
                             <button
-                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                class="accordion-header w-full items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                                <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
                                 <h3
                                     class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
                                     Is this legit? How can a holiday be free?
                                 </h3>
                                 <span
@@ -1175,7 +1158,7 @@
                             <div
                                 class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
                                 <div
-                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                     Yes — it’s real. We’ve partnered with a global travel network that gives us access
                                     to unbooked resort stays — the same way airlines offer last-minute deals to fill
                                     empty seats.
@@ -1194,14 +1177,14 @@
                         <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                             data-group="more">
                             <button
-                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                class="accordion-header w-full items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                                <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
                                 <h3
                                     class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
                                     How do I actually use this?
                                 </h3>
                                 <span
@@ -1215,7 +1198,7 @@
                             <div
                                 class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
                                 <div
-                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                     Simple. Here's how it works:
                                     <ul class="list-disc ml-6 mt-2 space-y-1">
                                         <li>Use our templates & scripts to reach out to prospects or run an advertising
@@ -1235,14 +1218,14 @@
                         <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                             data-group="more">
                             <button
-                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                class="accordion-header w-full items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                                <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
                                 <h3
                                     class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
                                     Is this legal & ethical?
                                 </h3>
                                 <span
@@ -1256,7 +1239,7 @@
                             <div
                                 class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
                                 <div
-                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                     Yes — it’s fully compliant with Australian consumer law.
                                     <p class="mt-2">You’re not bribing, misleading, or offering incentives in a way that
                                         crosses any ethical or legal lines. You’re simply gifting something of genuine
@@ -1272,14 +1255,14 @@
                         <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                             data-group="more">
                             <button
-                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                class="accordion-header w-full items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                                <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
                                 <h3
                                     class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
                                     What if I’m already doing well?
                                 </h3>
                                 <span
@@ -1293,7 +1276,7 @@
                             <div
                                 class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
                                 <div
-                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                     This <strong>amplifies your success.</strong>
                                     <p class="mt-2">If you’re already converting some leads or getting steady customers,
                                         this helps you double your results — because the getaway rewards open more
@@ -1305,14 +1288,14 @@
                         <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                             data-group="more">
                             <button
-                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                class="accordion-header w-full items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                                <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
                                 <h3
                                     class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
                                     Will I look desperate?
                                 </h3>
                                 <span
@@ -1326,7 +1309,7 @@
                             <div
                                 class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
                                 <div
-                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                     Quite the opposite. You’re offering a high-end bonus, not a discount.
                                     <p class="mt-2">Think: <strong>Positioning</strong> over price. <strong>Perceived
                                             value</strong> over negotiation. <strong>Trust</strong> over transaction.
@@ -1340,14 +1323,14 @@
                         <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                             data-group="more">
                             <button
-                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                class="accordion-header w-full items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                                <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
                                 <h3
                                     class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
                                     Does this work in my area?
                                 </h3>
                                 <span
@@ -1361,7 +1344,7 @@
                             <div
                                 class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
                                 <div
-                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                     If people in your area like getting rewarded or experiencing something special —
                                     <strong>YES!</strong>
                                     <p class="mt-2">We’ve seen it work in:</p>
@@ -1379,14 +1362,14 @@
                         <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                             data-group="more">
                             <button
-                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                class="accordion-header w-full items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                                <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
                                 <h3
                                     class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
                                     What if my client asks: ‘Is this real?’
                                 </h3>
                                 <span
@@ -1400,7 +1383,7 @@
                             <div
                                 class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
                                 <div
-                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                     Simple. You show, not sell.
                                     <p class="mt-2">Hand them the actual printed voucher or send them the link to the
                                         redemption portal. They’ll see real destinations. Real partners. Real
@@ -1415,14 +1398,14 @@
                         <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                             data-group="more">
                             <button
-                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                class="accordion-header w-full items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                                <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
                                 <h3
                                     class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
                                     Can I use this for prospecting and follow-up?
                                 </h3>
                                 <span
@@ -1436,7 +1419,7 @@
                             <div
                                 class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
                                 <div
-                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                     Absolutely 100%. That’s the power of it. This isn’t just a simple promotion — it’s a
                                     full-funnel trust builder.
                                     <p class="mt-2">You can use these incentives to:</p>
@@ -1455,14 +1438,14 @@
                         <div class="accordion-item glass-card rounded-xl overflow-hidden transition-all duration-300"
                             data-group="more">
                             <button
-                                class="accordion-header w-full flex items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300">
+                                class="accordion-header w-full items-center justify-between p-6 cursor-pointer group hover:bg-white/5 border border-transparent hover:border-brandOrange/50 transition-all duration-300" style="display: grid; grid-template-columns: 20px 1fr 20px; gap:12px">
+                                <svg class="w-5 h-5 text-brandOrange-light group-hover:text-brandOrange"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
                                 <h3
                                     class="flex items-center text-lg font-semibold text-white group-hover:text-brandOrange transition-colors">
-                                    <svg class="w-5 h-5 mr-3 text-brandOrange-light group-hover:text-brandOrange"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
                                     Is there a limit to how many vouchers I can hand out?
                                 </h3>
                                 <span
@@ -1476,7 +1459,7 @@
                             <div
                                 class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
                                 <div
-                                    class="p-6 pt-0 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
+                                    class="p-6 ml-8 text-gray-300 text-sm leading-relaxed border-t border-white/10">
                                     <strong>No.</strong> The Flex Pass and Annual VIP plans both include
                                     <strong>unlimited</strong> distribution of accommodation vouchers. Only one getaway
                                     accommodation voucher can be redeemed per person per year. The Annual VIP membership
@@ -1501,6 +1484,24 @@
                 </div>
             </div>
         </section>
+           <script>
+            function toggleReviews() {
+                const hiddenGallery = document.getElementById('hidden-reviews');
+                const btn = document.getElementById('toggle-reviews-btn');
+
+                if (hiddenGallery.classList.contains('hidden')) {
+                    hiddenGallery.classList.remove('hidden');
+                    hiddenGallery.classList.add('grid');
+                    btn.textContent = 'Hide Reviews';
+                    hiddenGallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    hiddenGallery.classList.remove('grid');
+                    hiddenGallery.classList.add('hidden');
+                    btn.textContent = 'Show All Reviews';
+                    btn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        </script>
 
         <script>
             document.addEventListener('DOMContentLoaded', () => {
