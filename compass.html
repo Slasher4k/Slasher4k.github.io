@@ -61,6 +61,9 @@ canvas {
   color: #4fc3f7;
   font-weight: 600;
 }
+#info-panel.hidden {
+  display: none;
+}
 #lock-indicator {
   position: absolute;
   top: 16px;
@@ -464,6 +467,7 @@ canvas {
       <tr><td>r</td><td>Reset bezel to 0°</td></tr>
       <tr><td>R</td><td>Reset all (bezel, rotation, selections)</td></tr>
       <tr><td>F</td><td>Toggle fixed position (stop mouse following)</td></tr>
+      <tr><td>B</td><td>Toggle bearing number on compass</td></tr>
       <tr><td>F1</td><td>Toggle this help screen</td></tr>
     </table>
     <button id="help-close">Close</button>
@@ -494,6 +498,7 @@ const state = {
     guidelines: false,
     bezelLocked: false,
     positionFixed: false,
+    bearingVisible: false,
   },
 
   mouse: { x: 0, y: 0 },
@@ -567,15 +572,15 @@ function loadData() {
 
   state.mapPoints = {
     22: [210, 320],
-    81: [142, 593],
+    81: [143, 594],
     74: [409, 379],
     100: [282, 565],
     70: [448, 473],
     21: [431, 633],
-    53: [645, 484],
+    53: [645, 485],
     90: [621, 592],
-    43: [906, 382],
-    34: [860, 573],
+    43: [906, 383],
+    34: [860, 574],
     75: [1016, 489],
     101: [1260, 464]
   };
@@ -851,19 +856,21 @@ function drawCompass(ctx) {
 
   ctx.restore(); // Undo bezel rotation
 
-  // Bearing number above the bezel, below the direction-of-travel arrow
-  ctx.save();
-  ctx.rotate(rotation);
-  const bearingDeg = ((-state.compass.bezelRotation * 180 / Math.PI) % 360 + 360) % 360;
-  ctx.font = 'bold 18px "Segoe UI", Arial, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillStyle = '#000000';
-  ctx.shadowColor = 'rgba(255,255,255,0.8)';
-  ctx.shadowBlur = 5;
-  ctx.fillText(`${Math.round(bearingDeg)}°`, 0, -BEZEL_RADIUS - 14);
-  ctx.shadowBlur = 0;
-  ctx.restore();
+  // Bearing number above the bezel (toggle with B key)
+  if (state.compass.bearingVisible) {
+    ctx.save();
+    ctx.rotate(rotation);
+    const bearingDeg = ((-state.compass.bezelRotation * 180 / Math.PI) % 360 + 360) % 360;
+    ctx.font = 'bold 18px "Segoe UI", Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillStyle = '#000000';
+    ctx.shadowColor = 'rgba(255,255,255,0.8)';
+    ctx.shadowBlur = 5;
+    ctx.fillText(`${Math.round(bearingDeg)}°`, 0, -BEZEL_RADIUS - 14);
+    ctx.shadowBlur = 0;
+    ctx.restore();
+  }
 
   ctx.restore(); // Undo compass translation
 }
@@ -1250,7 +1257,9 @@ function update() {
   ctx.fillRect(0, 0, canvasSize.w, canvasSize.h);
 
   drawMap(ctx);
-  drawPoints(ctx);
+  if (!state.compass.visible) {
+    drawPoints(ctx);
+  }
   drawLineBetweenPoints(ctx);
   if (state.compass.visible) {
     drawCompass(ctx);
@@ -1265,6 +1274,9 @@ function update() {
 // INFO PANEL
 // ============================================================
 function updateInfoPanel() {
+  // Show info panel only when compass is hidden
+  document.getElementById('info-panel').classList.toggle('hidden', state.compass.visible);
+
   const { bezelRotation } = state.compass;
   const bearingDeg = ((-bezelRotation * 180 / Math.PI) % 360 + 360) % 360;
   const bearingDisplay = document.getElementById('bearing-display');
@@ -1278,7 +1290,7 @@ function updateInfoPanel() {
     const bearing = computeBearing(p1, p2);
     const magnetic = ((bearing - MAGNETIC_DECLINATION) % 360 + 360) % 360;
     ptsDisplay.innerHTML =
-      `<span>${state.selectedStart}</span> → <span>${state.selectedEnd}</span> &nbsp;|&nbsp; Mag: ${Math.round(magnetic)}°`;
+      `<span>${state.selectedStart}</span> → <span>${state.selectedEnd}</span>`;
   } else if (state.selectedStart !== null) {
     ptsDisplay.innerHTML =
       `Start: <span>${state.selectedStart}</span> — click destination point`;
@@ -1655,6 +1667,14 @@ function onKeyDown(e) {
   if (e.key === 'f' || e.key === 'F') {
     e.preventDefault();
     state.compass.positionFixed = !state.compass.positionFixed;
+    update();
+    return;
+  }
+
+  // B key: toggle bearing display on compass
+  if (e.key === 'b' || e.key === 'B') {
+    e.preventDefault();
+    state.compass.bearingVisible = !state.compass.bearingVisible;
     update();
     return;
   }
