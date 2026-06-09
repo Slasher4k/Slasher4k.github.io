@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass Bearing Practice</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #1a1a2e;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  user-select: none;
+}
+#container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+canvas {
+  display: block;
+}
+#ui-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+#info-panel {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(0,0,0,0.75);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 14px 18px;
+  min-width: 160px;
+  backdrop-filter: blur(6px);
+}
+#info-panel .bearing {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffd700;
+}
+#info-panel .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.6;
+  margin-bottom: 2px;
+}
+#info-panel .point-label {
+  font-size: 13px;
+  margin-top: 6px;
+  opacity: 0.85;
+}
+#info-panel .point-label span {
+  color: #4fc3f7;
+  font-weight: 600;
+}
+#lock-indicator {
+  position: absolute;
+  top: 16px;
+  right: 264px;
+  background: rgba(0,0,0,0.75);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 10px 16px;
+  backdrop-filter: blur(6px);
+  font-size: 13px;
+  display: none;
+}
+#lock-indicator.active {
+  display: block;
+  border-color: #4fc3f7;
+}
+#lock-indicator .lock-icon {
+  color: #4fc3f7;
+  font-weight: 700;
+}
+#help-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  pointer-events: auto;
+  background: rgba(0,0,0,0.75);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 8px 14px;
+  color: #ffd700;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  font-family: inherit;
+  z-index: 10;
+}
+#help-btn:hover {
+  background: rgba(255,215,0,0.2);
+  border-color: #ffd700;
+}
+#demo-btn {
+  position: absolute;
+  top: 16px;
+  right: 100px;
+  pointer-events: auto;
+  background: rgba(0,0,0,0.75);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 8px 14px;
+  color: #4fc3f7;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  font-family: inherit;
+  z-index: 10;
+}
+#demo-btn:hover {
+  background: rgba(79,195,247,0.2);
+  border-color: #4fc3f7;
+}
+#help-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+#help-overlay.active {
+  display: flex;
+}
+#help-box {
+  background: rgba(20, 20, 40, 0.95);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 14px;
+  padding: 30px 40px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+#help-box h2 {
+  color: #ffd700;
+  font-size: 22px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+#help-box table {
+  width: 100%;
+  border-collapse: collapse;
+}
+#help-box td {
+  padding: 6px 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  font-size: 14px;
+}
+#help-box td:first-child {
+  color: #4fc3f7;
+  font-weight: 600;
+  white-space: nowrap;
+  padding-right: 20px;
+  text-align: right;
+}
+#help-box td:last-child {
+  color: rgba(255,255,255,0.85);
+}
+#help-close {
+  display: block;
+  margin: 20px auto 0;
+  background: rgba(255,215,0,0.15);
+  border: 1px solid #ffd700;
+  border-radius: 8px;
+  padding: 8px 28px;
+  color: #ffd700;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+#help-close:hover {
+  background: rgba(255,215,0,0.3);
+}
+#steps-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+#steps-overlay.active {
+  display: flex;
+}
+#steps-box {
+  background: rgba(20, 20, 40, 0.95);
+  border: 1px solid rgba(255,215,0,0.3);
+  border-radius: 14px;
+  padding: 30px 40px;
+  max-width: 520px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+#steps-box h2 {
+  color: #ffd700;
+  font-size: 22px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+#steps-box .step {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+#steps-box .step-num {
+  background: rgba(255,215,0,0.15);
+  border: 1px solid #ffd700;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffd700;
+  font-weight: 700;
+  font-size: 14px;
+}
+#steps-box .step-text {
+  color: rgba(255,255,255,0.85);
+  font-size: 15px;
+  line-height: 1.5;
+  padding-top: 5px;
+}
+#steps-box .step-text strong {
+  color: #ffd700;
+}
+#steps-close, #steps-anatomy-btn {
+  display: block;
+  margin: 10px auto 0;
+  background: rgba(255,215,0,0.15);
+  border: 1px solid #ffd700;
+  border-radius: 8px;
+  padding: 10px 32px;
+  color: #ffd700;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+#steps-close:hover, #steps-anatomy-btn:hover {
+  background: rgba(255,215,0,0.3);
+}
+#steps-anatomy-btn {
+  background: rgba(79, 195, 247, 0.15);
+  border-color: #4fc3f7;
+  color: #4fc3f7;
+}
+#steps-anatomy-btn:hover {
+  background: rgba(79, 195, 247, 0.3);
+}
+#steps-reminder {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  backdrop-filter: blur(6px);
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  pointer-events: auto;
+  font-family: inherit;
+  z-index: 10;
+}
+#steps-reminder:hover {
+  color: #ffd700;
+  border-color: rgba(255,215,0,0.3);
+}
+#anatomy-btn {
+  position: absolute;
+  bottom: 16px;
+  left: 220px;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(79,195,247,0.3);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  backdrop-filter: blur(6px);
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  pointer-events: auto;
+  font-family: inherit;
+  z-index: 10;
+}
+#anatomy-btn:hover {
+  color: #4fc3f7;
+  border-color: rgba(79,195,247,0.5);
+}
+#anatomy-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  z-index: 300;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+#anatomy-overlay.active {
+  display: flex;
+}
+#anatomy-box {
+  background: rgba(20, 20, 40, 0.95);
+  border: 1px solid rgba(79, 195, 247, 0.3);
+  border-radius: 14px;
+  padding: 24px 30px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  position: relative;
+}
+#anatomy-box h2 {
+  color: #ffd700;
+  font-size: 20px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+#anatomy-canvas {
+  display: block;
+  margin: 0 auto;
+  background: transparent;
+}
+#anatomy-labels {
+  margin-top: 12px;
+}
+#anatomy-labels .part {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+}
+#anatomy-labels .part .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  min-width: 10px;
+}
+#anatomy-labels .part .name {
+  font-weight: 600;
+}
+#anatomy-close {
+  display: block;
+  margin: 14px auto 0;
+  background: rgba(255,215,0,0.15);
+  border: 1px solid #ffd700;
+  border-radius: 8px;
+  padding: 8px 28px;
+  color: #ffd700;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+#anatomy-close:hover {
+  background: rgba(255,215,0,0.3);
+}
+</style>
+</head>
+<body>
+<div id="container">
+  <canvas id="canvas"></canvas>
+  <div id="ui-overlay">
+    <div id="info-panel">
+      <div class="label">Bearing</div>
+      <div class="bearing" id="bearing-display">0°</div>
+      <div class="point-label" id="points-display">Click a point to select start</div>
+    </div>
+    <button id="demo-btn">▶ Demo</button>
+    <button id="help-btn">❓ Help</button>
+    <div id="lock-indicator">
+      <span class="lock-icon">🔒</span> Locked — slide along direction of travel
+    </div>
+    <button id="steps-reminder">📐 How to take a bearing</button>
+    <button id="anatomy-btn">🧩 Compass anatomy</button>
+  </div>
+</div>
+
+<div id="steps-overlay">
+  <div id="steps-box">
+    <h2>🧭 Taking a Bearing</h2>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Position the compass</strong> — Move it so the long edge aligns between two points on the map</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Rotate the bezel</strong> — Turn the bezel until the <strong>red orienteering lines</strong> in the top half point north, parallel to the map's red north lines</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Read the bearing</strong> — The number at the red index line on the compass is your bearing in degrees</div>
+    </div>
+    <button id="steps-anatomy-btn">🧩 Show compass parts</button>
+    <button id="steps-close">Got it!</button>
+  </div>
+</div>
+
+<div id="anatomy-overlay">
+  <div id="anatomy-box">
+    <h2>🧩 Compass Anatomy</h2>
+    <canvas id="anatomy-canvas" width="560" height="700"></canvas>
+    <div id="anatomy-labels">
+      <div class="part"><span class="name" style="font-weight: bold;">Direction of Travel Arrow</span> — point this at your destination</div>
+      <div class="part"><span class="name" style="font-weight: bold;">Index Line</span> — read bearing here</div>
+      <div class="part"><span class="name" style="font-weight: bold;">Bezel Ring</span> — degree markings for bearings</div>
+      <div class="part"><span class="name" style="font-weight: bold;">Orienteering Arrow</span> — points to N on the bezel, fixed in place inside bezel</div>
+      <div class="part"><span class="name" style="font-weight: bold;">Orienteering Lines (Red top, Black bottom)</span> — align with map grid</div>
+    </div>
+    <button id="anatomy-close">Close</button>
+  </div>
+</div>
+
+<div id="help-overlay">
+  <div id="help-box">
+    <h2>⌨️ Keyboard Shortcuts</h2>
+    <table>
+      <tr><td>🖱 Move</td><td>Move compass to cursor</td></tr>
+      <tr><td>↔ ↑↓</td><td>Move compass 10px</td></tr>
+      <tr><td>Alt+↔↑↓</td><td>Move compass 1px</td></tr>
+      <tr><td>Scroll</td><td>Rotate bezel 1°</td></tr>
+      <tr><td>Ctrl+Scroll</td><td>Rotate bezel 10°</td></tr>
+      <tr><td>Shift+Scroll</td><td>Rotate compass 1°</td></tr>
+      <tr><td>Ctrl+Shift+Scroll</td><td>Rotate compass 10°</td></tr>
+      <tr><td>Q / E</td><td>Rotate compass 1°</td></tr>
+      <tr><td>Shift+Q/E</td><td>Rotate compass 5°</td></tr>
+      <tr><td>Space</td><td>Lock / slide along direction</td></tr>
+      <tr><td>C</td><td>Toggle compass visibility</td></tr>
+      <tr><td>G</td><td>Toggle guidelines</td></tr>
+      <tr><td>L</td><td>Toggle bezel lock</td></tr>
+      <tr><td>r</td><td>Reset bezel to 0°</td></tr>
+      <tr><td>R</td><td>Reset all (bezel, rotation, selections)</td></tr>
+      <tr><td>F</td><td>Toggle fixed position (stop mouse following)</td></tr>
+      <tr><td>F1</td><td>Toggle this help screen</td></tr>
+    </table>
+    <button id="help-close">Close</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+const state = {
+  canvas: null,
+  ctx: null,
+
+  mapImage: null,
+  mapPoints: {},
+
+  compass: {
+    x: 0,
+    y: 0,
+    // baseplate rotation (direction of travel angle in radians, clockwise from north)
+    rotation: 0,
+    // bezel rotation in radians (clockwise relative to baseplate)
+    bezelRotation: 0,
+    locked: false,
+    slideOffset: 0,
+    visible: true,
+    guidelines: false,
+    bezelLocked: false,
+    positionFixed: false,
+  },
+
+  mouse: { x: 0, y: 0 },
+  mouseOnCanvas: false,
+  mouseOnMap: false,
+
+  selectedStart: null,
+  selectedEnd: null,
+
+  lockSlideStartMouse: null,
+  lockSlideStartOffset: 0,
+
+  canvasSize: { w: 0, h: 0 },
+  mapOffset: { x: 0, y: 0 },
+  mapScale: 1,
+};
+
+// ============================================================
+// CONSTANTS
+// ============================================================
+const BEZEL_RADIUS = 95;
+const BASEPLATE_W = 220;
+const BASEPLATE_H = 400;
+const BASEPLATE_CORNER_R = 16;
+const ARROW_LENGTH = 48;
+const ARROW_WIDTH = 26;
+const MAGNETIC_DECLINATION = 11; // degrees east, subtract from true for magnetic
+
+// ============================================================
+// HELPERS
+// ============================================================
+function bearingRadToDeg(rad) {
+  return ((rad * 180 / Math.PI) % 360 + 360) % 360;
+}
+
+function degToRad(deg) {
+  return deg * Math.PI / 180;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function worldToScreen(wx, wy) {
+  return {
+    x: wx * state.mapScale + state.mapOffset.x,
+    y: wy * state.mapScale + state.mapOffset.y,
+  };
+}
+
+// ============================================================
+// LOAD MAP & POINTS
+// ============================================================
+function loadData() {
+  state.mapImage = new Image();
+  state.mapImage.onload = () => {
+    resizeCanvas();
+    update();
+  };
+  state.mapImage.src = 'bunya_nav_training.png';
+
+  state.mapPoints = {
+    22: [210, 320],
+    81: [142, 593],
+    74: [409, 379],
+    100: [282, 565],
+    70: [448, 473],
+    21: [431, 633],
+    53: [645, 484],
+    90: [621, 592],
+    43: [906, 382],
+    34: [860, 573],
+    75: [1016, 489],
+    101: [1260, 464]
+  };
+}
+
+// ============================================================
+// CANVAS SETUP
+// ============================================================
+function resizeCanvas() {
+  const canvas = state.canvas;
+  const dpr = window.devicePixelRatio || 1;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  state.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  state.canvasSize.w = w;
+  state.canvasSize.h = h;
+
+  if (state.mapImage) {
+    const imgW = state.mapImage.naturalWidth;
+    const imgH = state.mapImage.naturalHeight;
+    const scaleX = w / imgW;
+    const scaleY = h / imgH;
+    const scale = Math.min(scaleX, scaleY) * 0.92;
+    state.mapScale = scale;
+    state.mapOffset.x = (w - imgW * scale) / 2;
+    state.mapOffset.y = (h - imgH * scale) / 2;
+  }
+
+  // Only center compass on first load (before mouse has ever entered)
+  if (state.compass.x === 0 && state.compass.y === 0) {
+    state.compass.x = w / 2;
+    state.compass.y = h / 2;
+  }
+}
+
+// ============================================================
+// DRAW: MAP
+// ============================================================
+function drawMap(ctx) {
+  const { mapImage, mapOffset, mapScale } = state;
+  if (!mapImage || !mapImage.complete) return;
+  const w = mapImage.naturalWidth * mapScale;
+  const h = mapImage.naturalHeight * mapScale;
+  ctx.drawImage(mapImage, mapOffset.x, mapOffset.y, w, h);
+}
+
+// ============================================================
+// DRAW: POINTS
+// ============================================================
+function drawPoints(ctx) {
+  const { mapPoints, mapScale, mapOffset, selectedStart, selectedEnd } = state;
+
+  for (const [key, [wx, wy]] of Object.entries(mapPoints)) {
+    const sx = wx * mapScale + mapOffset.x;
+    const sy = wy * mapScale + mapOffset.y;
+    const radius = key == selectedStart || key == selectedEnd ? 9 : 7;
+
+    if (key == selectedStart || key == selectedEnd) {
+      ctx.beginPath();
+      ctx.arc(sx, sy, radius + 6, 0, Math.PI * 2);
+      ctx.fillStyle = key == selectedStart ? 'rgba(76, 175, 80, 0.35)' : 'rgba(244, 67, 54, 0.35)';
+      ctx.fill();
+    }
+
+    ctx.beginPath();
+    ctx.arc(sx, sy, radius, 0, Math.PI * 2);
+    ctx.fillStyle = key == selectedStart ? '#4caf50' : key == selectedEnd ? '#f44336' : '#cb07b4';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+}
+
+// ============================================================
+// DRAW: COMPASS
+// ============================================================
+function drawCompass(ctx) {
+  const { compass } = state;
+  const { x, y, rotation, bezelRotation } = compass;
+
+  const pad = 200;
+  if (x < -pad || x > state.canvasSize.w + pad || y < -pad || y > state.canvasSize.h + pad) return;
+
+  ctx.save();
+  ctx.translate(x, y);
+
+  // --- Baseplate ---
+  ctx.save();
+  ctx.rotate(rotation);
+
+  ctx.shadowColor = 'rgba(0,0,0,0.3)';
+  ctx.shadowBlur = 16;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 4;
+  roundRect(ctx, -BASEPLATE_W / 2, -BASEPLATE_H / 2, BASEPLATE_W, BASEPLATE_H, BASEPLATE_CORNER_R);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Direction of Travel Arrow (red, at top of baseplate)
+  const arrowTipY = -BASEPLATE_H / 2 + 6;
+  const arrowBaseY = -BASEPLATE_H / 2 + 6 + ARROW_LENGTH;
+  ctx.beginPath();
+  ctx.moveTo(0, arrowTipY);
+  ctx.lineTo(-ARROW_WIDTH / 2, arrowBaseY);
+  ctx.lineTo(ARROW_WIDTH / 2, arrowBaseY);
+  ctx.closePath();
+  ctx.fillStyle = '#d32f2f';
+  ctx.fill();
+
+  // Index Line (thin 2px red line at top of bezel — no shadow)
+  ctx.shadowBlur = 0;
+  ctx.shadowColor = 'transparent';
+  ctx.beginPath();
+  ctx.moveTo(0, -BEZEL_RADIUS - 8);
+  ctx.lineTo(0, -BEZEL_RADIUS + 16);
+  ctx.strokeStyle = '#d32f2f';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // "SILVA" branding near the bottom of the baseplate
+  ctx.font = 'bold 24px "Segoe UI", Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillStyle = 'rgba(0,0,0,0.75)';
+  ctx.fillText('SILVA', 0, BASEPLATE_H / 2 - 18);
+
+  ctx.restore(); // Undo baseplate rotation
+
+  // --- Bezel (rotates independently) ---
+  ctx.save();
+  ctx.rotate(bezelRotation + rotation); // Draw bezel in absolute orientation
+
+  // Bezel fill
+  ctx.beginPath();
+  ctx.arc(0, 0, BEZEL_RADIUS, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(250, 250, 250, 0.35)';
+  ctx.fill();
+
+  // Bezel ring (outer)
+  ctx.beginPath();
+  ctx.arc(0, 0, BEZEL_RADIUS, 0, Math.PI * 2);
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Inner ring
+  ctx.beginPath();
+  ctx.arc(0, 0, BEZEL_RADIUS - 14, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // Bezel inner ring offset
+  const innerRingR = BEZEL_RADIUS - 14;
+
+  // Degree tick marks
+  for (let deg = 0; deg < 360; deg += 2) {
+    const rad = degToRad(deg);
+    const is10 = deg % 10 === 0;
+    const isMajor = deg % 20 === 0;
+    const inner = is10 ? innerRingR + 4 : innerRingR + 9;
+    const outer = isMajor ? BEZEL_RADIUS : (is10 ? BEZEL_RADIUS : BEZEL_RADIUS - 2);
+
+    ctx.beginPath();
+    ctx.moveTo(Math.sin(rad) * inner, -Math.cos(rad) * inner);
+    ctx.lineTo(Math.sin(rad) * outer, -Math.cos(rad) * outer);
+    ctx.strokeStyle = isMajor ? '#111' : is10 ? '#333' : '#999';
+    ctx.lineWidth = isMajor ? 2 : is10 ? 1.5 : 0.7;
+    ctx.stroke();
+  }
+
+  // Label ring radius
+  // Degree labels (every 20°, skip 0/90/180/270 since N/E/S/W covers them)
+  const labelR = innerRingR - 8;
+  ctx.font = '11px "Segoe UI", Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (let deg = 0; deg < 360; deg += 20) {
+    if (deg % 90 === 0) continue;
+    const rad = degToRad(deg);
+    const lx = Math.sin(rad) * labelR;
+    const ly = -Math.cos(rad) * labelR;
+    ctx.fillStyle = '#222';
+    ctx.fillText(deg.toString(), lx, ly);
+  }
+
+  // Cardinal direction labels
+  const cardinals = [
+    { deg: 0,   label: 'N', color: '#d32f2f' },
+    { deg: 90,  label: 'E', color: '#333' },
+    { deg: 180, label: 'S', color: '#333' },
+    { deg: 270, label: 'W', color: '#333' },
+  ];
+  ctx.font = 'bold 14px "Segoe UI", Arial, sans-serif';
+  for (const { deg, label, color } of cardinals) {
+    const rad = degToRad(deg);
+    const lx = Math.sin(rad) * labelR;
+    const ly = -Math.cos(rad) * labelR;
+    ctx.fillStyle = color;
+    ctx.fillText(label, lx, ly);
+  }
+
+  // Orienteering lines half-width
+  const orientW = (innerRingR - 4) * 0.7;
+
+  // Orienteering Lines (7 evenly spaced) - red top half, black bottom half
+  ctx.lineWidth = 0.8;
+  for (let i = -3; i <= 3; i++) {
+    const lx = i * (orientW / 3);
+    if (Math.abs(lx) < 1) continue;
+    const halfLen = Math.sqrt(Math.max(0, innerRingR * innerRingR - lx * lx));
+    if (halfLen > 0) {
+      // Top half (N) - red
+      ctx.beginPath();
+      ctx.moveTo(lx, 0);
+      ctx.lineTo(lx, -halfLen);
+      ctx.strokeStyle = 'rgba(211, 47, 47, 0.8)';
+      ctx.stroke();
+      // Bottom half (S) - black
+      ctx.beginPath();
+      ctx.moveTo(lx, 0);
+      ctx.lineTo(lx, halfLen);
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.stroke();
+    }
+  }
+
+  // Orienteering Arrow (wider, red top half, black bottom half)
+  const oa = BEZEL_RADIUS - 33;
+
+  // Left half - RED top
+  ctx.beginPath();
+  ctx.strokeStyle = '#d32f2f';
+  ctx.moveTo(0, -oa);
+  ctx.lineTo(-8, -oa + 16);
+  ctx.lineTo(-5, -oa + 16);
+  ctx.lineTo(-5, 0);
+  ctx.stroke();
+
+  // Left half - BLACK bottom
+  ctx.beginPath();
+  ctx.strokeStyle = '#000';
+  ctx.moveTo(-5, 0);
+  ctx.lineTo(-5, BEZEL_RADIUS - 33);
+  ctx.stroke();
+
+  // Right half - RED top
+  ctx.beginPath();
+  ctx.strokeStyle = '#d32f2f';
+  ctx.moveTo(0, -oa);
+  ctx.lineTo(8, -oa + 16);
+  ctx.lineTo(5, -oa + 16);
+  ctx.lineTo(5, 0);
+  ctx.stroke();
+
+  // Right half - BLACK bottom
+  ctx.beginPath();
+  ctx.strokeStyle = '#000';
+  ctx.moveTo(5, 0);
+  ctx.lineTo(5, BEZEL_RADIUS - 33);
+  ctx.stroke();
+
+  ctx.restore(); // Undo bezel rotation
+
+  // Bearing number above the bezel, below the direction-of-travel arrow
+  ctx.save();
+  ctx.rotate(rotation);
+  const bearingDeg = ((-state.compass.bezelRotation * 180 / Math.PI) % 360 + 360) % 360;
+  ctx.font = 'bold 18px "Segoe UI", Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillStyle = '#000000';
+  ctx.shadowColor = 'rgba(255,255,255,0.8)';
+  ctx.shadowBlur = 5;
+  ctx.fillText(`${Math.round(bearingDeg)}°`, 0, -BEZEL_RADIUS - 14);
+  ctx.shadowBlur = 0;
+  ctx.restore();
+
+  ctx.restore(); // Undo compass translation
+}
+
+// ============================================================
+// DRAW: ANATOMY (large labelled compass diagram)
+// ============================================================
+function drawAnatomy() {
+  const canvas = document.getElementById('anatomy-canvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = 1;
+  const w = 560;
+  const h = 700;
+
+  ctx.clearRect(0, 0, w, h);
+
+  // Center of the compass in the canvas
+  const cx = 200;
+  const cy = 370;
+
+  // Scale up for larger view (1.5x relative to normal)
+  const s = 1.5;
+  const br = BEZEL_RADIUS * s;
+  const bw = BASEPLATE_W * s;
+  const bh = BASEPLATE_H * s;
+  const al = ARROW_LENGTH * s;
+  const aw = ARROW_WIDTH * s;
+  const irr = (BEZEL_RADIUS - 14) * s;
+
+  ctx.save();
+  ctx.translate(cx, cy);
+
+  // --- Baseplate ---
+  ctx.save();
+
+  ctx.shadowColor = 'rgba(0,0,0,0.2)';
+  ctx.shadowBlur = 10;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 2;
+  roundRect(ctx, -bw / 2, -bh / 2, bw, bh, BASEPLATE_CORNER_R * s);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Direction of Travel Arrow
+  const arrTipY = -bh / 2 + 6 * s;
+  const arrBaseY = -bh / 2 + 6 * s + al;
+  ctx.beginPath();
+  ctx.moveTo(0, arrTipY);
+  ctx.lineTo(aw / -2, arrBaseY);
+  ctx.lineTo(aw / 2, arrBaseY);
+  ctx.closePath();
+  ctx.fillStyle = '#d32f2f';
+  ctx.fill();
+
+  // Index line
+  ctx.beginPath();
+  ctx.moveTo(0, -br - 8 * s);
+  ctx.lineTo(0, -br + 16 * s);
+  ctx.strokeStyle = '#d32f2f';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // SILVA branding
+  ctx.font = 'bold 28px "Segoe UI", Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillText('SILVA', 0, bh / 2 - 12 * s);
+
+  ctx.restore();
+
+  // --- Bezel ---
+  ctx.save();
+
+  // Bezel fill
+  ctx.beginPath();
+  ctx.arc(0, 0, br, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(250, 250, 250, 0.95)';
+  ctx.fill();
+
+  // Bezel ring
+  ctx.beginPath();
+  ctx.arc(0, 0, br, 0, Math.PI * 2);
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Inner ring
+  ctx.beginPath();
+  ctx.arc(0, 0, irr, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // Tick marks
+  for (let deg = 0; deg < 360; deg += 2) {
+    const rad = degToRad(deg);
+    const is10 = deg % 10 === 0;
+    const isMaj = deg % 20 === 0;
+    const inner = is10 ? irr + 4 * s : irr + 9 * s;
+    const outer = isMaj ? br : (is10 ? br : br - 2 * s);
+    ctx.beginPath();
+    ctx.moveTo(Math.sin(rad) * inner, -Math.cos(rad) * inner);
+    ctx.lineTo(Math.sin(rad) * outer, -Math.cos(rad) * outer);
+    ctx.strokeStyle = isMaj ? '#111' : is10 ? '#333' : '#999';
+    ctx.lineWidth = isMaj ? 2 : is10 ? 1.5 : 0.7;
+    ctx.stroke();
+  }
+
+  // Degree labels
+  const labelR = irr - 12 * s;
+  ctx.font = '12px "Segoe UI", Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (let deg = 0; deg < 360; deg += 20) {
+    if (deg % 90 === 0) continue;
+    const rad = degToRad(deg);
+    const lx = Math.sin(rad) * labelR;
+    const ly = -Math.cos(rad) * labelR;
+    ctx.fillStyle = '#222';
+    ctx.fillText(deg.toString(), lx, ly);
+  }
+
+  // Cardinal labels
+  const cardinals = [
+    { deg: 0,   label: 'N', color: '#d32f2f' },
+    { deg: 90,  label: 'E', color: '#333' },
+    { deg: 180, label: 'S', color: '#333' },
+    { deg: 270, label: 'W', color: '#333' },
+  ];
+  ctx.font = 'bold 16px "Segoe UI", Arial, sans-serif';
+  for (const { deg, label, color } of cardinals) {
+    const rad = degToRad(deg);
+    const lx = Math.sin(rad) * labelR;
+    const ly = -Math.cos(rad) * labelR;
+    ctx.fillStyle = color;
+    ctx.fillText(label, lx, ly);
+  }
+
+  // Orienteering lines
+  const ow = (irr - 4 * s) * 0.7;
+  ctx.lineWidth = 0.8;
+  for (let i = -3; i <= 3; i++) {
+    const lx = i * (ow / 3);
+    if (Math.abs(lx) < 2) continue;
+    const halfLen = Math.sqrt(Math.max(0, irr * irr - lx * lx));
+    if (halfLen > 0) {
+      ctx.beginPath();
+      ctx.moveTo(lx, 0);
+      ctx.lineTo(lx, -halfLen);
+      ctx.strokeStyle = 'rgba(211, 47, 47, 0.8)';
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(lx, 0);
+      ctx.lineTo(lx, halfLen);
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.stroke();
+    }
+  }
+
+  // Orienteering Arrow (wider, red top half, black bottom half)
+  const oa2 = br - 33 * s;
+
+  // Left half - RED top
+  ctx.beginPath();
+  ctx.strokeStyle = '#d32f2f';
+  ctx.moveTo(0, -oa2);
+  ctx.lineTo(-8 * s, -oa2 + 16 * s);
+  ctx.lineTo(-5 * s, -oa2 + 16 * s);
+  ctx.lineTo(-5 * s, 0);
+  ctx.stroke();
+
+  // Left half - BLACK bottom
+  ctx.beginPath();
+  ctx.strokeStyle = '#000';
+  ctx.moveTo(-5 * s, 0);
+  ctx.lineTo(-5 * s, br - 33 * s);
+  ctx.stroke();
+
+  // Right half - RED top
+  ctx.beginPath();
+  ctx.strokeStyle = '#d32f2f';
+  ctx.moveTo(0, -oa2);
+  ctx.lineTo(8 * s, -oa2 + 16 * s);
+  ctx.lineTo(5 * s, -oa2 + 16 * s);
+  ctx.lineTo(5 * s, 0);
+  ctx.stroke();
+
+  // Right half - BLACK bottom
+  ctx.beginPath();
+  ctx.strokeStyle = '#000';
+  ctx.moveTo(5 * s, 0);
+  ctx.lineTo(5 * s, br - 33 * s);
+  ctx.stroke();
+
+  ctx.restore();
+
+  // --- Callouts ---
+  ctx.save();
+
+  // Callout line style
+  ctx.strokeStyle = 'rgba(0,0,0,0.6)';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([4, 3]);
+  ctx.font = '11px "Segoe UI", Arial, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+
+  const callouts = [
+    { label: 'Direction Arrow', px: 20, py: -bh/2 + 50, dx: 170, dy: -bh/2 + 45 },
+    { label: 'Index Line', px: 3, py: -br - 8, dx: 170, dy: -br - 10 },
+    { label: 'Bezel Ring', px: br, py: -br/2 + 30, dx: 170, dy: -br/2 + 25 },
+    { label: 'Orienteering\nArrow (N)', px: 0, py: -irr/2 - 5, dx: 170, dy: -irr/2 - 25 },
+    { label: 'Orienteering\nLines', px: -20, py: irr*.6, dx: 170, dy: irr*.6 - 5 },
+  ];
+
+  for (const c of callouts) {
+    ctx.beginPath();
+    ctx.moveTo(c.px, c.py);
+    ctx.lineTo(c.dx, c.dy);
+    ctx.stroke();
+    ctx.fillStyle = '#4fc3f7';
+    ctx.font = 'bold 14px "Segoe UI", Arial, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(c.label, c.dx + 6, c.dy);
+  }
+
+  ctx.restore();
+
+  // Restore for next frame
+  ctx.restore();
+}
+
+// ============================================================
+// DRAW: GUIDELINES (extended lines parallel to baseplate sides)
+// ============================================================
+function drawGuidelines(ctx) {
+  if (!state.compass.guidelines) return;
+  const { compass, canvasSize } = state;
+  const { x, y, rotation } = compass;
+
+  // Direction of travel (long axis of baseplate)
+  const dirX = Math.sin(rotation);
+  const dirY = -Math.cos(rotation);
+
+  // Perpendicular (side-to-side)
+  const perpX = -Math.cos(rotation);
+  const perpY = -Math.sin(rotation);
+
+  // Extend to canvas edges
+  const extend = Math.sqrt(canvasSize.w * canvasSize.w + canvasSize.h * canvasSize.h);
+
+  ctx.save();
+  ctx.strokeStyle = 'rgba(0, 0, 0, 0.85)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([8, 6]);
+
+  // Two guidelines parallel to the long sides, offset to each side edge of the baseplate
+  const offset = BASEPLATE_W / 2;
+  const ox = perpX * offset;
+  const oy = perpY * offset;
+
+  // Left side guideline
+  ctx.beginPath();
+  ctx.moveTo(x + ox - dirX * extend, y + oy - dirY * extend);
+  ctx.lineTo(x + ox + dirX * extend, y + oy + dirY * extend);
+  ctx.stroke();
+
+  // Right side guideline
+  ctx.beginPath();
+  ctx.moveTo(x - ox - dirX * extend, y - oy - dirY * extend);
+  ctx.lineTo(x - ox + dirX * extend, y - oy + dirY * extend);
+  ctx.stroke();
+
+  ctx.setLineDash([]);
+  ctx.restore();
+}
+
+// ============================================================
+// DRAW: LINE FROM START TO END
+// ============================================================
+function drawLineBetweenPoints(ctx) {
+  const { mapPoints, selectedStart, selectedEnd } = state;
+  if (selectedStart === null || selectedEnd === null) return;
+
+  const p1 = mapPoints[selectedStart];
+  const p2 = mapPoints[selectedEnd];
+  if (!p1 || !p2) return;
+
+  const s1 = worldToScreen(p1[0], p1[1]);
+  const s2 = worldToScreen(p2[0], p2[1]);
+
+  ctx.beginPath();
+  ctx.moveTo(s1.x, s1.y);
+  ctx.lineTo(s2.x, s2.y);
+  ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6, 4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  const bearing = computeBearing(p1, p2);
+  const magnetic = ((bearing - MAGNETIC_DECLINATION) % 360 + 360) % 360;
+  const mx = (s1.x + s2.x) / 2;
+  const my = (s1.y + s2.y) / 2;
+
+  ctx.save();
+  ctx.font = 'bold 14px "Segoe UI", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillStyle = '#000000';
+  ctx.shadowColor = 'rgba(0,0,0,0.9)';
+  ctx.shadowBlur = 6;
+  ctx.fillText(`Bearing: ${Math.round(magnetic)}°`, mx, my - 6);
+  ctx.shadowBlur = 0;
+  ctx.restore();
+}
+
+function computeBearing(p1, p2) {
+  const dx = p2[0] - p1[0];
+  const dy = p2[1] - p1[1];
+  let angle = Math.atan2(dx, -dy) * (180 / Math.PI);
+  if (angle < 0) angle += 360;
+  return Math.round(angle);
+}
+
+// ============================================================
+// DRAW: GRID NORTH REFERENCE
+// ============================================================
+function drawNorthReference(ctx) {
+  const { mapOffset } = state;
+  const size = 36;
+  const pad = 24;
+  const nx = mapOffset.x + pad;
+  const ny = mapOffset.y + pad;
+
+  ctx.save();
+  ctx.translate(nx, ny);
+
+  // Background circle
+  ctx.beginPath();
+  ctx.arc(0, 0, size / 2 + 4, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(0,0,0,0.6)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // Rotate to magnetic north (declination offset)
+  ctx.rotate(degToRad(MAGNETIC_DECLINATION));
+
+  // Arrow pointing to magnetic north
+  ctx.beginPath();
+  ctx.moveTo(0, -size / 2 + 4);
+  ctx.lineTo(-8, -4);
+  ctx.lineTo(8, -4);
+  ctx.closePath();
+  ctx.fillStyle = '#ffd700';
+  ctx.fill();
+
+  // Label
+  ctx.font = '10px "Segoe UI", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = '#ffd700';
+  ctx.fillText('N', 0, 4);
+
+  ctx.restore();
+}
+
+// ============================================================
+// MAIN UPDATE
+// ============================================================
+function update() {
+  const ctx = state.ctx;
+  const { canvasSize } = state;
+
+  ctx.clearRect(0, 0, canvasSize.w, canvasSize.h);
+  ctx.fillStyle = '#2c3e50';
+  ctx.fillRect(0, 0, canvasSize.w, canvasSize.h);
+
+  drawMap(ctx);
+  drawPoints(ctx);
+  drawLineBetweenPoints(ctx);
+  if (state.compass.visible) {
+    drawCompass(ctx);
+  }
+  drawNorthReference(ctx);
+  drawGuidelines(ctx);
+
+  updateInfoPanel();
+}
+
+// ============================================================
+// INFO PANEL
+// ============================================================
+function updateInfoPanel() {
+  const { bezelRotation } = state.compass;
+  const bearingDeg = ((-bezelRotation * 180 / Math.PI) % 360 + 360) % 360;
+  const bearingDisplay = document.getElementById('bearing-display');
+  bearingDisplay.textContent = Math.round(bearingDeg) + '°' +
+    (state.compass.locked ? ' 🔒' : '');
+
+  const ptsDisplay = document.getElementById('points-display');
+  if (state.selectedStart !== null && state.selectedEnd !== null) {
+    const p1 = state.mapPoints[state.selectedStart];
+    const p2 = state.mapPoints[state.selectedEnd];
+    const bearing = computeBearing(p1, p2);
+    const magnetic = ((bearing - MAGNETIC_DECLINATION) % 360 + 360) % 360;
+    ptsDisplay.innerHTML =
+      `<span>${state.selectedStart}</span> → <span>${state.selectedEnd}</span> &nbsp;|&nbsp; Mag: ${Math.round(magnetic)}°`;
+  } else if (state.selectedStart !== null) {
+    ptsDisplay.innerHTML =
+      `Start: <span>${state.selectedStart}</span> — click destination point`;
+  } else {
+    ptsDisplay.textContent = 'Click a point to select start';
+  }
+
+  const lockInd = document.getElementById('lock-indicator');
+  lockInd.classList.toggle('active', state.compass.locked);
+}
+
+// ============================================================
+// MOUSE EVENTS
+// ============================================================
+function onMouseMove(e) {
+  const rect = state.canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  state.mouse.x = mx;
+  state.mouse.y = my;
+  state.mouseOnCanvas = true;
+
+  // Check if mouse is within the map image bounds
+  const { mapScale, mapOffset, mapImage } = state;
+  if (mapImage && mapImage.complete) {
+    const imgW = mapImage.naturalWidth * mapScale;
+    const imgH = mapImage.naturalHeight * mapScale;
+    state.mouseOnMap = mx >= mapOffset.x && mx <= mapOffset.x + imgW &&
+                       my >= mapOffset.y && my <= mapOffset.y + imgH;
+  } else {
+    state.mouseOnMap = false;
+  }
+
+  if (state.compass.positionFixed) {
+    // Position is fixed — don't move compass
+  } else if (!state.compass.locked && state.mouseOnMap) {
+    state.compass.x = mx;
+    state.compass.y = my;
+  } else if (!state.compass.locked) {
+    // Mouse is off the map image — don't move compass
+  } else {
+    const dirX = Math.sin(state.compass.rotation);
+    const dirY = -Math.cos(state.compass.rotation);
+
+    if (state.lockSlideStartMouse === null) {
+      state.lockSlideStartMouse = { x: mx, y: my };
+      state.lockSlideStartOffset = state.compass.slideOffset;
+    }
+
+    const dx = mx - state.lockSlideStartMouse.x;
+    const dy = my - state.lockSlideStartMouse.y;
+    const projection = dx * dirX + dy * dirY;
+
+    state.compass.slideOffset = state.lockSlideStartOffset + projection;
+    state.compass.x = state.compass._lockBaseX + state.compass.slideOffset * dirX;
+    state.compass.y = state.compass._lockBaseY + state.compass.slideOffset * dirY;
+  }
+
+  update();
+}
+
+function onMouseLeave() {
+  state.mouseOnCanvas = false;
+}
+
+function onClick(e) {
+  const rect = state.canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  const { mapPoints, mapScale, mapOffset } = state;
+  const clickRadius = 12;
+
+  for (const [key, [wx, wy]] of Object.entries(mapPoints)) {
+    const sx = wx * mapScale + mapOffset.x;
+    const sy = wy * mapScale + mapOffset.y;
+    const dist = Math.hypot(mx - sx, my - sy);
+    if (dist < clickRadius) {
+      // If clicking the selected end point, unselect it
+      if (key === state.selectedEnd) {
+        state.selectedEnd = null;
+      // If clicking the selected start point, unselect both
+      } else if (key === state.selectedStart) {
+        state.selectedStart = null;
+        state.selectedEnd = null;
+      } else if (state.selectedStart === null) {
+        // No start selected — make this the start
+        state.selectedStart = key;
+      } else if (state.selectedEnd === null) {
+        // Start selected but no end — make this the end and align
+        state.selectedEnd = key;
+        alignCompassBetweenPoints();
+      } else {
+        // Both already selected — clear both and make this the new start
+        state.selectedStart = key;
+        state.selectedEnd = null;
+      }
+      update();
+      return;
+    }
+  }
+
+  // Click on empty space toggles lock/slide mode
+  state.compass.locked = !state.compass.locked;
+  if (state.compass.locked) {
+    state.compass._lockBaseX = state.compass.x;
+    state.compass._lockBaseY = state.compass.y;
+    state.compass.slideOffset = 0;
+    state.lockSlideStartMouse = null;
+  } else {
+    state.lockSlideStartMouse = null;
+  }
+  update();
+}
+
+function alignCompassBetweenPoints() {
+  const { selectedStart, selectedEnd, mapPoints } = state;
+  if (selectedStart === null || selectedEnd === null) return;
+
+  const p1 = mapPoints[selectedStart];
+  const p2 = mapPoints[selectedEnd];
+
+  const s1 = worldToScreen(p1[0], p1[1]);
+  const s2 = worldToScreen(p2[0], p2[1]);
+  const mx = (s1.x + s2.x) / 2;
+  const my = (s1.y + s2.y) / 2;
+
+  const dx = p2[0] - p1[0];
+  const dy = p2[1] - p1[1];
+  const angle = Math.atan2(dx, -dy);
+
+  // Perpendicular direction (left side of baseplate)
+  const perpX = -Math.cos(angle);
+  const perpY = -Math.sin(angle);
+  // Offset center by half baseplate width to put edge on the line
+  state.compass.x = mx + perpX * (BASEPLATE_W / 2);
+  state.compass.y = my + perpY * (BASEPLATE_W / 2);
+  state.compass._lockBaseX = state.compass.x;
+  state.compass._lockBaseY = state.compass.y;
+  state.compass.slideOffset = 0;
+
+  state.compass.rotation = angle;
+
+  // Set bezel to the correct magnetic bearing
+  const trueBearing = computeBearing(p1, p2);
+  const magneticBearing = ((trueBearing - MAGNETIC_DECLINATION) % 360 + 360) % 360;
+  state.compass.bezelRotation = degToRad(360 - magneticBearing);
+}
+
+// ============================================================
+// DEMO: Animated bearing between 53 and 43
+// ============================================================
+let demoAnimId = null;
+
+function runDemo() {
+  // Cancel any existing demo animation
+  if (demoAnimId) {
+    cancelAnimationFrame(demoAnimId);
+    demoAnimId = null;
+  }
+
+  const p1 = state.mapPoints[53];
+  const p2 = state.mapPoints[43];
+  if (!p1 || !p2) return;
+
+  // Set the start/end points immediately
+  state.selectedStart = '53';
+  state.selectedEnd = '43';
+
+  // Compute target rotation (align long axis of baseplate with line between points)
+  const dx = p2[0] - p1[0];
+  const dy = p2[1] - p1[1];
+  const targetRotation = Math.atan2(dx, -dy);
+
+  // Compute edge-aligned position: compass positioned so its LEFT edge runs along the line
+  const s1 = worldToScreen(p1[0], p1[1]);
+  const s2 = worldToScreen(p2[0], p2[1]);
+  const midX = (s1.x + s2.x) / 2;
+  const midY = (s1.y + s2.y) / 2;
+  // Perpendicular direction (left side of baseplate)
+  const perpX = -Math.cos(targetRotation);
+  const perpY = -Math.sin(targetRotation);
+  // Offset center by half baseplate width to put edge on the line
+  const targetX = midX + perpX * (BASEPLATE_W / 2);
+  const targetY = midY + perpY * (BASEPLATE_W / 2);
+
+  // Compute target bezel
+  const trueBearing = computeBearing(p1, p2);
+  const magneticBearing = ((trueBearing - MAGNETIC_DECLINATION) % 360 + 360) % 360;
+  const targetBezel = degToRad(360 - magneticBearing);
+
+  // Starting values
+  const startX = state.compass.x;
+  const startY = state.compass.y;
+  const startRotation = state.compass.rotation;
+  const startBezel = state.compass.bezelRotation;
+
+  // Two-phase timing: 60% for positioning, 40% for bezel
+  const posDuration = 1500;
+  const bezelDuration = 2000;
+  const totalDuration = posDuration + bezelDuration;
+  let startTime = null;
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function animate(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const elapsed = timestamp - startTime;
+
+    if (elapsed < posDuration) {
+      // Phase 1: Move and rotate compass to align edge with points
+      const t = elapsed / posDuration;
+      const e = easeInOutCubic(t);
+
+      state.compass.x = startX + (targetX - startX) * e;
+      state.compass.y = startY + (targetY - startY) * e;
+
+      let rotDiff = targetRotation - startRotation;
+      while (rotDiff > Math.PI) rotDiff -= 2 * Math.PI;
+      while (rotDiff < -Math.PI) rotDiff += 2 * Math.PI;
+      state.compass.rotation = startRotation + rotDiff * e;
+
+      update();
+      demoAnimId = requestAnimationFrame(animate);
+    } else if (elapsed < totalDuration) {
+      // Phase 2: Rotate bezel to correct bearing (compass is already in place)
+      const t = (elapsed - posDuration) / bezelDuration;
+      const e = easeInOutCubic(t);
+
+      let bezDiff = targetBezel - startBezel;
+      while (bezDiff > Math.PI) bezDiff -= 2 * Math.PI;
+      while (bezDiff < -Math.PI) bezDiff += 2 * Math.PI;
+      state.compass.bezelRotation = startBezel + bezDiff * e;
+
+      update();
+      demoAnimId = requestAnimationFrame(animate);
+    } else {
+      // Ensure final values
+      state.compass.bezelRotation = targetBezel;
+      update();
+      demoAnimId = null;
+    }
+  }
+
+  demoAnimId = requestAnimationFrame(animate);
+}
+
+// ============================================================
+// KEYBOARD EVENTS
+// ============================================================
+function onKeyDown(e) {
+  const step = e.altKey ? 1 : 10;
+
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+    e.preventDefault();
+
+    if (!state.compass.locked) {
+      switch (e.key) {
+        case 'ArrowUp':    state.compass.y -= step; break;
+        case 'ArrowDown':  state.compass.y += step; break;
+        case 'ArrowLeft':  state.compass.x -= step; break;
+        case 'ArrowRight': state.compass.x += step; break;
+      }
+      state.compass._lockBaseX = state.compass.x;
+      state.compass._lockBaseY = state.compass.y;
+      state.compass.slideOffset = 0;
+    } else {
+      const dirX = Math.sin(state.compass.rotation);
+      const dirY = -Math.cos(state.compass.rotation);
+      let delta = 0;
+      switch (e.key) {
+        case 'ArrowUp':    delta = -step; break;
+        case 'ArrowDown':  delta = step; break;
+      }
+      state.compass.slideOffset += delta;
+      state.compass.x = state.compass._lockBaseX + state.compass.slideOffset * dirX;
+      state.compass.y = state.compass._lockBaseY + state.compass.slideOffset * dirY;
+    }
+
+    update();
+    return;
+  }
+
+  if (e.key === ' ' || e.key === 'Spacebar') {
+    e.preventDefault();
+    state.compass.locked = !state.compass.locked;
+
+    if (state.compass.locked) {
+      state.compass._lockBaseX = state.compass.x;
+      state.compass._lockBaseY = state.compass.y;
+      state.compass.slideOffset = 0;
+      state.lockSlideStartMouse = null;
+    } else {
+      state.lockSlideStartMouse = null;
+    }
+
+    update();
+    return;
+  }
+
+  // Q / E: rotate the whole compass baseplate
+  if (e.key === 'q' || e.key === 'Q') {
+    e.preventDefault();
+    const rotStep = e.shiftKey ? 5 : 1;
+    state.compass.rotation -= degToRad(rotStep);
+    if (state.compass.bezelLocked) {
+      state.compass.bezelRotation += degToRad(rotStep);
+    }
+    update();
+    return;
+  }
+  if (e.key === 'e' || e.key === 'E') {
+    e.preventDefault();
+    const rotStep = e.shiftKey ? 5 : 1;
+    state.compass.rotation += degToRad(rotStep);
+    if (state.compass.bezelLocked) {
+      state.compass.bezelRotation -= degToRad(rotStep);
+    }
+    update();
+    return;
+  }
+
+  // F1 key: toggle help overlay
+  if (e.key === 'F1') {
+    e.preventDefault();
+    document.getElementById('help-overlay').classList.toggle('active');
+    return;
+  }
+
+  // r key: reset bezel only
+  if (e.key === 'r') {
+    state.compass.bezelRotation = 0;
+    update();
+    return;
+  }
+  // R (shift+r): reset all
+  if (e.key === 'R') {
+    state.compass.bezelRotation = 0;
+    state.compass.rotation = 0;
+    state.selectedStart = null;
+    state.selectedEnd = null;
+    update();
+    return;
+  }
+
+  // C key: toggle compass visibility
+  if (e.key === 'c' || e.key === 'C') {
+    e.preventDefault();
+    state.compass.visible = !state.compass.visible;
+    update();
+    return;
+  }
+
+  // G key: toggle guidelines
+  if (e.key === 'g' || e.key === 'G') {
+    e.preventDefault();
+    state.compass.guidelines = !state.compass.guidelines;
+    update();
+    return;
+  }
+
+  // L key: toggle bezel lock (bezel stays fixed to the world when compass rotates)
+  if (e.key === 'l' || e.key === 'L') {
+    e.preventDefault();
+    state.compass.bezelLocked = !state.compass.bezelLocked;
+    update();
+    return;
+  }
+
+  // F key: toggle position fixed (compass stops following mouse)
+  if (e.key === 'f' || e.key === 'F') {
+    e.preventDefault();
+    state.compass.positionFixed = !state.compass.positionFixed;
+    update();
+    return;
+  }
+}
+
+// ============================================================
+// SCROLL WHEEL: Rotate bezel
+// ============================================================
+function onWheel(e) {
+  e.preventDefault();
+  const delta = e.deltaY > 0 ? 1 : -1;
+  const step = e.ctrlKey ? 10 : 1;
+
+  if (e.shiftKey) {
+    // Shift+Scroll: rotate baseplate instead of bezel
+    state.compass.rotation += delta * degToRad(step);
+    // If bezel is locked, keep it aligned with the world
+    if (state.compass.bezelLocked) {
+      state.compass.bezelRotation -= delta * degToRad(step);
+    }
+  } else {
+    // Scroll: rotate bezel (existing behavior)
+    state.compass.bezelRotation += delta * degToRad(step);
+  }
+
+  update();
+}
+
+// ============================================================
+// WINDOW RESIZE
+// ============================================================
+function onResize() {
+  resizeCanvas();
+  update();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  state.canvas = document.getElementById('canvas');
+  state.ctx = state.canvas.getContext('2d');
+
+  window.addEventListener('resize', onResize);
+  state.canvas.addEventListener('mousemove', onMouseMove);
+  state.canvas.addEventListener('mouseleave', onMouseLeave);
+  state.canvas.addEventListener('click', onClick);
+  window.addEventListener('keydown', onKeyDown);
+  state.canvas.addEventListener('wheel', onWheel, { passive: false });
+
+  // Demo button
+  document.getElementById('demo-btn').addEventListener('click', runDemo);
+
+  // Help overlay button
+  document.getElementById('help-btn').addEventListener('click', () => {
+    document.getElementById('help-overlay').classList.add('active');
+  });
+  document.getElementById('help-close').addEventListener('click', () => {
+    document.getElementById('help-overlay').classList.remove('active');
+  });
+  document.getElementById('help-overlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      document.getElementById('help-overlay').classList.remove('active');
+    }
+  });
+
+  loadData();
+
+  // Show steps overlay on first load
+  document.getElementById('steps-overlay').classList.add('active');
+  document.getElementById('steps-close').addEventListener('click', () => {
+    document.getElementById('steps-overlay').classList.remove('active');
+  });
+  document.getElementById('steps-reminder').addEventListener('click', () => {
+    document.getElementById('steps-overlay').classList.add('active');
+  });
+
+  // Anatomy popup
+  document.getElementById('steps-anatomy-btn').addEventListener('click', () => {
+    document.getElementById('steps-overlay').classList.remove('active');
+    document.getElementById('anatomy-overlay').classList.add('active');
+    drawAnatomy();
+  });
+  document.getElementById('anatomy-btn').addEventListener('click', () => {
+    document.getElementById('anatomy-overlay').classList.add('active');
+    drawAnatomy();
+  });
+  document.getElementById('anatomy-close').addEventListener('click', () => {
+    document.getElementById('anatomy-overlay').classList.remove('active');
+  });
+  document.getElementById('anatomy-overlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      document.getElementById('anatomy-overlay').classList.remove('active');
+    }
+  });
+}
+
+window.addEventListener('load', init);
+</script>
+</body>
+</html>
