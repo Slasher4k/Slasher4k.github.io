@@ -13,6 +13,41 @@ body {
   color: #fff;
   user-select: none;
 }
+#size-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #1a1a2e;
+  z-index: 9999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+}
+#size-warning.active {
+  display: flex;
+}
+#size-warning h1 {
+  color: #ffd700;
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+#size-warning p {
+  color: rgba(255,255,255,0.7);
+  font-size: 16px;
+  line-height: 1.6;
+}
+#size-warning .min-width {
+  color: #4fc3f7;
+  font-weight: 700;
+}
+#app-container {
+  width: 100%;
+  height: 100%;
+}
 #container {
   position: relative;
   width: 100vw;
@@ -82,6 +117,27 @@ canvas {
 }
 #lock-indicator .lock-icon {
   color: #4fc3f7;
+  font-weight: 700;
+}
+#fixed-indicator {
+  position: absolute;
+  top: 58px;
+  right: 16px;
+  background: rgba(0,0,0,0.75);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 6px 12px;
+  backdrop-filter: blur(6px);
+  font-size: 11px;
+  display: none;
+  pointer-events: none;
+}
+#fixed-indicator.active {
+  display: block;
+  border-color: #ff9800;
+}
+#fixed-indicator .fixed-icon {
+  color: #ff9800;
   font-weight: 700;
 }
 #help-btn {
@@ -394,18 +450,31 @@ canvas {
 </style>
 </head>
 <body>
+<div id="size-warning">
+  <div>
+    <h1>📏 Screen too small</h1>
+    <p>This app requires a screen at least <span class="min-width">1200px</span> wide.<br>
+    Please resize your browser or use a larger device.</p>
+    <p style="margin-top:12px; font-size:13px;">Current width: <span id="width-display"></span>px</p>
+  </div>
+</div>
 <div id="container">
   <canvas id="canvas"></canvas>
   <div id="ui-overlay">
     <div id="info-panel">
-      <div class="label">Bearing</div>
+      <div class="label" id="bearing-label">Bearing</div>
       <div class="bearing" id="bearing-display">0°</div>
+      <div class="label" id="computed-label" style="display:none;">Computed</div>
+      <div class="bearing" id="computed-display" style="display:none;">0°</div>
       <div class="point-label" id="points-display">Click a point to select start</div>
     </div>
     <button id="demo-btn">▶ Demo</button>
     <button id="help-btn">❓ Help</button>
     <div id="lock-indicator">
       <span class="lock-icon">🔒</span> Locked — slide along direction of travel
+    </div>
+    <div id="fixed-indicator">
+      <span class="fixed-icon">📌</span> Position fixed
     </div>
     <button id="steps-reminder">📐 How to take a bearing</button>
     <button id="anatomy-btn">🧩 Compass anatomy</button>
@@ -414,7 +483,21 @@ canvas {
 
 <div id="steps-overlay">
   <div id="steps-box">
-    <h2>🧭 Taking a Bearing</h2>
+    <h2>🧭 Modes</h2>
+
+    <div style="margin-bottom:16px; display:flex; gap:10px; justify-content:center;">
+      <span style="background:rgba(79,195,247,0.15); border:1px solid #4fc3f7; border-radius:8px; padding:6px 16px; color:#4fc3f7; font-weight:600; font-size:13px;">🧭 Compass Mode</span>
+      <span style="background:rgba(255,215,0,0.15); border:1px solid #ffd700; border-radius:8px; padding:6px 16px; color:#ffd700; font-weight:600; font-size:13px;">📍 Points Mode</span>
+    </div>
+
+    <div class="step">
+      <div class="step-num">C</div>
+      <div class="step-text">Press <strong>C</strong> to toggle between modes</div>
+    </div>
+
+    <hr style="border:none; border-top:1px solid rgba(255,255,255,0.1); margin:14px 0;">
+
+    <div style="margin-bottom:14px; color:#4fc3f7; font-weight:700; font-size:14px;">🧭 Compass Mode (compass visible)</div>
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-text"><strong>Position the compass</strong> — Move it so the long edge aligns between two points on the map</div>
@@ -427,6 +510,23 @@ canvas {
       <div class="step-num">3</div>
       <div class="step-text"><strong>Read the bearing</strong> — The number at the red index line on the compass is your bearing in degrees</div>
     </div>
+
+    <hr style="border:none; border-top:1px solid rgba(255,255,255,0.1); margin:14px 0;">
+
+    <div style="margin-bottom:14px; color:#ffd700; font-weight:700; font-size:14px;">📍 Points Mode (compass hidden)</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Click a start point</strong> — The point turns <span style="color:#4caf50; font-weight:600;">green</span></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Click an end point</strong> — The point turns <span style="color:#f44336; font-weight:600;">red</span></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Read the computed bearing</strong> in the info panel — no compass needed!</div>
+    </div>
+
     <button id="steps-anatomy-btn">🧩 Show compass parts</button>
     <button id="steps-close">Got it!</button>
   </div>
@@ -454,10 +554,10 @@ canvas {
       <tr><td>🖱 Move</td><td>Move compass to cursor</td></tr>
       <tr><td>↔ ↑↓</td><td>Move compass 10px</td></tr>
       <tr><td>Alt+↔↑↓</td><td>Move compass 1px</td></tr>
-      <tr><td>Scroll</td><td>Rotate bezel 1°</td></tr>
-      <tr><td>Ctrl+Scroll</td><td>Rotate bezel 10°</td></tr>
-      <tr><td>Shift+Scroll</td><td>Rotate compass 1°</td></tr>
-      <tr><td>Ctrl+Shift+Scroll</td><td>Rotate compass 10°</td></tr>
+      <tr><td>Scroll</td><td>Rotate compass 1°</td></tr>
+      <tr><td>Ctrl+Scroll</td><td>Rotate compass 10°</td></tr>
+      <tr><td>Shift+Scroll</td><td>Rotate bezel 1°</td></tr>
+      <tr><td>Ctrl+Shift+Scroll</td><td>Rotate bezel 10°</td></tr>
       <tr><td>Q / E</td><td>Rotate compass 1°</td></tr>
       <tr><td>Shift+Q/E</td><td>Rotate compass 5°</td></tr>
       <tr><td>Space</td><td>Lock / slide along direction</td></tr>
@@ -1267,6 +1367,8 @@ function update() {
   drawNorthReference(ctx);
   drawGuidelines(ctx);
 
+  // Update fixed indicator
+  document.getElementById('fixed-indicator').classList.toggle('active', state.compass.positionFixed);
   updateInfoPanel();
 }
 
@@ -1274,28 +1376,52 @@ function update() {
 // INFO PANEL
 // ============================================================
 function updateInfoPanel() {
-  // Show info panel only when compass is hidden
-  document.getElementById('info-panel').classList.toggle('hidden', state.compass.visible);
+  const visible = state.compass.visible;
+  document.getElementById('info-panel').classList.toggle('hidden', visible);
 
-  const { bezelRotation } = state.compass;
-  const bearingDeg = ((-bezelRotation * 180 / Math.PI) % 360 + 360) % 360;
+  const bearingLabel = document.getElementById('bearing-label');
   const bearingDisplay = document.getElementById('bearing-display');
-  bearingDisplay.textContent = Math.round(bearingDeg) + '°' +
-    (state.compass.locked ? ' 🔒' : '');
+  const computedLabel = document.getElementById('computed-label');
+  const computedDisplay = document.getElementById('computed-display');
+
+  if (visible) {
+    // Compass mode: show bezel reading, hide computed
+    bearingLabel.style.display = 'block';
+    bearingDisplay.style.display = 'block';
+    computedLabel.style.display = 'none';
+    computedDisplay.style.display = 'none';
+
+    const { bezelRotation } = state.compass;
+    const bearingDeg = ((-bezelRotation * 180 / Math.PI) % 360 + 360) % 360;
+    bearingDisplay.textContent = Math.round(bearingDeg) + '°' +
+      (state.compass.locked ? ' 🔒' : '');
+  } else {
+    // Points mode: show computed bearing, hide bezel
+    bearingLabel.style.display = 'none';
+    bearingDisplay.style.display = 'none';
+    computedLabel.style.display = 'block';
+    computedDisplay.style.display = 'block';
+
+    if (state.selectedStart !== null && state.selectedEnd !== null) {
+      const p1 = state.mapPoints[state.selectedStart];
+      const p2 = state.mapPoints[state.selectedEnd];
+      const bearing = computeBearing(p1, p2);
+      const magnetic = ((bearing - MAGNETIC_DECLINATION) % 360 + 360) % 360;
+      computedDisplay.textContent = magnetic + '°';
+    } else {
+      computedDisplay.textContent = '—';
+    }
+  }
 
   const ptsDisplay = document.getElementById('points-display');
   if (state.selectedStart !== null && state.selectedEnd !== null) {
-    const p1 = state.mapPoints[state.selectedStart];
-    const p2 = state.mapPoints[state.selectedEnd];
-    const bearing = computeBearing(p1, p2);
-    const magnetic = ((bearing - MAGNETIC_DECLINATION) % 360 + 360) % 360;
     ptsDisplay.innerHTML =
       `<span>${state.selectedStart}</span> → <span>${state.selectedEnd}</span>`;
   } else if (state.selectedStart !== null) {
     ptsDisplay.innerHTML =
       `Start: <span>${state.selectedStart}</span> — click destination point`;
   } else {
-    ptsDisplay.textContent = 'Click a point to select start';
+    ptsDisplay.textContent = visible ? 'Click a point to select start' : 'Click two points for bearing';
   }
 
   const lockInd = document.getElementById('lock-indicator');
@@ -1381,9 +1507,14 @@ function onClick(e) {
         // No start selected — make this the start
         state.selectedStart = key;
       } else if (state.selectedEnd === null) {
-        // Start selected but no end — make this the end and align
+        // Start selected but no end — just draw line & store correct bearing
         state.selectedEnd = key;
-        alignCompassBetweenPoints();
+
+        // Store the correct bearing for later answer checking
+        const p1 = mapPoints[state.selectedStart];
+        const p2 = mapPoints[state.selectedEnd];
+        const trueBearing = computeBearing(p1, p2);
+        state.correctBearing = ((trueBearing - MAGNETIC_DECLINATION) % 360 + 360) % 360;
       } else {
         // Both already selected — clear both and make this the new start
         state.selectedStart = key;
@@ -1681,7 +1812,7 @@ function onKeyDown(e) {
 }
 
 // ============================================================
-// SCROLL WHEEL: Rotate bezel
+// SCROLL WHEEL: Rotate compass, Shift+Scroll for bezel
 // ============================================================
 function onWheel(e) {
   e.preventDefault();
@@ -1689,15 +1820,15 @@ function onWheel(e) {
   const step = e.ctrlKey ? 10 : 1;
 
   if (e.shiftKey) {
-    // Shift+Scroll: rotate baseplate instead of bezel
+    // Shift+Scroll: rotate bezel (fine-tune bearing)
+    state.compass.bezelRotation += delta * degToRad(step);
+  } else {
+    // Scroll: rotate compass first (more intuitive)
     state.compass.rotation += delta * degToRad(step);
     // If bezel is locked, keep it aligned with the world
     if (state.compass.bezelLocked) {
       state.compass.bezelRotation -= delta * degToRad(step);
     }
-  } else {
-    // Scroll: rotate bezel (existing behavior)
-    state.compass.bezelRotation += delta * degToRad(step);
   }
 
   update();
@@ -1714,7 +1845,19 @@ function onResize() {
 // ============================================================
 // INIT
 // ============================================================
+function checkScreenWidth() {
+  const warningEl = document.getElementById('size-warning');
+  const widthDisplay = document.getElementById('width-display');
+  if (!warningEl || !widthDisplay) return;
+  const w = window.innerWidth;
+  widthDisplay.textContent = w;
+  warningEl.classList.toggle('active', w < 1200);
+}
+
 function init() {
+  checkScreenWidth();
+  window.addEventListener('resize', checkScreenWidth);
+
   state.canvas = document.getElementById('canvas');
   state.ctx = state.canvas.getContext('2d');
 
