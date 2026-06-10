@@ -310,20 +310,30 @@ canvas {
 #steps-box .step-text strong {
   color: #ffd700;
 }
-#steps-close, #steps-anatomy-btn {
+#steps-close, #steps-anatomy-btn, #steps-shortcuts-btn {
   display: block;
   margin: 10px auto 0;
-  background: rgba(255,215,0,0.15);
-  border: 1px solid #ffd700;
   border-radius: 8px;
   padding: 10px 32px;
-  color: #ffd700;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
 }
-#steps-close:hover, #steps-anatomy-btn:hover {
+#steps-close {
+  background: rgba(76, 175, 80, 0.2);
+  border: 1px solid #4caf50;
+  color: #4caf50;
+}
+#steps-close:hover {
+  background: rgba(76, 175, 80, 0.4);
+}
+#steps-anatomy-btn, #steps-shortcuts-btn {
+  background: rgba(255,215,0,0.15);
+  border: 1px solid #ffd700;
+  color: #ffd700;
+}
+#steps-anatomy-btn:hover, #steps-shortcuts-btn:hover {
   background: rgba(255,215,0,0.3);
 }
 #steps-anatomy-btn {
@@ -528,6 +538,7 @@ canvas {
     </div>
 
     <button id="steps-anatomy-btn">🧩 Show compass parts</button>
+    <button id="steps-shortcuts-btn">⌨️ Keyboard shortcuts</button>
     <button id="steps-close">Got it!</button>
   </div>
 </div>
@@ -1893,6 +1904,12 @@ function init() {
   });
   document.getElementById('steps-reminder').addEventListener('click', () => {
     document.getElementById('steps-overlay').classList.add('active');
+  });
+
+  // Shortcuts button in steps overlay
+  document.getElementById('steps-shortcuts-btn').addEventListener('click', () => {
+    document.getElementById('steps-overlay').classList.remove('active');
+    document.getElementById('help-overlay').classList.add('active');
   });
 
   // Anatomy popup
