@@ -1,0 +1,730 @@
+ !DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Firetower Nav</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; overflow: hidden; font-family: sans-serif; }
+  #canvas { display: block; width: 100vw; height: 100vh; }
+
+  #compass { position: fixed; top: 20px; right: 20px; width: 80px; height: 80px; pointer-events: none; }
+  #compass canvas { width: 80px; height: 80px; }
+
+  #map-overlay {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: min(90vw, 900px); height: min(85vh, 800px);
+    background: #f5f0e0;
+    border: 2px solid #8B7355; border-radius: 6px;
+    display: none;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    z-index: 50;
+  }
+  #map-overlay canvas { width: 100%; height: 100%; display: block; border-radius: 4px; }
+  #map-label { position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+    font-size: 12px; color: #5a3a1a; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;
+    text-shadow: 0 1px 0 #fff; z-index: 51; pointer-events: none; }
+
+  #crosshair { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 16px; height: 16px; pointer-events: none; }
+  #crosshair::before, #crosshair::after { content: ''; position: absolute; background: rgba(255,255,255,0.8); }
+  #crosshair::before { width: 2px; height: 100%; left: 50%; transform: translateX(-50%); }
+  #crosshair::after { width: 100%; height: 2px; top: 50%; transform: translateY(-50%); }
+
+  #objective { position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.6); color: #f0e8c8; padding: 8px 18px 4px;
+    border-radius: 20px; font-size: 13px; letter-spacing: 0.5px; border: 1px solid rgba(255,255,255,0.2);
+    text-align: center; line-height: 1.6; }
+  #bearing-display { font-size: 15px; color: #ffd700; font-weight: bold; letter-spacing: 0; }
+
+  #distance { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.55); color: #f0e8c8; padding: 6px 14px;
+    border-radius: 16px; font-size: 12px; display: none; }
+
+  #controls { position: fixed; bottom: 20px; left: 20px;
+    color: rgba(255,255,255,0.5); font-size: 11px; line-height: 1.8; pointer-events: none; }
+
+  #success { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    background: rgba(0,0,0,0.8); color: #f0e8c8; padding: 20px 40px;
+    border-radius: 8px; font-size: 18px; text-align: center; display: none; border: 1px solid #8B7355; }
+
+  #start-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.82); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; color: #f0e8c8; z-index: 100; }
+  #start-screen h1 { font-size: 36px; letter-spacing: 4px; margin-bottom: 8px; }
+  #start-screen p { font-size: 13px; opacity: 0.6; margin-bottom: 24px; }
+
+  #heightmap-row { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+  #heightmap-label-btn {
+    background: rgba(255,255,255,0.1); color: #f0e8c8;
+    border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px;
+    border-radius: 4px; font-size: 13px; cursor: pointer; }
+  #heightmap-label-btn:hover { background: rgba(255,255,255,0.18); }
+  #file-name { font-size: 12px; opacity: 0.6; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #heightmap-input { display: none; }
+
+  .start-btn { background: #8B7355; color: #f0e8c8; border: none; padding: 12px 32px;
+    font-size: 16px; border-radius: 4px; cursor: pointer; letter-spacing: 1px; }
+  .start-btn:hover { background: #a08060; }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div id="hud">
+  <div id="crosshair"></div>
+  <div id="objective">Navigate to the waypoint — press M to toggle map<br><span id="bearing-display"></span></div>
+  <div id="compass"><canvas id="compass-canvas" width="160" height="160"></canvas></div>
+  <div id="map-overlay">
+    <div id="map-label">Topographic Map</div>
+    <canvas id="map-canvas" width="800" height="800"></canvas>
+  </div>
+  <div id="distance"></div>
+  <div id="controls">WASD — move<br>Mouse — look<br>M — map<br>Shift — run</div>
+  <div id="success"></div>
+</div>
+
+<div id="start-screen">
+  <h1>FIRETOWER</h1>
+  <p>Navigate the wilderness using your map and compass</p>
+  <div id="heightmap-row">
+    <label id="heightmap-label-btn" for="heightmap-input">Load heightmap PNG</label>
+    <input type="file" id="heightmap-input" accept=".png,.jpg,.jpeg">
+    <span id="file-name">or use generated terrain</span>
+  </div>
+  <button class="start-btn" id="start-btn">CLICK TO START</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+let W = 128, H = 128;
+const TERRAIN_SIZE = 800;
+const TERRAIN_HEIGHT = 120;
+let heightmap = null;
+
+// --- Procedural fallback ---
+function generateHeightmap(w, h) {
+  const data = new Float32Array(w * h);
+  const sx = Math.random()*10000, sy = Math.random()*10000;
+  function hash(x, y) { let n = Math.sin((x+sx)*127.1+(y+sy)*311.7)*43758.5453; return n-Math.floor(n); }
+  function noise(x, y, scale) {
+    const xi = Math.floor(x/scale), yi = Math.floor(y/scale);
+    const xf = x/scale-xi, yf = y/scale-yi;
+    const u = xf*xf*(3-2*xf), v = yf*yf*(3-2*yf);
+    return hash(xi,yi)*(1-u)*(1-v)+hash(xi+1,yi)*u*(1-v)+hash(xi,yi+1)*(1-u)*v+hash(xi+1,yi+1)*u*v;
+  }
+  for (let y=0;y<h;y++) for (let x=0;x<w;x++) {
+    let v = noise(x,y,40)*0.35+noise(x,y,20)*0.25+noise(x,y,12)*0.18+noise(x,y,6)*0.13+noise(x,y,3)*0.09;
+    // Ridged transform: creates sharp ridges and gullies instead of soft blobs
+    v = 1 - Math.abs(v*2 - 1);
+    data[y*w+x] = Math.pow(v, 0.8);
+  }
+  return data;
+}
+
+// --- PNG loader ---
+function loadHeightmapFromImage(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      c.width = img.width; c.height = img.height;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const px = ctx.getImageData(0,0,img.width,img.height).data;
+      const data = new Float32Array(img.width*img.height);
+      for (let i=0;i<data.length;i++) data[i] = px[i*4]/255;
+      URL.revokeObjectURL(url);
+      resolve({ data, w: img.width, h: img.height });
+    };
+    img.onerror = () => reject(new Error('Failed to load image'));
+    img.src = url;
+  });
+}
+
+let loadedFile = null;
+document.getElementById('heightmap-input').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  loadedFile = file;
+  document.getElementById('file-name').textContent = file.name;
+});
+
+// --- Height sampling ---
+function getHeight(nx, ny) {
+  const x = Math.max(0, Math.min(W-2, nx*(W-1)));
+  const y = Math.max(0, Math.min(H-2, ny*(H-1)));
+  const xi = Math.floor(x), yi = Math.floor(y);
+  const xf = x-xi, yf = y-yi;
+  const h00=heightmap[yi*W+xi], h10=heightmap[yi*W+xi+1];
+  const h01=heightmap[(yi+1)*W+xi], h11=heightmap[(yi+1)*W+xi+1];
+  return (h00*(1-xf)*(1-yf)+h10*xf*(1-yf)+h01*(1-xf)*yf+h11*xf*yf)*TERRAIN_HEIGHT;
+}
+function worldToNorm(x,z) { return { nx:(x+TERRAIN_SIZE/2)/TERRAIN_SIZE, ny:(z+TERRAIN_SIZE/2)/TERRAIN_SIZE }; }
+function getWorldHeight(x,z) { const {nx,ny}=worldToNorm(x,z); return getHeight(nx,ny); }
+
+// --- Three.js ---
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87CEAB);
+scene.fog = new THREE.Fog(0x87CEAB, 200, 600);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+const sun = new THREE.DirectionalLight(0xfff4e0, 1.2);
+sun.position.set(100,200,100); scene.add(sun);
+
+let terrainMesh = null;
+let waypointMesh = null, poleMesh = null;
+const waypointPos = new THREE.Vector3();
+
+function buildTerrain() {
+  if (terrainMesh) { scene.remove(terrainMesh); terrainMesh.geometry.dispose(); }
+
+  const geo = new THREE.PlaneGeometry(TERRAIN_SIZE, TERRAIN_SIZE, W-1, H-1);
+  geo.rotateX(-Math.PI/2);
+  const pos = geo.attributes.position;
+  for (let i=0;i<pos.count;i++) {
+    const {nx,ny} = worldToNorm(pos.getX(i), pos.getZ(i));
+    pos.setY(i, getHeight(nx,ny));
+  }
+  geo.computeVertexNormals();
+  terrainMesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color: 0x5a7a3a }));
+  scene.add(terrainMesh);
+}
+
+function addTrees() {
+  for (let i=0;i<500;i++) {
+    const x=(Math.random()-0.5)*TERRAIN_SIZE*0.9, z=(Math.random()-0.5)*TERRAIN_SIZE*0.9;
+    if (Math.abs(x)<30&&Math.abs(z)<30) continue;
+    const h=getWorldHeight(x,z);
+    const trunk=new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.6,4,5),new THREE.MeshLambertMaterial({color:0x6B4226}));
+    trunk.position.set(x,h+2,z); scene.add(trunk);
+    const foliage=new THREE.Mesh(new THREE.ConeGeometry(3,7,6),new THREE.MeshLambertMaterial({color:0x2d5a27}));
+    foliage.position.set(x,h+7,z); scene.add(foliage);
+  }
+}
+
+function placeWaypoint() {
+  if (waypointMesh) { scene.remove(waypointMesh); scene.remove(poleMesh); }
+  const minDist = 80, maxDist = 350;
+  const angle = Math.random() * Math.PI * 2;
+  const dist = minDist + Math.random() * (maxDist - minDist);
+  waypointPos.set(Math.cos(angle)*dist, 0, Math.sin(angle)*dist);
+  waypointPos.y = getWorldHeight(waypointPos.x, waypointPos.z);
+  waypointMesh = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 0.4, 16), new THREE.MeshLambertMaterial({color:0xff4422}));
+  waypointMesh.position.set(waypointPos.x, waypointPos.y + 0.2, waypointPos.z); scene.add(waypointMesh);
+  poleMesh = null;
+  // Rebuild static map now that waypoint has moved
+  if (heightmap) drawStaticMap();
+}
+
+// --- Player ---
+const player = { x:0, z:0, yaw:0, pitch:0, run:false };
+const keys = {};
+let mapVisible=false, locked=false, started=false, reached=false;
+
+document.getElementById('start-btn').addEventListener('click', async () => {
+  // Request pointer lock synchronously before any await
+  document.getElementById('canvas').requestPointerLock();
+  document.getElementById('start-screen').style.display = 'none';
+  if (loadedFile) {
+    try {
+      const result = await loadHeightmapFromImage(loadedFile);
+      heightmap = result.data; W = result.w; H = result.h;
+    } catch(e) {
+      alert('Could not load heightmap: ' + e.message);
+      return;
+    }
+  } else {
+    heightmap = generateHeightmap(W, H);
+  }
+  buildTerrain();
+  addTrees();
+  placeWaypoint();
+  started = true;
+});
+
+document.addEventListener('pointerlockchange', () => {
+  locked = document.pointerLockElement === document.getElementById('canvas');
+});
+document.addEventListener('mousemove', (e) => {
+  if (!locked) return;
+  player.yaw -= e.movementX*0.002;
+  player.pitch += e.movementY*0.002;
+  player.pitch = Math.max(-Math.PI/3, Math.min(Math.PI/3, player.pitch));
+});
+document.addEventListener('keydown', (e) => {
+  keys[e.code]=true;
+  if (e.code==='KeyM') {
+    mapVisible=!mapVisible;
+    document.getElementById('map-overlay').style.display=mapVisible?'block':'none';
+    if(mapVisible){
+      document.exitPointerLock();
+      drawMap();
+    } else {
+      document.getElementById('canvas').requestPointerLock();
+    }
+  }
+  if (e.code==='ShiftLeft'||e.code==='ShiftRight') player.run=true;
+});
+document.addEventListener('keyup', (e) => {
+  keys[e.code]=false;
+  if (e.code==='ShiftLeft'||e.code==='ShiftRight') player.run=false;
+});
+window.addEventListener('resize', () => {
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
+
+// --- Map ---
+const mapCanvas = document.getElementById('map-canvas');
+const mapCtx = mapCanvas.getContext('2d');
+const MC = 800;
+
+// Virtual compass state (for the map overlay)
+const mapCompass = {
+  rotation: 0,       // baseplate rotation in radians
+  bezelRotation: 0,  // bezel rotation in radians
+  // Position in the map canvas (bottom-left area)
+  x: 140,
+  y: MC - 140,
+  dragging: false,
+  dragOffX: 0,
+  dragOffY: 0,
+};
+
+function degToRad(d) { return d * Math.PI / 180; }
+
+function drawVirtualCompass(ctx) {
+  const { x, y, rotation, bezelRotation } = mapCompass;
+  const BR = 90; // bezel radius
+  const BW = 200, BH = 360; // baseplate dimensions (centered on (x,y))
+
+  ctx.save();
+  ctx.translate(x, y);
+
+  // --- Baseplate (translucent white) ---
+  ctx.save();
+  ctx.rotate(rotation);
+  ctx.shadowColor = 'rgba(0,0,0,0.25)';
+  ctx.shadowBlur = 10;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 2;
+  const r = 12;
+  ctx.beginPath();
+  ctx.moveTo(-BW/2+r, -BH/2);
+  ctx.lineTo(BW/2-r, -BH/2);
+  ctx.quadraticCurveTo(BW/2, -BH/2, BW/2, -BH/2+r);
+  ctx.lineTo(BW/2, BH/2-r);
+  ctx.quadraticCurveTo(BW/2, BH/2, BW/2-r, BH/2);
+  ctx.lineTo(-BW/2+r, BH/2);
+  ctx.quadraticCurveTo(-BW/2, BH/2, -BW/2, BH/2-r);
+  ctx.lineTo(-BW/2, -BH/2+r);
+  ctx.quadraticCurveTo(-BW/2, -BH/2, -BW/2+r, -BH/2);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255,255,255,0.30)';
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+
+  // Direction of Travel Arrow (red, at top)
+  const atY = -BH/2 + 6;
+  const abY = atY + 40;
+  ctx.beginPath();
+  ctx.moveTo(0, atY);
+  ctx.lineTo(-12, abY);
+  ctx.lineTo(12, abY);
+  ctx.closePath();
+  ctx.fillStyle = '#d32f2f';
+  ctx.fill();
+
+  // Index line (red at top of bezel)
+  ctx.beginPath();
+  ctx.moveTo(0, -BR - 6);
+  ctx.lineTo(0, -BR + 14);
+  ctx.strokeStyle = '#d32f2f';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // "SILVA" branding near bottom
+  ctx.font = 'bold 18px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillText('SILVA', 0, BH/2 - 14);
+
+  ctx.restore(); // undo baseplate rotation
+
+  // --- Bezel ---
+  ctx.save();
+  ctx.rotate(bezelRotation + rotation);
+
+  ctx.beginPath();
+  ctx.arc(0, 0, BR, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(250,250,250,0.3)';
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(0, 0, BR, 0, Math.PI*2);
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  const iR = BR - 12;
+  ctx.beginPath();
+  ctx.arc(0, 0, iR, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // Degree ticks (every 2°, majors every 20°)
+  for (let d = 0; d < 360; d += 2) {
+    const rad = degToRad(d);
+    const is10 = d % 10 === 0;
+    const isMaj = d % 20 === 0;
+    const inner = is10 ? iR + 3 : iR + 7;
+    const outer = isMaj ? BR : (is10 ? BR : BR - 2);
+    ctx.beginPath();
+    ctx.moveTo(Math.sin(rad)*inner, -Math.cos(rad)*inner);
+    ctx.lineTo(Math.sin(rad)*outer, -Math.cos(rad)*outer);
+    ctx.strokeStyle = isMaj ? '#111' : is10 ? '#333' : '#999';
+    ctx.lineWidth = isMaj ? 1.8 : is10 ? 1.3 : 0.6;
+    ctx.stroke();
+  }
+
+  // Degree labels (every 20°, skip N/E/S/W positions)
+  const lR = iR - 7;
+  ctx.font = '10px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (let d = 20; d < 360; d += 20) {
+    if (d % 90 === 0) continue;
+    const rad = degToRad(d);
+    ctx.fillStyle = '#222';
+    ctx.fillText(String(d), Math.sin(rad)*lR, -Math.cos(rad)*lR);
+  }
+
+  // Cardinal labels
+  ctx.font = 'bold 13px sans-serif';
+  const cards = [
+    [0, 'N', '#d32f2f'], [90, 'E', '#333'], [180, 'S', '#333'], [270, 'W', '#333']
+  ];
+  for (const [deg, label, color] of cards) {
+    const rad = degToRad(deg);
+    ctx.fillStyle = color;
+    ctx.fillText(label, Math.sin(rad)*lR, -Math.cos(rad)*lR);
+  }
+
+  // Orienteering lines (red top, black bottom)
+  const ow = (iR - 3) * 0.65;
+  ctx.lineWidth = 0.7;
+  for (let i = -3; i <= 3; i++) {
+    const lx = i * (ow / 3);
+    if (Math.abs(lx) < 0.5) continue;
+    const hl = Math.sqrt(Math.max(0, iR*iR - lx*lx));
+    if (hl > 0) {
+      ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, -hl);
+      ctx.strokeStyle = 'rgba(211,47,47,0.75)'; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, hl);
+      ctx.strokeStyle = 'rgba(0,0,0,0.75)'; ctx.stroke();
+    }
+  }
+
+  // Orienteering arrow (red top, black bottom)
+  const oa = BR - 28;
+  ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.strokeStyle = '#d32f2f';
+  ctx.moveTo(0, -oa); ctx.lineTo(-7, -oa+14); ctx.lineTo(-4, -oa+14); ctx.lineTo(-4, 0); ctx.stroke();
+  ctx.beginPath(); ctx.strokeStyle = '#000';
+  ctx.moveTo(-4, 0); ctx.lineTo(-4, oa); ctx.stroke();
+  ctx.beginPath(); ctx.strokeStyle = '#d32f2f';
+  ctx.moveTo(0, -oa); ctx.lineTo(7, -oa+14); ctx.lineTo(4, -oa+14); ctx.lineTo(4, 0); ctx.stroke();
+  ctx.beginPath(); ctx.strokeStyle = '#000';
+  ctx.moveTo(4, 0); ctx.lineTo(4, oa); ctx.stroke();
+
+  ctx.restore(); // undo bezel rotation
+  ctx.restore(); // undo translation
+}
+
+// Wheel event on map overlay: scroll = rotate compass, shift+scroll = rotate bezel
+document.getElementById('map-overlay').addEventListener('wheel', (e) => {
+  if (!mapVisible) return;
+  e.preventDefault();
+  const delta = Math.sign(e.deltaY) * (e.ctrlKey ? 10 : 1) * (Math.PI / 180);
+  if (e.shiftKey) {
+    mapCompass.bezelRotation = (mapCompass.bezelRotation + delta) % (Math.PI * 2);
+  } else {
+    mapCompass.rotation = (mapCompass.rotation + delta) % (Math.PI * 2);
+  }
+  drawMap();
+});
+
+// Drag compass: mousedown checks if click is inside baseplate bounds
+document.getElementById('map-overlay').addEventListener('mousedown', (e) => {
+  if (!mapVisible) return;
+  const rect = mapCanvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) * (MC / rect.width);
+  const my = (e.clientY - rect.top) * (MC / rect.height);
+  const dx = mx - mapCompass.x;
+  const dy = my - mapCompass.y;
+  const BW = 200, BH = 360;
+  // Check if within axis-aligned bounding box of baseplate (generous padding)
+  const hw = BW / 2 + 20, hh = BH / 2 + 20;
+  if (dx >= -hw && dx <= hw && dy >= -hh && dy <= hh) {
+    mapCompass.dragging = true;
+    mapCompass.dragOffX = dx;
+    mapCompass.dragOffY = dy;
+  }
+});
+document.addEventListener('mousemove', (e) => {
+  if (!mapCompass.dragging || !mapVisible) return;
+  const rect = mapCanvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) * (MC / rect.width);
+  const my = (e.clientY - rect.top) * (MC / rect.height);
+  mapCompass.x = Math.max(10, Math.min(MC - 10, mx - mapCompass.dragOffX));
+  mapCompass.y = Math.max(10, Math.min(MC - 10, my - mapCompass.dragOffY));
+  drawMap();
+});
+document.addEventListener('mouseup', () => {
+  mapCompass.dragging = false;
+});
+
+// Offscreen canvas holds the static base map (terrain + contours + waypoint)
+// Only redrawn when waypoint changes, never during normal movement
+const staticMapCanvas = document.createElement('canvas');
+staticMapCanvas.width = MC; staticMapCanvas.height = MC;
+const staticCtx = staticMapCanvas.getContext('2d');
+
+function drawStaticMap() {
+  staticCtx.fillStyle='#e8dfc0'; staticCtx.fillRect(0,0,MC,MC);
+  for (let y=0;y<MC;y++) for (let x=0;x<MC;x++) {
+    const h=getHeight(x/MC, y/MC)/TERRAIN_HEIGHT;
+    staticCtx.fillStyle=`rgb(${Math.floor(160+h*40)},${Math.floor(180+h*60)},${Math.floor(120+h*20)})`;
+    staticCtx.fillRect(x,y,1,1);
+  }
+  // --- Smooth contour lines via supersampled heightmap ---
+  // Build a 2x supersampled heightmap via bilinear interpolation
+  const SS = 2;
+  const sw = W*SS, sh = H*SS;
+  const shm = new Float32Array(sw*sh);
+  for (let y=0;y<sh;y++) for (let x=0;x<sw;x++) {
+    const nx = x/(sw-1), ny = y/(sh-1);
+    const fx = nx*(W-1), fy = ny*(H-1);
+    const xi = Math.floor(fx), yi = Math.floor(fy);
+    const xf = fx-xi, yf = fy-yi;
+    const xc = Math.min(xi, W-2), yc = Math.min(yi, H-2);
+    const h00=heightmap[yc*W+xc], h10=heightmap[yc*W+xc+1], h01=heightmap[(yc+1)*W+xc], h11=heightmap[(yc+1)*W+xc+1];
+    shm[y*sw+x] = h00*(1-xf)*(1-yf)+h10*xf*(1-yf)+h01*(1-xf)*yf+h11*xf*yf;
+  }
+  staticCtx.strokeStyle='rgba(100,70,30,0.35)'; staticCtx.lineWidth=0.5;
+  for (let c=1;c<12;c++) {
+    const level=(c/12);
+    // Collect contour points from the supersampled grid
+    const pts = [];
+    for (let y=0;y<sh-1;y++) for (let x=0;x<sw-1;x++) {
+      const h00=shm[y*sw+x], h10=shm[y*sw+x+1], h01=shm[(y+1)*sw+x];
+      if ((h00<level)!==(h01<level)) {
+        const t=(level-h00)/(h01-h00);
+        pts.push({ x:(x+0.5)/sw*MC, y:(y+t)/sh*MC });
+      }
+      if ((h00<level)!==(h10<level)) {
+        const t=(level-h00)/(h10-h00);
+        pts.push({ x:(x+t)/sw*MC, y:(y+0.5)/sh*MC });
+      }
+    }
+    if (pts.length < 4) continue;
+    // Sort all points into disconnected contour loops by nearest-neighbor with distance threshold
+    const cellW = MC / sw; // approximate grid cell width (~3.1px)
+    const maxJump = cellW * 3; // points further than this belong to a different loop
+    const used = new Uint8Array(pts.length);
+    const loops = [];
+    for (let start=0;start<pts.length;start++) {
+      if (used[start]) continue;
+      const loop = [pts[start]];
+      used[start] = 1;
+      for (;;) {
+        let best=-1, bd=Infinity;
+        const last = loop[loop.length-1];
+        for (let j=0;j<pts.length;j++) {
+          if (used[j]) continue;
+          const d = (pts[j].x-last.x)**2 + (pts[j].y-last.y)**2;
+          if (d<bd) { bd=d; best=j; }
+        }
+        if (best>=0 && Math.sqrt(bd) < maxJump) { loop.push(pts[best]); used[best]=1; }
+        else break;
+      }
+      // Also try extending backward
+      for (;;) {
+        let best=-1, bd=Infinity;
+        const first = loop[0];
+        for (let j=0;j<pts.length;j++) {
+          if (used[j]) continue;
+          const d = (pts[j].x-first.x)**2 + (pts[j].y-first.y)**2;
+          if (d<bd) { bd=d; best=j; }
+        }
+        if (best>=0 && Math.sqrt(bd) < maxJump) { loop.unshift(pts[best]); used[best]=1; }
+        else break;
+      }
+      if (loop.length >= 4) loops.push(loop);
+    }
+    // Smooth and draw each loop, with one elevation label per loop
+    const elevLabel = `${Math.round(level*TERRAIN_HEIGHT)}`;
+    for (let L=0;L<loops.length;L++) {
+      const ordered = loops[L];
+      const smooth = [ordered[0]];
+      for (let i=1;i<ordered.length-1;i++) {
+        smooth.push({
+          x: (ordered[i-1].x+ordered[i].x+ordered[i+1].x)/3,
+          y: (ordered[i-1].y+ordered[i].y+ordered[i+1].y)/3
+        });
+      }
+      smooth.push(ordered[ordered.length-1]);
+      staticCtx.beginPath();
+      staticCtx.moveTo(smooth[0].x, smooth[0].y);
+      for (let k=1;k<smooth.length;k++) staticCtx.lineTo(smooth[k].x, smooth[k].y);
+      staticCtx.stroke();
+      // Label at midpoint of this loop
+      const mid = smooth[Math.floor(smooth.length/2)];
+      const tw = staticCtx.measureText(elevLabel).width;
+      staticCtx.fillStyle = 'rgba(245,240,224,0.85)';
+      staticCtx.fillRect(mid.x - tw/2 - 2, mid.y - 4, tw + 4, 8);
+      staticCtx.fillStyle = 'rgba(100,70,30,0.7)';
+      staticCtx.textAlign = 'center'; staticCtx.textBaseline = 'middle';
+      staticCtx.fillText(elevLabel, mid.x, mid.y);
+    }
+  }
+  // North grid lines — 7 evenly spaced
+  staticCtx.strokeStyle = 'rgba(180,60,60,0.55)';
+  staticCtx.lineWidth = 1.2;
+  for (let i = 0; i < 7; i++) {
+    const gx = (i / 6) * MC;
+    staticCtx.beginPath();
+    staticCtx.moveTo(gx, 0);
+    staticCtx.lineTo(gx, MC);
+    staticCtx.stroke();
+    // Small "↑ N" label at top of each line
+    staticCtx.fillStyle = 'rgba(180,60,60,0.4)';
+    staticCtx.font = '7px sans-serif';
+    staticCtx.textAlign = 'center';
+    staticCtx.textBaseline = 'top';
+    staticCtx.fillText('↑', gx, 4);
+  }
+
+  // Waypoint marker
+  const wnx=(waypointPos.x+TERRAIN_SIZE/2)/TERRAIN_SIZE, wny=(waypointPos.z+TERRAIN_SIZE/2)/TERRAIN_SIZE;
+  staticCtx.fillStyle='#ff3311'; staticCtx.beginPath(); staticCtx.arc(wnx*MC,wny*MC,6,0,Math.PI*2); staticCtx.fill();
+  staticCtx.strokeStyle='#fff'; staticCtx.lineWidth=1.5; staticCtx.stroke();
+  staticCtx.fillStyle='#fff'; staticCtx.font='bold 10px sans-serif'; staticCtx.textAlign='center'; staticCtx.textBaseline='middle';
+  staticCtx.fillText('X',wnx*MC,wny*MC);
+  // North label
+  staticCtx.fillStyle='rgba(0,0,0,0.6)'; staticCtx.font='bold 12px sans-serif'; staticCtx.textAlign='left'; staticCtx.textBaseline='top';
+  staticCtx.fillText('N ↑',6,22);
+}
+
+function drawMap() {
+  // Blit the pre-rendered static base — zero cost
+  mapCtx.drawImage(staticMapCanvas, 0, 0);
+  // Draw the player position as a simple blue dot
+  const pnx=(player.x+TERRAIN_SIZE/2)/TERRAIN_SIZE, pny=(player.z+TERRAIN_SIZE/2)/TERRAIN_SIZE;
+  mapCtx.beginPath();
+  mapCtx.arc(pnx*MC, pny*MC, 4, 0, Math.PI*2);
+  mapCtx.fillStyle = '#1a6aff';
+  mapCtx.fill();
+  mapCtx.strokeStyle = '#fff';
+  mapCtx.lineWidth = 1.5;
+  mapCtx.stroke();
+  // Draw the virtual Silva compass
+  drawVirtualCompass(mapCtx);
+}
+
+// --- Compass ---
+const compCtx = document.getElementById('compass-canvas').getContext('2d');
+function drawCompass() {
+  const c=compCtx; c.clearRect(0,0,160,160);
+  c.beginPath(); c.arc(80,80,70,0,Math.PI*2); c.fillStyle='rgba(30,20,10,0.85)'; c.fill();
+  c.strokeStyle='#a08060'; c.lineWidth=3; c.stroke();
+  c.save(); c.translate(80,80);
+  // Rotating outer ring — cardinal labels move to show player direction
+  c.rotate(player.yaw);
+  const cardinals = [
+    [0, 'N', '#ff4422'], [Math.PI/2, 'E', '#d0b080'],
+    [Math.PI, 'S', '#d0b080'], [-Math.PI/2, 'W', '#d0b080']
+  ];
+  for (const [a, l, color] of cardinals) {
+    c.fillStyle = color;
+    c.font = l==='N'?'bold 16px sans-serif':'bold 13px sans-serif';
+    c.textAlign = 'center'; c.textBaseline = 'middle';
+    c.fillText(l, Math.sin(a)*52, -Math.cos(a)*52);
+  }
+  c.restore();
+  // Fixed needle always pointing north (drawn inside translate)
+  c.save(); c.translate(80,80);
+  c.beginPath(); c.moveTo(0,-48); c.lineTo(-6,8); c.lineTo(0,0); c.lineTo(6,8); c.closePath(); c.fillStyle='#ff3311'; c.fill();
+  c.beginPath(); c.moveTo(0,48); c.lineTo(-6,-8); c.lineTo(0,0); c.lineTo(6,-8); c.closePath(); c.fillStyle='#e0d0b0'; c.fill();
+  c.beginPath(); c.arc(0,0,4,0,Math.PI*2); c.fillStyle='#fff'; c.fill();
+  c.restore();
+  c.restore();
+}
+
+// --- Game loop ---
+const clock = new THREE.Clock();
+function update(dt) {
+  if (!started) return;
+  if (mapVisible) {
+    document.getElementById('bearing-display').textContent = '';
+    drawCompass(); return;
+  }
+  if (!locked) return;
+  const spd=player.run?24:5;
+  const fx=-Math.sin(player.yaw), fz=-Math.cos(player.yaw);
+  const rx=Math.cos(player.yaw), rz=-Math.sin(player.yaw);
+  if(keys['KeyW']){player.x+=fx*spd*dt;player.z+=fz*spd*dt;}
+  if(keys['KeyS']){player.x-=fx*spd*dt;player.z-=fz*spd*dt;}
+  if(keys['KeyA']){player.x-=rx*spd*dt;player.z-=rz*spd*dt;}
+  if(keys['KeyD']){player.x+=rx*spd*dt;player.z+=rz*spd*dt;}
+  player.x=Math.max(-TERRAIN_SIZE/2+10,Math.min(TERRAIN_SIZE/2-10,player.x));
+  player.z=Math.max(-TERRAIN_SIZE/2+10,Math.min(TERRAIN_SIZE/2-10,player.z));
+  camera.position.set(player.x, getWorldHeight(player.x,player.z)+1.7, player.z);
+  const ld=new THREE.Vector3(Math.sin(player.yaw)*Math.cos(player.pitch),Math.sin(player.pitch),Math.cos(player.yaw)*Math.cos(player.pitch)).negate();
+  camera.lookAt(camera.position.clone().add(ld));
+  const dx=waypointPos.x-player.x, dz=waypointPos.z-player.z, dist=Math.sqrt(dx*dx+dz*dz);
+  const de=document.getElementById('distance');
+  if (dist < 10) {
+    de.style.display='block';
+    de.textContent=`Waypoint: ${Math.round(dist)}m`;
+    waypointMesh.visible = true;
+  } else {
+    de.style.display='none';
+    waypointMesh.visible = false;
+  }
+  if(!reached&&dist<3){
+    reached=true;
+    const s=document.getElementById('success'); s.style.display='block';
+    s.innerHTML='✓ Waypoint reached!<br><small style="font-size:13px;opacity:0.7">Press M to view your route on the map</small>';
+    setTimeout(()=>{s.style.display='none';reached=false;placeWaypoint();if(mapVisible)drawMap();},4000);
+  }
+  // Update bearing display
+  const bearingDeg = ((-player.yaw * 180 / Math.PI) % 360 + 360) % 360;
+  document.getElementById('bearing-display').textContent = `Bearing: ${Math.round(bearingDeg)}°`;
+  drawCompass();
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  update(Math.min(clock.getDelta(),0.05));
+  if (mapVisible) drawMap();
+  renderer.render(scene,camera);
+}
+
+drawCompass();
+animate();
+</script>
+</body>
+</html>
