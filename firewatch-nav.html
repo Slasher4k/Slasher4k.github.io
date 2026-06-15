@@ -196,7 +196,7 @@ function buildTerrain() {
 }
 
 function addTrees() {
-  for (let i=0;i<500;i++) {
+  for (let i=0;i<2000;i++) {
     const x=(Math.random()-0.5)*TERRAIN_SIZE*0.9, z=(Math.random()-0.5)*TERRAIN_SIZE*0.9;
     if (Math.abs(x)<30&&Math.abs(z)<30) continue;
     const h=getWorldHeight(x,z);
