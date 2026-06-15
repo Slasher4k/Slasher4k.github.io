@@ -1,4 +1,3 @@
- !DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -218,6 +217,7 @@ function placeWaypoint() {
   waypointMesh = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 0.4, 16), new THREE.MeshLambertMaterial({color:0xff4422}));
   waypointMesh.position.set(waypointPos.x, waypointPos.y + 0.2, waypointPos.z); scene.add(waypointMesh);
   poleMesh = null;
+  trail.length = 0; trailTimer = 0;
   // Rebuild static map now that waypoint has moved
   if (heightmap) drawStaticMap();
 }
@@ -226,6 +226,9 @@ function placeWaypoint() {
 const player = { x:0, z:0, yaw:0, pitch:0, run:false };
 const keys = {};
 let mapVisible=false, locked=false, started=false, reached=false;
+const trail = [];
+let trailTimer = 0;
+const MAX_TRAIL = 200;
 
 document.getElementById('start-btn').addEventListener('click', async () => {
   // Request pointer lock synchronously before any await
@@ -242,6 +245,7 @@ document.getElementById('start-btn').addEventListener('click', async () => {
   } else {
     heightmap = generateHeightmap(W, H);
   }
+  trail.length = 0; trailTimer = 0;
   buildTerrain();
   addTrees();
   placeWaypoint();
@@ -631,6 +635,15 @@ function drawStaticMap() {
 function drawMap() {
   // Blit the pre-rendered static base — zero cost
   mapCtx.drawImage(staticMapCanvas, 0, 0);
+  // Draw player trail
+  if (trail.length >= 2) {
+    mapCtx.strokeStyle = 'rgba(26,106,255,0.35)';
+    mapCtx.lineWidth = 2;
+    mapCtx.beginPath();
+    mapCtx.moveTo(trail[0].x, trail[0].y);
+    for (let i=1;i<trail.length;i++) mapCtx.lineTo(trail[i].x, trail[i].y);
+    mapCtx.stroke();
+  }
   // Draw the player position as a simple blue dot
   const pnx=(player.x+TERRAIN_SIZE/2)/TERRAIN_SIZE, pny=(player.z+TERRAIN_SIZE/2)/TERRAIN_SIZE;
   mapCtx.beginPath();
@@ -709,6 +722,16 @@ function update(dt) {
     const s=document.getElementById('success'); s.style.display='block';
     s.innerHTML='✓ Waypoint reached!<br><small style="font-size:13px;opacity:0.7">Press M to view your route on the map</small>';
     setTimeout(()=>{s.style.display='none';reached=false;placeWaypoint();if(mapVisible)drawMap();},4000);
+  }
+  // Trail sampling (~every 0.5s when moving)
+  const moving = keys['KeyW']||keys['KeyS']||keys['KeyA']||keys['KeyD'];
+  trailTimer += dt;
+  if (moving && trailTimer > 0.5) {
+    trailTimer = 0;
+    const tx = (player.x+TERRAIN_SIZE/2)/TERRAIN_SIZE * MC;
+    const ty = (player.z+TERRAIN_SIZE/2)/TERRAIN_SIZE * MC;
+    trail.push({ x: tx, y: ty });
+    if (trail.length > MAX_TRAIL) trail.shift();
   }
   // Update bearing display
   const bearingDeg = ((-player.yaw * 180 / Math.PI) % 360 + 360) % 360;
