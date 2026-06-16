@@ -8,8 +8,8 @@
   body { background: #000; overflow: hidden; font-family: sans-serif; }
   #canvas { display: block; width: 100vw; height: 100vh; }
 
-  #compass { position: fixed; top: 20px; right: 20px; width: 80px; height: 80px; pointer-events: none; }
-  #compass canvas { width: 80px; height: 80px; }
+  #bezel-compass { position: fixed; bottom: 20px; right: 20px; width: 200px; height: 200px; pointer-events: none; z-index: 40; }
+  #bezel-compass canvas { width: 200px; height: 200px; }
 
   #map-overlay {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
@@ -22,9 +22,6 @@
     z-index: 50;
   }
   #map-overlay canvas { width: 100%; height: 100%; display: block; border-radius: 4px; }
-  #map-label { position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
-    font-size: 12px; color: #5a3a1a; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;
-    text-shadow: 0 1px 0 #fff; z-index: 51; pointer-events: none; }
 
   #crosshair { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
     width: 16px; height: 16px; pointer-events: none; }
@@ -43,7 +40,7 @@
     border-radius: 16px; font-size: 12px; display: none; }
 
   #controls { position: fixed; bottom: 20px; left: 20px;
-    color: rgba(255,255,255,0.5); font-size: 11px; line-height: 1.8; pointer-events: none; }
+    color: rgba(0,0,0,1); font-size: 11px; line-height: 1.8; pointer-events: none; }
 
   #success { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
     background: rgba(0,0,0,0.8); color: #f0e8c8; padding: 20px 40px;
@@ -74,13 +71,12 @@
 <div id="hud">
   <div id="crosshair"></div>
   <div id="objective">Navigate to the waypoint — press M to toggle map<br><span id="bearing-display"></span></div>
-  <div id="compass"><canvas id="compass-canvas" width="160" height="160"></canvas></div>
   <div id="map-overlay">
-    <div id="map-label">Topographic Map</div>
     <canvas id="map-canvas" width="800" height="800"></canvas>
   </div>
   <div id="distance"></div>
-  <div id="controls">WASD — move<br>Mouse — look<br>M — map<br>Shift — run</div>
+  <div id="bezel-compass"><canvas id="bezel-canvas" width="200" height="200"></canvas></div>
+  <div id="controls">WASD — move<br>Mouse — look<br>M — map<br>B — bearing<br>Shift — run</div>
   <div id="success"></div>
 </div>
 
@@ -201,9 +197,9 @@ function addTrees() {
     if (Math.abs(x)<30&&Math.abs(z)<30) continue;
     const h=getWorldHeight(x,z);
     const trunk=new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.6,4,5),new THREE.MeshLambertMaterial({color:0x6B4226}));
-    trunk.position.set(x,h+2,z); scene.add(trunk);
+    trunk.position.set(x,h+1,z); scene.add(trunk);
     const foliage=new THREE.Mesh(new THREE.ConeGeometry(3,7,6),new THREE.MeshLambertMaterial({color:0x2d5a27}));
-    foliage.position.set(x,h+7,z); scene.add(foliage);
+    foliage.position.set(x,h+6,z); scene.add(foliage);
   }
 }
 
@@ -225,7 +221,7 @@ function placeWaypoint() {
 // --- Player ---
 const player = { x:0, z:0, yaw:0, pitch:0, run:false };
 const keys = {};
-let mapVisible=false, locked=false, started=false, reached=false;
+let mapVisible=false, locked=false, started=false, reached=false, showBearing=false;
 const trail = [];
 let trailTimer = 0;
 const MAX_TRAIL = 200;
@@ -266,14 +262,18 @@ document.addEventListener('keydown', (e) => {
   if (e.code==='KeyM') {
     mapVisible=!mapVisible;
     document.getElementById('map-overlay').style.display=mapVisible?'block':'none';
+    const ctrl = document.getElementById('controls');
     if(mapVisible){
       document.exitPointerLock();
+      ctrl.innerHTML = 'Scroll — rotate compass<br>Shift + scroll — rotate bezel<br>Click + Drag — move compass<br>M — close map';
       drawMap();
     } else {
       document.getElementById('canvas').requestPointerLock();
+      ctrl.innerHTML = 'WASD — move<br>Mouse — look<br>M — map<br>B — bearing<br>Shift — run';
     }
   }
   if (e.code==='ShiftLeft'||e.code==='ShiftRight') player.run=true;
+  if (e.code==='KeyB' && !mapVisible) { showBearing = !showBearing; }
 });
 document.addEventListener('keyup', (e) => {
   keys[e.code]=false;
@@ -411,8 +411,12 @@ function drawVirtualCompass(ctx) {
   for (let d = 20; d < 360; d += 20) {
     if (d % 90 === 0) continue;
     const rad = degToRad(d);
+    ctx.save();
+    ctx.translate(Math.sin(rad)*lR, -Math.cos(rad)*lR);
+    ctx.rotate(rad);
     ctx.fillStyle = '#222';
-    ctx.fillText(String(d), Math.sin(rad)*lR, -Math.cos(rad)*lR);
+    ctx.fillText(String(d), 0, 0);
+    ctx.restore();
   }
 
   // Cardinal labels
@@ -422,8 +426,12 @@ function drawVirtualCompass(ctx) {
   ];
   for (const [deg, label, color] of cards) {
     const rad = degToRad(deg);
+    ctx.save();
+    ctx.translate(Math.sin(rad)*lR, -Math.cos(rad)*lR);
+    ctx.rotate(rad);
     ctx.fillStyle = color;
-    ctx.fillText(label, Math.sin(rad)*lR, -Math.cos(rad)*lR);
+    ctx.fillText(label, 0, 0);
+    ctx.restore();
   }
 
   // Orienteering lines (red top, black bottom)
@@ -488,13 +496,22 @@ document.getElementById('map-overlay').addEventListener('mousedown', (e) => {
   }
 });
 document.addEventListener('mousemove', (e) => {
-  if (!mapCompass.dragging || !mapVisible) return;
+  if (!mapVisible) return;
   const rect = mapCanvas.getBoundingClientRect();
   const mx = (e.clientX - rect.left) * (MC / rect.width);
   const my = (e.clientY - rect.top) * (MC / rect.height);
-  mapCompass.x = Math.max(10, Math.min(MC - 10, mx - mapCompass.dragOffX));
-  mapCompass.y = Math.max(10, Math.min(MC - 10, my - mapCompass.dragOffY));
-  drawMap();
+  if (mapCompass.dragging) {
+    mapCompass.x = Math.max(10, Math.min(MC - 10, mx - mapCompass.dragOffX));
+    mapCompass.y = Math.max(10, Math.min(MC - 10, my - mapCompass.dragOffY));
+    mapCanvas.style.cursor = 'grabbing';
+    drawMap();
+  } else {
+    const dx = mx - mapCompass.x;
+    const dy = my - mapCompass.y;
+    const BW = 200, BH = 360;
+    const hw = BW / 2 + 20, hh = BH / 2 + 20;
+    mapCanvas.style.cursor = (dx >= -hw && dx <= hw && dy >= -hh && dy <= hh) ? 'grab' : 'default';
+  }
 });
 document.addEventListener('mouseup', () => {
   mapCompass.dragging = false;
@@ -657,32 +674,125 @@ function drawMap() {
   drawVirtualCompass(mapCtx);
 }
 
-// --- Compass ---
-const compCtx = document.getElementById('compass-canvas').getContext('2d');
-function drawCompass() {
-  const c=compCtx; c.clearRect(0,0,160,160);
-  c.beginPath(); c.arc(80,80,70,0,Math.PI*2); c.fillStyle='rgba(30,20,10,0.85)'; c.fill();
-  c.strokeStyle='#a08060'; c.lineWidth=3; c.stroke();
-  c.save(); c.translate(80,80);
-  // Rotating outer ring — cardinal labels move to show player direction
-  c.rotate(player.yaw);
-  const cardinals = [
-    [0, 'N', '#ff4422'], [Math.PI/2, 'E', '#d0b080'],
-    [Math.PI, 'S', '#d0b080'], [-Math.PI/2, 'W', '#d0b080']
-  ];
-  for (const [a, l, color] of cardinals) {
-    c.fillStyle = color;
-    c.font = l==='N'?'bold 16px sans-serif':'bold 13px sans-serif';
-    c.textAlign = 'center'; c.textBaseline = 'middle';
-    c.fillText(l, Math.sin(a)*52, -Math.cos(a)*52);
+// --- Bezel compass (bottom-right during gameplay) ---
+const bezelCanvas = document.getElementById('bezel-canvas');
+const bezelCtx = bezelCanvas.getContext('2d');
+function drawBezelCompass() {
+  const c = bezelCtx;
+  const R = 100, BR = 90, iR = 78;
+  c.clearRect(0,0,R*2,R*2);
+  c.save(); c.translate(R,R);
+
+  // Outer ring (fixed background)
+  c.beginPath(); c.arc(0,0,BR,0,Math.PI*2);
+  c.fillStyle = 'rgba(30,20,10,0.85)'; c.fill();
+  c.strokeStyle = '#a08060'; c.lineWidth = 2.5; c.stroke();
+
+  // --- Rotating bezel (matches map compass bezel) ---
+  c.save();
+  c.rotate(mapCompass.bezelRotation);
+
+  c.beginPath(); c.arc(0,0,BR,0,Math.PI*2);
+  c.fillStyle = 'rgba(250,250,250,0.15)'; c.fill();
+
+  c.beginPath(); c.arc(0,0,iR,0,Math.PI*2);
+  c.strokeStyle = 'rgba(255,255,255,0.12)'; c.lineWidth = 1; c.stroke();
+
+  // Degree ticks (every 2°, majors every 20°)
+  for (let d=0;d<360;d+=2) {
+    const rad = d*Math.PI/180;
+    const is10 = d%10===0, isMaj = d%20===0;
+    const inner = is10 ? iR+3 : iR+7;
+    const outer = isMaj ? BR : (is10 ? BR : BR-2);
+    c.beginPath();
+    c.moveTo(Math.sin(rad)*inner, -Math.cos(rad)*inner);
+    c.lineTo(Math.sin(rad)*outer, -Math.cos(rad)*outer);
+    c.strokeStyle = isMaj?'#ddd':is10?'#888':'#666';
+    c.lineWidth = isMaj?1.5:is10?1:0.5; c.stroke();
   }
+
+  // Degree labels (every 20°, skip N/E/S/W)
+  const lR2 = iR-6;
+  c.font = '9px sans-serif'; c.textAlign='center'; c.textBaseline='middle';
+  for (let d=20;d<360;d+=20) {
+    if (d%90===0) continue;
+    const rad = d*Math.PI/180;
+    c.save();
+    c.translate(Math.sin(rad)*lR2, -Math.cos(rad)*lR2);
+    c.rotate(rad);
+    c.fillStyle = '#ccc';
+    c.fillText(String(d), 0, 0);
+    c.restore();
+  }
+
+  // Cardinal labels
+  c.font = 'bold 12px sans-serif';
+  const cards = [[0,'N','#ff4422'],[90,'E','#d0b080'],[180,'S','#d0b080'],[270,'W','#d0b080']];
+  for (const [deg,label,color] of cards) {
+    const rad = deg*Math.PI/180;
+    c.save();
+    c.translate(Math.sin(rad)*lR2, -Math.cos(rad)*lR2);
+    c.rotate(rad);
+    c.fillStyle = color;
+    c.fillText(label, 0, 0);
+    c.restore();
+  }
+
+  // Orienteering lines (red top, black bottom)
+  const ow = (iR-3)*0.65;
+  c.lineWidth = 0.6;
+  for (let i=-3;i<=3;i++) {
+    const lx = i*(ow/3);
+    if (Math.abs(lx)<0.5) continue;
+    const hl = Math.sqrt(Math.max(0,iR*iR-lx*lx));
+    if (hl>0) {
+      c.beginPath(); c.moveTo(lx,0); c.lineTo(lx,-hl);
+      c.strokeStyle='rgba(211,47,47,0.6)'; c.stroke();
+      c.beginPath(); c.moveTo(lx,0); c.lineTo(lx,hl);
+      c.strokeStyle='rgba(0,0,0,0.4)'; c.stroke();
+    }
+  }
+
+  // Orienteering arrow (red top, black bottom)
+  const oa2 = iR - 20;
+  c.lineWidth = 1;
+  c.beginPath(); c.strokeStyle='#d32f2f';
+  c.moveTo(0,-oa2); c.lineTo(-5,-oa2+10); c.lineTo(-3,-oa2+10); c.lineTo(-3,0); c.stroke();
+  c.beginPath(); c.strokeStyle='#000';
+  c.moveTo(-3,0); c.lineTo(-3,oa2); c.stroke();
+  c.beginPath(); c.strokeStyle='#d32f2f';
+  c.moveTo(0,-oa2); c.lineTo(5,-oa2+10); c.lineTo(3,-oa2+10); c.lineTo(3,0); c.stroke();
+  c.beginPath(); c.strokeStyle='#000';
+  c.moveTo(3,0); c.lineTo(3,oa2); c.stroke();
+
+  c.restore(); // end bezel rotation
+
+  // --- Magnetic needle (counter-rotates to always point north) ---
+  c.save();
+  c.rotate(player.yaw);
+  const oaN = iR - 20;
+  // Red top half (filled)
+  c.beginPath();
+  c.moveTo(0, -oaN);
+  c.lineTo(-5, -oaN+10);
+  c.lineTo(-3, -oaN+10);
+  c.lineTo(-3, 0);
+  c.lineTo(3, 0);
+  c.lineTo(3, -oaN+10);
+  c.lineTo(5, -oaN+10);
+  c.closePath();
+  c.fillStyle = '#d32f2f'; c.fill();
+  // Black bottom half (filled)
+  c.beginPath();
+  c.moveTo(-3, 0);
+  c.lineTo(-3, oaN);
+  c.lineTo(3, oaN);
+  c.lineTo(3, 0);
+  c.closePath();
+  c.fillStyle = '#000'; c.fill();
+  c.beginPath(); c.arc(0,0,3,0,Math.PI*2); c.fillStyle='#fff'; c.fill();
   c.restore();
-  // Fixed needle always pointing north (drawn inside translate)
-  c.save(); c.translate(80,80);
-  c.beginPath(); c.moveTo(0,-48); c.lineTo(-6,8); c.lineTo(0,0); c.lineTo(6,8); c.closePath(); c.fillStyle='#ff3311'; c.fill();
-  c.beginPath(); c.moveTo(0,48); c.lineTo(-6,-8); c.lineTo(0,0); c.lineTo(6,-8); c.closePath(); c.fillStyle='#e0d0b0'; c.fill();
-  c.beginPath(); c.arc(0,0,4,0,Math.PI*2); c.fillStyle='#fff'; c.fill();
-  c.restore();
+
   c.restore();
 }
 
@@ -690,9 +800,10 @@ function drawCompass() {
 const clock = new THREE.Clock();
 function update(dt) {
   if (!started) return;
+  document.getElementById('bezel-compass').style.display = mapVisible ? 'none' : 'block';
   if (mapVisible) {
     document.getElementById('bearing-display').textContent = '';
-    drawCompass(); return;
+    drawBezelCompass(); return;
   }
   if (!locked) return;
   const spd=player.run?24:5;
@@ -735,8 +846,8 @@ function update(dt) {
   }
   // Update bearing display
   const bearingDeg = ((-player.yaw * 180 / Math.PI) % 360 + 360) % 360;
-  document.getElementById('bearing-display').textContent = `Bearing: ${Math.round(bearingDeg)}°`;
-  drawCompass();
+  document.getElementById('bearing-display').textContent = showBearing ? `Bearing: ${Math.round(bearingDeg)}°` : '';
+  drawBezelCompass();
 }
 
 function animate() {
@@ -746,7 +857,6 @@ function animate() {
   renderer.render(scene,camera);
 }
 
-drawCompass();
 animate();
 </script>
 </body>
