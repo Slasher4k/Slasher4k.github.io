@@ -76,7 +76,7 @@
   </div>
   <div id="distance"></div>
   <div id="bezel-compass"><canvas id="bezel-canvas" width="200" height="200"></canvas></div>
-  <div id="controls">WASD — move<br>Mouse — look<br>M — map<br>B — bearing<br>Shift — run</div>
+  <div id="controls">WASD — move<br>Mouse — look<br>M — map<br>B — bearing<br>Shift — run<br>Esc — release mouse</div>
   <div id="success"></div>
 </div>
 
@@ -250,6 +250,17 @@ document.getElementById('start-btn').addEventListener('click', async () => {
 
 document.addEventListener('pointerlockchange', () => {
   locked = document.pointerLockElement === document.getElementById('canvas');
+  if (!locked && started && !mapVisible) {
+    document.getElementById('controls').innerHTML = 'Click screen to re-engage mouse<br>M — map<br>Esc — release mouse';
+  }
+});
+
+// Click on the game canvas re-engages pointer lock when lost (e.g. after pressing Escape)
+document.getElementById('canvas').addEventListener('click', () => {
+  if (started && !locked && !mapVisible) {
+    document.getElementById('canvas').requestPointerLock();
+    document.getElementById('controls').innerHTML = 'WASD — move<br>Mouse — look<br>M — map<br>B — bearing<br>Shift — run<br>Esc — release mouse';
+  }
 });
 document.addEventListener('mousemove', (e) => {
   if (!locked) return;
@@ -265,11 +276,11 @@ document.addEventListener('keydown', (e) => {
     const ctrl = document.getElementById('controls');
     if(mapVisible){
       document.exitPointerLock();
-      ctrl.innerHTML = 'Scroll — rotate compass<br>Shift + scroll — rotate bezel<br>Click + Drag — move compass<br>M — close map';
+      ctrl.innerHTML = '<span style="color:#1a6aff;">●</span> You = blue dot on map<br>Scroll — rotate compass<br>Shift + scroll — rotate bezel<br>Click + Drag — move compass<br>M — close map';
       drawMap();
     } else {
       document.getElementById('canvas').requestPointerLock();
-      ctrl.innerHTML = 'WASD — move<br>Mouse — look<br>M — map<br>B — bearing<br>Shift — run';
+      ctrl.innerHTML = 'WASD — move<br>Mouse — look<br>M — map<br>B — bearing<br>Shift — run<br>Esc — release mouse';
     }
   }
   if (e.code==='ShiftLeft'||e.code==='ShiftRight') player.run=true;
@@ -670,6 +681,7 @@ function drawMap() {
   mapCtx.strokeStyle = '#fff';
   mapCtx.lineWidth = 1.5;
   mapCtx.stroke();
+
   // Draw the virtual Silva compass
   drawVirtualCompass(mapCtx);
 }
