@@ -119,27 +119,6 @@ canvas {
   color: #4fc3f7;
   font-weight: 700;
 }
-#fixed-indicator {
-  position: absolute;
-  top: 58px;
-  right: 16px;
-  background: rgba(0,0,0,0.75);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 10px;
-  padding: 6px 12px;
-  backdrop-filter: blur(6px);
-  font-size: 11px;
-  display: none;
-  pointer-events: none;
-}
-#fixed-indicator.active {
-  display: block;
-  border-color: #ff9800;
-}
-#fixed-indicator .fixed-icon {
-  color: #ff9800;
-  font-weight: 700;
-}
 #help-btn {
   position: absolute;
   top: 16px;
@@ -181,6 +160,27 @@ canvas {
 #demo-btn:hover {
   background: rgba(79,195,247,0.2);
   border-color: #4fc3f7;
+}
+#demo-message {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  border: 1px solid #4fc3f7;
+  border-radius: 10px;
+  padding: 10px 24px;
+  backdrop-filter: blur(6px);
+  font-size: 16px;
+  font-weight: 600;
+  color: #4fc3f7;
+  display: none;
+  z-index: 50;
+  pointer-events: none;
+  text-align: center;
+}
+#demo-message.active {
+  display: block;
 }
 #help-overlay {
   position: fixed;
@@ -457,6 +457,182 @@ canvas {
 #anatomy-close:hover {
   background: rgba(255,215,0,0.3);
 }
+
+/* ===== TEST MODE ===== */
+#test-btn {
+  position: absolute;
+  top: 16px;
+  right: 184px;
+  pointer-events: auto;
+  background: rgba(0,0,0,0.75);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 8px 14px;
+  color: #ab47bc;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  font-family: inherit;
+  z-index: 10;
+}
+#test-btn:hover {
+  background: rgba(171,71,188,0.2);
+  border-color: #ab47bc;
+}
+#test-btn.active {
+  background: rgba(171,71,188,0.25);
+  border-color: #ab47bc;
+  color: #ce93d8;
+}
+#test-indicator {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(171,71,188,0.2);
+  border: 1px solid #ab47bc;
+  border-radius: 10px;
+  padding: 8px 14px;
+  backdrop-filter: blur(6px);
+  font-size: 13px;
+  font-weight: 600;
+  color: #ce93d8;
+  display: none;
+  z-index: 10;
+  pointer-events: none;
+}
+#test-indicator.active {
+  display: block;
+}
+#test-ui {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 50;
+  display: none;
+}
+#test-ui.active {
+  display: block;
+}
+#test-panel {
+  background: rgba(0,0,0,0.85);
+  border: 1px solid rgba(171,71,188,0.4);
+  border-radius: 12px;
+  padding: 16px 24px;
+  backdrop-filter: blur(8px);
+  pointer-events: auto;
+  min-width: 380px;
+  text-align: center;
+}
+#test-panel .question {
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+#test-panel .question span {
+  color: #ab47bc;
+  font-weight: 700;
+}
+#test-input-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+#test-input {
+  width: 80px;
+  padding: 6px 10px;
+  border: 1px solid rgba(171,71,188,0.5);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  font-family: inherit;
+  outline: none;
+}
+#test-input:focus {
+  border-color: #ab47bc;
+}
+#test-input::-webkit-inner-spin-button,
+#test-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#test-input[type=number] {
+  -moz-appearance: textfield;
+}
+#test-input-area .deg-label {
+  color: rgba(255,255,255,0.6);
+  font-size: 16px;
+}
+#test-submit {
+  padding: 6px 18px;
+  border: 1px solid #4caf50;
+  border-radius: 6px;
+  background: rgba(76,175,80,0.15);
+  color: #4caf50;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+#test-submit:hover {
+  background: rgba(76,175,80,0.3);
+}
+#test-feedback {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  padding: 6px 0;
+}
+#test-feedback.correct {
+  color: #4caf50;
+}
+#test-feedback.incorrect {
+  color: #f44336;
+}
+#test-feedback .answer {
+  color: #ffd700;
+}
+#test-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+#test-next {
+  padding: 6px 18px;
+  border: 1px solid #4fc3f7;
+  border-radius: 6px;
+  background: rgba(79,195,247,0.15);
+  color: #4fc3f7;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+#test-next:hover {
+  background: rgba(79,195,247,0.3);
+}
+.test-exit {
+  padding: 6px 18px;
+  border: 1px solid #f44336;
+  border-radius: 6px;
+  background: rgba(244,67,54,0.15);
+  color: #f44336;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.test-exit:hover {
+  background: rgba(244,67,54,0.3);
+}
 </style>
 </head>
 <body>
@@ -478,16 +654,31 @@ canvas {
       <div class="bearing" id="computed-display" style="display:none;">0°</div>
       <div class="point-label" id="points-display">Click a point to select start</div>
     </div>
+    <button id="test-btn">🧪 Test</button>
     <button id="demo-btn">▶ Demo</button>
+    <div id="demo-message"></div>
     <button id="help-btn">❓ Help</button>
+    <div id="test-indicator">🧪 Test Mode</div>
     <div id="lock-indicator">
       <span class="lock-icon">🔒</span> Locked — slide along direction of travel
     </div>
-    <div id="fixed-indicator">
-      <span class="fixed-icon">📌</span> Position fixed
-    </div>
     <button id="steps-reminder">📐 How to take a bearing</button>
     <button id="anatomy-btn">🧩 Compass anatomy</button>
+    <div id="test-ui">
+      <div id="test-panel">
+        <div class="question">Bearing from <span id="test-start-label">?</span> to <span id="test-end-label">?</span></div>
+        <div id="test-input-area">
+          <input type="number" id="test-input" min="0" max="359" placeholder="0" value="">
+          <span class="deg-label">°</span>
+          <button id="test-submit">Submit</button>
+        </div>
+        <div id="test-feedback"></div>
+        <div id="test-actions">
+          <button id="test-next">Next Question</button>
+          <button id="test-exit-btn" class="test-exit">Exit Test</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -562,9 +753,9 @@ canvas {
   <div id="help-box">
     <h2>⌨️ Keyboard Shortcuts</h2>
     <table>
-      <tr><td>🖱 Move</td><td>Move compass to cursor</td></tr>
-      <tr><td>↔ ↑↓</td><td>Move compass 10px</td></tr>
-      <tr><td>Alt+↔↑↓</td><td>Move compass 1px</td></tr>
+      <tr><td>🖱 Drag</td><td>Click & drag compass to move</td></tr>
+      <tr><td>↔ ↑↓</td><td>Move compass 1px</td></tr>
+      <tr><td>Ctrl+↔↑↓</td><td>Move compass 10px</td></tr>
       <tr><td>Scroll</td><td>Rotate compass 1°</td></tr>
       <tr><td>Ctrl+Scroll</td><td>Rotate compass 10°</td></tr>
       <tr><td>Shift+Scroll</td><td>Rotate bezel 1°</td></tr>
@@ -577,14 +768,13 @@ canvas {
       <tr><td>L</td><td>Toggle bezel lock</td></tr>
       <tr><td>r</td><td>Reset bezel to 0°</td></tr>
       <tr><td>R</td><td>Reset all (bezel, rotation, selections)</td></tr>
-      <tr><td>F</td><td>Toggle fixed position (stop mouse following)</td></tr>
       <tr><td>B</td><td>Toggle bearing number on compass</td></tr>
       <tr><td>F1</td><td>Toggle this help screen</td></tr>
     </table>
     <button id="help-close">Close</button>
   </div>
 </div>
-<img src="https://pixel.jellyrobot.com.au/pixel.gif?page=compass" alt="" style="display: none;">
+
 <script>
 // ============================================================
 // STATE
@@ -608,7 +798,6 @@ const state = {
     visible: true,
     guidelines: false,
     bezelLocked: false,
-    positionFixed: false,
     bearingVisible: false,
   },
 
@@ -616,11 +805,19 @@ const state = {
   mouseOnCanvas: false,
   mouseOnMap: false,
 
+  dragging: false,
+  dragStartMouseX: 0,
+  dragStartMouseY: 0,
+  dragStartCompassX: 0,
+  dragStartCompassY: 0,
+
   selectedStart: null,
   selectedEnd: null,
 
   lockSlideStartMouse: null,
   lockSlideStartOffset: 0,
+
+  testMode: false,
 
   canvasSize: { w: 0, h: 0 },
   mapOffset: { x: 0, y: 0 },
@@ -637,6 +834,7 @@ const BASEPLATE_CORNER_R = 16;
 const ARROW_LENGTH = 48;
 const ARROW_WIDTH = 26;
 const MAGNETIC_DECLINATION = 11; // degrees east, subtract from true for magnetic
+const TEST_ACCEPTANCE = 2; // degrees tolerance for test mode answers
 
 // ============================================================
 // HELPERS
@@ -679,7 +877,7 @@ function loadData() {
     resizeCanvas();
     update();
   };
-  state.mapImage.src = 'bunya_nav_training.png';
+  state.mapImage.src = 'maps/bunya_nav_training.png';
 
   state.mapPoints = {
     22: [210, 320],
@@ -885,8 +1083,12 @@ function drawCompass(ctx) {
     const rad = degToRad(deg);
     const lx = Math.sin(rad) * labelR;
     const ly = -Math.cos(rad) * labelR;
+    ctx.save();
+    ctx.translate(lx, ly);
+    ctx.rotate(rad);
     ctx.fillStyle = '#222';
-    ctx.fillText(deg.toString(), lx, ly);
+    ctx.fillText(deg.toString(), 0, 0);
+    ctx.restore();
   }
 
   // Cardinal direction labels
@@ -896,11 +1098,13 @@ function drawCompass(ctx) {
     { deg: 180, label: 'S', color: '#333' },
     { deg: 270, label: 'W', color: '#333' },
   ];
-  ctx.font = 'bold 14px "Segoe UI", Arial, sans-serif';
   for (const { deg, label, color } of cardinals) {
     const rad = degToRad(deg);
     const lx = Math.sin(rad) * labelR;
     const ly = -Math.cos(rad) * labelR;
+    ctx.font = (label === 'W' || label === 'E')
+      ? 'bold 10px "Segoe UI", Arial, sans-serif'
+      : 'bold 14px "Segoe UI", Arial, sans-serif';
     ctx.fillStyle = color;
     ctx.fillText(label, lx, ly);
   }
@@ -1357,6 +1561,109 @@ function drawNorthReference(ctx) {
 }
 
 // ============================================================
+// TEST MODE
+// ============================================================
+function pickRandomTestPoints() {
+  const keys = Object.keys(state.mapPoints);
+  const startIdx = Math.floor(Math.random() * keys.length);
+  let endIdx;
+  do {
+    endIdx = Math.floor(Math.random() * keys.length);
+  } while (endIdx === startIdx);
+
+  const startKey = keys[startIdx];
+  const endKey = keys[endIdx];
+
+  state.selectedStart = startKey;
+  state.selectedEnd = endKey;
+
+  const p1 = state.mapPoints[startKey];
+  const p2 = state.mapPoints[endKey];
+  const trueBearing = computeBearing(p1, p2);
+  state.testBearingCorrect = ((trueBearing - MAGNETIC_DECLINATION) % 360 + 360) % 360;
+
+  // Update UI labels
+  document.getElementById('test-start-label').textContent = startKey;
+  document.getElementById('test-end-label').textContent = endKey;
+}
+
+function showTestUI() {
+  document.getElementById('test-ui').classList.add('active');
+  document.getElementById('test-indicator').classList.add('active');
+  document.getElementById('test-btn').classList.add('active');
+  document.getElementById('test-feedback').textContent = '';
+  document.getElementById('test-feedback').className = '';
+  document.getElementById('test-input').value = '';
+  document.getElementById('test-input').disabled = false;
+  document.getElementById('test-submit').style.display = '';
+  document.getElementById('test-next').style.display = 'none';
+  document.getElementById('test-exit-btn').style.display = '';
+  document.getElementById('test-input').focus();
+}
+
+function hideTestUI() {
+  document.getElementById('test-ui').classList.remove('active');
+  document.getElementById('test-indicator').classList.remove('active');
+  document.getElementById('test-btn').classList.remove('active');
+}
+
+function enterTestMode() {
+  state.testMode = true;
+  state.compass.visible = true;
+  pickRandomTestPoints();
+  showTestUI();
+  update();
+}
+
+function exitTestMode() {
+  state.testMode = false;
+  state.selectedStart = null;
+  state.selectedEnd = null;
+  hideTestUI();
+  update();
+}
+
+function onSubmitTestAnswer() {
+  const input = document.getElementById('test-input');
+  const feedback = document.getElementById('test-feedback');
+  const userAnswer = parseInt(input.value, 10);
+
+  if (isNaN(userAnswer) || userAnswer < 0 || userAnswer > 359) {
+    feedback.textContent = 'Enter a value between 0 and 359';
+    feedback.className = 'incorrect';
+    return;
+  }
+
+  const correct = state.testBearingCorrect;
+  const diff = Math.abs(userAnswer - correct);
+  const withinTolerance = diff <= TEST_ACCEPTANCE || diff >= (360 - TEST_ACCEPTANCE);
+
+  if (withinTolerance) {
+    feedback.innerHTML = `✅ Correct! The bearing is <span class="answer">${correct}°</span>`;
+    feedback.className = 'correct';
+  } else {
+    feedback.innerHTML = `❌ Incorrect. The answer is <span class="answer">${correct}°</span> (you entered ${userAnswer}°)`;
+    feedback.className = 'incorrect';
+  }
+
+  input.disabled = true;
+  document.getElementById('test-submit').style.display = 'none';
+  document.getElementById('test-next').style.display = '';
+}
+
+function onNextQuestion() {
+  pickRandomTestPoints();
+  document.getElementById('test-feedback').textContent = '';
+  document.getElementById('test-feedback').className = '';
+  document.getElementById('test-input').value = '';
+  document.getElementById('test-input').disabled = false;
+  document.getElementById('test-submit').style.display = '';
+  document.getElementById('test-next').style.display = 'none';
+  document.getElementById('test-input').focus();
+  update();
+}
+
+// ============================================================
 // MAIN UPDATE
 // ============================================================
 function update() {
@@ -1368,18 +1675,20 @@ function update() {
   ctx.fillRect(0, 0, canvasSize.w, canvasSize.h);
 
   drawMap(ctx);
-  if (!state.compass.visible) {
+  // In test mode, always draw points since we highlight two test points
+  if (!state.compass.visible || state.testMode) {
     drawPoints(ctx);
   }
-  drawLineBetweenPoints(ctx);
+  // Don't draw the line between points in test mode — user figures it out
+  if (!state.testMode) {
+    drawLineBetweenPoints(ctx);
+  }
   if (state.compass.visible) {
     drawCompass(ctx);
   }
   drawNorthReference(ctx);
   drawGuidelines(ctx);
 
-  // Update fixed indicator
-  document.getElementById('fixed-indicator').classList.toggle('active', state.compass.positionFixed);
   updateInfoPanel();
 }
 
@@ -1462,14 +1771,12 @@ function onMouseMove(e) {
     state.mouseOnMap = false;
   }
 
-  if (state.compass.positionFixed) {
-    // Position is fixed — don't move compass
-  } else if (!state.compass.locked && state.mouseOnMap) {
-    state.compass.x = mx;
-    state.compass.y = my;
-  } else if (!state.compass.locked) {
-    // Mouse is off the map image — don't move compass
-  } else {
+  if (state.dragging) {
+    const dx = mx - state.dragStartMouseX;
+    const dy = my - state.dragStartMouseY;
+    state.compass.x = state.dragStartCompassX + dx;
+    state.compass.y = state.dragStartCompassY + dy;
+  } else if (state.compass.locked) {
     const dirX = Math.sin(state.compass.rotation);
     const dirY = -Math.cos(state.compass.rotation);
 
@@ -1487,11 +1794,64 @@ function onMouseMove(e) {
     state.compass.y = state.compass._lockBaseY + state.compass.slideOffset * dirY;
   }
 
+  // Update cursor style based on compass hover/drag state
+  if (state.dragging) {
+    state.canvas.style.cursor = 'grabbing';
+  } else if (state.compass.visible) {
+    const cdx = mx - state.compass.x;
+    const cdy = my - state.compass.y;
+    const ccos = Math.cos(-state.compass.rotation);
+    const csin = Math.sin(-state.compass.rotation);
+    const clocalX = cdx * ccos - cdy * csin;
+    const clocalY = cdx * csin + cdy * ccos;
+    if (Math.abs(clocalX) <= BASEPLATE_W / 2 && Math.abs(clocalY) <= BASEPLATE_H / 2) {
+      state.canvas.style.cursor = 'grab';
+    } else {
+      state.canvas.style.cursor = 'default';
+    }
+  } else {
+    state.canvas.style.cursor = 'default';
+  }
+
   update();
 }
 
 function onMouseLeave() {
   state.mouseOnCanvas = false;
+}
+
+function onMouseDown(e) {
+  const rect = state.canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  // Don't allow dragging when compass is locked
+  if (state.compass.locked) return;
+
+  // Check if mouse is over the compass baseplate (when visible)
+  if (state.compass.visible) {
+    // Transform mouse into compass-local coordinates, accounting for rotation
+    const lx = mx - state.compass.x;
+    const ly = my - state.compass.y;
+    const cos = Math.cos(-state.compass.rotation);
+    const sin = Math.sin(-state.compass.rotation);
+    const localX = lx * cos - ly * sin;
+    const localY = lx * sin + ly * cos;
+    // Check if within the baseplate rectangle bounds
+    if (Math.abs(localX) <= BASEPLATE_W / 2 && Math.abs(localY) <= BASEPLATE_H / 2) {
+      state.dragging = true;
+      state.dragStartMouseX = mx;
+      state.dragStartMouseY = my;
+      state.dragStartCompassX = state.compass.x;
+      state.dragStartCompassY = state.compass.y;
+      update();
+      return;
+    }
+  }
+}
+
+function onMouseUp(e) {
+  state.dragging = false;
 }
 
 function onClick(e) {
@@ -1536,16 +1896,7 @@ function onClick(e) {
     }
   }
 
-  // Click on empty space toggles lock/slide mode
-  state.compass.locked = !state.compass.locked;
-  if (state.compass.locked) {
-    state.compass._lockBaseX = state.compass.x;
-    state.compass._lockBaseY = state.compass.y;
-    state.compass.slideOffset = 0;
-    state.lockSlideStartMouse = null;
-  } else {
-    state.lockSlideStartMouse = null;
-  }
+  // Click on empty space does nothing — lock is toggled via Space key only
   update();
 }
 
@@ -1616,26 +1967,41 @@ function runDemo() {
   // Perpendicular direction (left side of baseplate)
   const perpX = -Math.cos(targetRotation);
   const perpY = -Math.sin(targetRotation);
-  // Offset center by half baseplate width to put edge on the line
-  const targetX = midX + perpX * (BASEPLATE_W / 2);
-  const targetY = midY + perpY * (BASEPLATE_W / 2);
+  // Offset center by half baseplate width to put edge on the line,
+  // then shift 30px along the direction of travel so orienteering lines stay aligned
+  const dirX = Math.sin(targetRotation);
+  const dirY = -Math.cos(targetRotation);
+  const targetX = midX + perpX * (BASEPLATE_W / 2) + dirX * 23;
+  const targetY = midY + perpY * (BASEPLATE_W / 2) + dirY * 23;
 
   // Compute target bezel
   const trueBearing = computeBearing(p1, p2);
   const magneticBearing = ((trueBearing - MAGNETIC_DECLINATION) % 360 + 360) % 360;
   const targetBezel = degToRad(360 - magneticBearing);
 
+  // Reset bezel to 0 for a clean start
+  state.compass.bezelRotation = 0;
+
   // Starting values
   const startX = state.compass.x;
   const startY = state.compass.y;
   const startRotation = state.compass.rotation;
-  const startBezel = state.compass.bezelRotation;
+  const startBezel = 0;
 
-  // Two-phase timing: 60% for positioning, 40% for bezel
+  // Show first message
+  const msgEl = document.getElementById('demo-message');
+  msgEl.textContent = 'Aligning compass between two points';
+  msgEl.classList.add('active');
+
+  // Three-phase timing: position, pause, bezel
   const posDuration = 1500;
+  const pauseDuration = 600;
   const bezelDuration = 2000;
-  const totalDuration = posDuration + bezelDuration;
+  const phase1End = posDuration;
+  const phase2Start = posDuration + pauseDuration;
+  const totalDuration = phase2Start + bezelDuration;
   let startTime = null;
+  let bezelStarted = false;
 
   function easeInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -1645,7 +2011,7 @@ function runDemo() {
     if (!startTime) startTime = timestamp;
     const elapsed = timestamp - startTime;
 
-    if (elapsed < posDuration) {
+    if (elapsed < phase1End) {
       // Phase 1: Move and rotate compass to align edge with points
       const t = elapsed / posDuration;
       const e = easeInOutCubic(t);
@@ -1660,23 +2026,35 @@ function runDemo() {
 
       update();
       demoAnimId = requestAnimationFrame(animate);
-    } else if (elapsed < totalDuration) {
-      // Phase 2: Rotate bezel to correct bearing (compass is already in place)
-      const t = (elapsed - posDuration) / bezelDuration;
-      const e = easeInOutCubic(t);
-
-      let bezDiff = targetBezel - startBezel;
-      while (bezDiff > Math.PI) bezDiff -= 2 * Math.PI;
-      while (bezDiff < -Math.PI) bezDiff += 2 * Math.PI;
-      state.compass.bezelRotation = startBezel + bezDiff * e;
-
+    } else if (elapsed < phase2Start) {
+      // Pause between phases — hold position
       update();
       demoAnimId = requestAnimationFrame(animate);
     } else {
-      // Ensure final values
-      state.compass.bezelRotation = targetBezel;
-      update();
-      demoAnimId = null;
+      // Phase 2: Rotate bezel to correct bearing
+      if (!bezelStarted) {
+        msgEl.textContent = 'Rotate bezel to north';
+        bezelStarted = true;
+      }
+
+      if (elapsed < totalDuration) {
+        const t = (elapsed - phase2Start) / bezelDuration;
+        const e = easeInOutCubic(t);
+
+        let bezDiff = targetBezel - startBezel;
+        while (bezDiff > Math.PI) bezDiff -= 2 * Math.PI;
+        while (bezDiff < -Math.PI) bezDiff += 2 * Math.PI;
+        state.compass.bezelRotation = startBezel + bezDiff * e;
+
+        update();
+        demoAnimId = requestAnimationFrame(animate);
+      } else {
+        // Ensure final values and hide message
+        state.compass.bezelRotation = targetBezel;
+        msgEl.classList.remove('active');
+        update();
+        demoAnimId = null;
+      }
     }
   }
 
@@ -1687,7 +2065,7 @@ function runDemo() {
 // KEYBOARD EVENTS
 // ============================================================
 function onKeyDown(e) {
-  const step = e.altKey ? 1 : 10;
+  const step = e.ctrlKey ? 10 : 1;
 
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
     e.preventDefault();
@@ -1775,15 +2153,31 @@ function onKeyDown(e) {
   if (e.key === 'R') {
     state.compass.bezelRotation = 0;
     state.compass.rotation = 0;
-    state.selectedStart = null;
-    state.selectedEnd = null;
+    if (!state.testMode) {
+      state.selectedStart = null;
+      state.selectedEnd = null;
+    }
     update();
     return;
   }
 
-  // C key: toggle compass visibility
+  // T key: toggle test mode (only in compass mode)
+  if (e.key === 't' || e.key === 'T') {
+    e.preventDefault();
+    if (state.compass.visible) {
+      if (state.testMode) {
+        exitTestMode();
+      } else {
+        enterTestMode();
+      }
+    }
+    return;
+  }
+
+  // C key: toggle compass visibility (disabled in test mode)
   if (e.key === 'c' || e.key === 'C') {
     e.preventDefault();
+    if (state.testMode) return; // Can't leave compass mode during test
     state.compass.visible = !state.compass.visible;
     update();
     return;
@@ -1805,14 +2199,6 @@ function onKeyDown(e) {
     return;
   }
 
-  // F key: toggle position fixed (compass stops following mouse)
-  if (e.key === 'f' || e.key === 'F') {
-    e.preventDefault();
-    state.compass.positionFixed = !state.compass.positionFixed;
-    update();
-    return;
-  }
-
   // B key: toggle bearing display on compass
   if (e.key === 'b' || e.key === 'B') {
     e.preventDefault();
@@ -1830,8 +2216,8 @@ function onWheel(e) {
   const delta = e.deltaY > 0 ? 1 : -1;
   const step = e.ctrlKey ? 10 : 1;
 
-  if (e.shiftKey) {
-    // Shift+Scroll: rotate bezel (fine-tune bearing)
+  if (e.shiftKey || state.compass.locked) {
+    // Shift+Scroll or Locked: rotate bezel (fine-tune bearing)
     state.compass.bezelRotation += delta * degToRad(step);
   } else {
     // Scroll: rotate compass first (more intuitive)
@@ -1875,9 +2261,31 @@ function init() {
   window.addEventListener('resize', onResize);
   state.canvas.addEventListener('mousemove', onMouseMove);
   state.canvas.addEventListener('mouseleave', onMouseLeave);
+  state.canvas.addEventListener('mousedown', onMouseDown);
+  state.canvas.addEventListener('mouseup', onMouseUp);
+  window.addEventListener('mouseup', onMouseUp);
   state.canvas.addEventListener('click', onClick);
   window.addEventListener('keydown', onKeyDown);
   state.canvas.addEventListener('wheel', onWheel, { passive: false });
+
+  // Test button
+  document.getElementById('test-btn').addEventListener('click', () => {
+    if (state.testMode) {
+      exitTestMode();
+    } else if (state.compass.visible) {
+      enterTestMode();
+    }
+  });
+
+  // Test submit and navigation
+  document.getElementById('test-submit').addEventListener('click', onSubmitTestAnswer);
+  document.getElementById('test-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !document.getElementById('test-input').disabled) {
+      onSubmitTestAnswer();
+    }
+  });
+  document.getElementById('test-next').addEventListener('click', onNextQuestion);
+  document.getElementById('test-exit-btn').addEventListener('click', exitTestMode);
 
   // Demo button
   document.getElementById('demo-btn').addEventListener('click', runDemo);
